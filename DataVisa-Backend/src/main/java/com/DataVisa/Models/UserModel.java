@@ -10,25 +10,23 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 @Data
 public class UserModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	//email teste
+	//pedro@fatec.com
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long codigo;
-	
-	private String nome;
+	private String email;
 	
 	//senha teste
 	//1234
 	private int senha;
-	
-	//email teste
-	//pedro@fatec.com
-	private String email;
+
+	private String nome;
 	
 	private int nivelAcesso;
+	
 }
