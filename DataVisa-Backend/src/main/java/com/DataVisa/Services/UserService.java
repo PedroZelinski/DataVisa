@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.Models.UserModel;
@@ -72,6 +70,7 @@ public class UserService {
 	}
 	
 	private Optional<UserModel> findByAllFields (UserModel user){
-		return userRepository.findByAllFields(user.getEmail(),user.getSenha(),user.getNome(),user.getNivelAcesso());
+		return userRepository.findByAllFields(user.getEmail(),user.getSenha(), user.getNome(), user.getDepartamento(),
+				user.getAdminConta(), user.getEditaModelo(), user.getEditaConexão(), user.getEditaSenha());
 	}
 }

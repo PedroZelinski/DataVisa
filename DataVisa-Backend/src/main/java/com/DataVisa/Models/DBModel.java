@@ -5,13 +5,12 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "bancos")
+@Table(name = "conexoes")
 @Data
 public class DBModel implements Serializable {
 
@@ -20,13 +19,25 @@ public class DBModel implements Serializable {
 	//nome teste
 	//db1
 	@Id
-	private String nome;
+	@GeneratedValue
+	private Long id;
+	
+	private String nomeConexao;
+	
+	private String tipoDb;
+	
+	//nome teste
+	//datavisa
+	private String nomeDb;
+
+	private String usuarioDb;
 	
 	//senha teste
 	//1234
-	private String senha;
+	private String senhaDb;
 	
-	private List<String> tabelas;
-
+	private int portDb;
+	
+	private String caminhoDb;
 	
 }

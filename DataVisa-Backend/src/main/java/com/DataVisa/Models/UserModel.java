@@ -27,6 +27,14 @@ public class UserModel implements Serializable {
 
 	private String nome;
 	
-	private int nivelAcesso;
+	private String departamento;
+	
+	private int adminConta;
+	
+	private int editaModelo;
+	
+	private int editaConexão;
+	
+	private int editaSenha;
 	
 }

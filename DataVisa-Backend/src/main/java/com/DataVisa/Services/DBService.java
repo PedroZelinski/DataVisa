@@ -19,7 +19,7 @@ public class DBService {
 	public Optional<String> save(DBModel database) {
 		try {
 			//Verifica se o banco já existe
-			if (databaseRepository.findById(database.getNome()).isPresent()) {
+			if (databaseRepository.findById(database.getNomeConexao()).isPresent()) {
 				throw new IllegalArgumentException("Banco já cadastrado.");
 			}
 			
@@ -35,14 +35,14 @@ public class DBService {
 		try {
 			
 			//Verifica se o banco existe
-			if (databaseRepository.findById(database.getNome()).isEmpty()) {
+			if (databaseRepository.findById(database.getNomeConexao()).isEmpty()) {
                 throw new RuntimeException("Usuário não encontrado.");
             }
 			
 			databaseRepository.delete(database);
 			
 			//Verifica se o banco foi excluido
-            if (databaseRepository.findById(database.getNome()).isPresent()) {
+            if (databaseRepository.findById(database.getNomeConexao()).isPresent()) {
                 throw new RuntimeException("Falha ao excluir o banco.");
             }
             
