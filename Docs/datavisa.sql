@@ -98,39 +98,38 @@ CREATE TABLE Riachuelo_Conexao1 (
     campos VARCHAR(100),
     conexaoId BIGINT,     
     permissaoAcesso INT, 
-    permissaoAlteracao INT,
     FOREIGN KEY (conexaoId) REFERENCES conexoes(id) 
 );
 
 INSERT INTO Renner_Conexao1 (nome, campos, conexaoId, permissaoAcesso, permissaoAlteracao) VALUES
-('contratos', 'id<BIGINT>, nome<VARCHAR>, valor<DECIMAL>, vencimento<DATE>', 1, 2, 1),
-('vendedor', 'id<BIGINT>, nome<VARCHAR>, salario<DOUBLE>, percComissao<DOUBLE>', 1, 3, 3),
-('clientes', 'id<BIGINT>, nome<VARCHAR>, documento<VARCHAR>, telefone<VARCHAR>', 1, 3, 3),
-('vendas', 'id<BIGINT>, nroCupom<int>, dataVenda<DATETIME>, total<DOUBLE>, clienteId<BIGINT>,vendedorId<BIGINT>', 1, 3, 3),
-('entregas', 'id<BIGINT>, vendaId<BIGINT>, endereco<VARCHAR>, status<VARCHAR>, dataEntrega<DATE>', 1, 3, 3);
+('contratos', 'id<BIGINT>, nome<VARCHAR>, valor<DECIMAL>, vencimento<DATE>', 1, 2),
+('vendedor', 'id<BIGINT>, nome<VARCHAR>, salario<DOUBLE>, percComissao<DOUBLE>', 1, 3),
+('clientes', 'id<BIGINT>, nome<VARCHAR>, documento<VARCHAR>, telefone<VARCHAR>', 1, 3),
+('vendas', 'id<BIGINT>, nroCupom<int>, dataVenda<DATETIME>, total<DOUBLE>, clienteId<BIGINT>,vendedorId<BIGINT>', 1, 3),
+('entregas', 'id<BIGINT>, vendaId<BIGINT>, endereco<VARCHAR>, status<VARCHAR>, dataEntrega<DATE>', 1, 3);
 
 
 INSERT INTO Magalu_Conexao1 (nome, campos, conexaoId, permissaoAcesso, permissaoAlteracao) VALUES
-('Produtos_Magalu', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 2, 3, 3),
-('Clientes_Magalu', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 2, 3, 3),
-('Vendas_Magalu', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 2, 3, 3);
+('Produtos_Magalu', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 2, 3),
+('Clientes_Magalu', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 2, 3),
+('Vendas_Magalu', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 2, 3);
 
 INSERT INTO Americanas_Conexao1 (nome, campos, conexaoId, permissaoAcesso, permissaoAlteracao) VALUES
-('Produtos_Americanas', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 3, 3, 3),
-('Clientes_Americanas', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 3, 3, 3),
-('Vendas_Americanas', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 3, 3, 3);
+('Produtos_Americanas', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 3, 3),
+('Clientes_Americanas', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 3, 3),
+('Vendas_Americanas', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 3, 3);
 
 
 INSERT INTO CasasBahia_Conexao1 (nome, campos, conexaoId, permissaoAcesso, permissaoAlteracao) VALUES
-('Produtos_CasasBahia', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 4, 3, 3),
-('Clientes_CasasBahia', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 4, 3, 3),
-('Vendas_CasasBahia', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 4, 3, 3);
+('Produtos_CasasBahia', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 4, 3),
+('Clientes_CasasBahia', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 4, 3),
+('Vendas_CasasBahia', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 4, 3);
 
 
 INSERT INTO Riachuelo_Conexao1 (nome, campos, conexaoId, permissaoAcesso, permissaoAlteracao) VALUES
-('Produtos_Riachuelo', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 5, 3, 3),
-('Clientes_Riachuelo', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 5, 3, 3),
-('Vendas_Riachuelo', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 5, 3, 3);
+('Produtos_Riachuelo', 'id<BIGINT>, nome<VARCHAR>, preco<DECIMAL>, estoque<INT>', 5, 3),
+('Clientes_Riachuelo', 'id<BIGINT>, nome<VARCHAR>, email<VARCHAR>, telefone<VARCHAR>', 5, 3),
+('Vendas_Riachuelo', 'id<BIGINT>, data<DATETIME>, clienteId<BIGINT>, total<DECIMAL>', 5, 3);
 
 
 
