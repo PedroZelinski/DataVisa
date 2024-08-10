@@ -57,8 +57,7 @@ CREATE TABLE Renner_Conexao1 (
     nome VARCHAR(60),
     campos VARCHAR(100),
     conexaoId BIGINT,     
-    permissaoAcesso INT, 
-    permissaoAlteracao INT,
+    permissaoAcesso INT,
     FOREIGN KEY (conexaoId) REFERENCES conexoes(id) 
 );
 
@@ -67,8 +66,7 @@ CREATE TABLE Magalu_Conexao1 (
     nome VARCHAR(60),
     campos VARCHAR(100),
     conexaoId BIGINT,     
-    permissaoAcesso INT, 
-    permissaoAlteracao INT,
+    permissaoAcesso INT,
     FOREIGN KEY (conexaoId) REFERENCES conexoes(id) 
 );
 
@@ -77,8 +75,7 @@ CREATE TABLE Americanas_Conexao1 (
     nome VARCHAR(60),
     campos VARCHAR(100),
     conexaoId BIGINT,     
-    permissaoAcesso INT, 
-    permissaoAlteracao INT,
+    permissaoAcesso INT,
     FOREIGN KEY (conexaoId) REFERENCES conexoes(id) 
 );
 
@@ -88,7 +85,6 @@ CREATE TABLE CasasBahia_Conexao1 (
     campos VARCHAR(100),
     conexaoId BIGINT,     
     permissaoAcesso INT, 
-    permissaoAlteracao INT,
     FOREIGN KEY (conexaoId) REFERENCES conexoes(id) 
 );
 
