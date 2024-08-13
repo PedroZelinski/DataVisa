@@ -1,22 +1,21 @@
 use dataVisa;
 
 create table usuarios (
-	id bigint primary key auto_increment,	
-    nome varchar(60),
-    email varchar(60),
+    email varchar(60) primary key,
     senha varchar(60),
+    nome varchar(60),
     departamento varchar(60),
-    editaModelo int,
-    editaConexao int,
-    nivelAcesso int
+    edita_modelo int,
+    edita_conexao int,
+    nivel_acesso int
 );
 
 insert into usuarios(nome, email, senha, departamento, 
-	editaModelo, nivelAcesso, editaConexao) values
-    ("Pedro", "pedro@fatec.com","1234","DataVisa",1,1,1),
-    ("Analista de Dados", "analista@datavisa.com","qwerty","TI",0,1,1),
-    ("Administrador", "admin@datavisa.com","123456789","Administração",1,1,0),
-    ("Gestor", "gestor@datavisa.com", "1q2w3e4r5t", "Gestão",0,1,0);
+	edita_modelo, edita_conexao, nivel_acesso) values
+    ("Pedro", "pedro@fatec.com","1234","DataVisa",1,1,0),
+    ("Jorge", "analista@datavisa.com","qwerty","TI",0,1,1),
+    ("Lorena", "admin@datavisa.com","123456789","Administração",1,1,0),
+    ("William", "gestor@datavisa.com", "1q2w3e4r5t", "Gestão",0,1,1);
 
 create table empresas(
 	id bigint primary key auto_increment,	
