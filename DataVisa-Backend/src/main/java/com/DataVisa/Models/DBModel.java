@@ -16,8 +16,6 @@ public class DBModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	//nome teste
-	//db1
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -30,6 +28,8 @@ public class DBModel implements Serializable {
 	//datavisa
 	private String nomeDb;
 
+	//usuario teste
+	//root
 	private String usuarioDb;
 	
 	//senha teste

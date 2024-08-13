@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.Models.DocumentModel;
+import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.DocumentRepository;
 
 @Service
@@ -14,6 +15,7 @@ public class DocumentService {
 	
 	@Autowired
 	DocumentRepository documentRepository;
+	
 	
 	public Optional<String> save(DocumentModel document) {
 		try {
@@ -52,6 +54,9 @@ public class DocumentService {
 		return "Banco excluído com sucesso!";
 	}
 
+	public Optional<DocumentModel> findById(Long id){
+		return documentRepository.findById(id);
+	}
 	
 	public List<DocumentModel> findAll(){
 		return documentRepository.findAll();

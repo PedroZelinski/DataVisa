@@ -71,6 +71,6 @@ public class UserService {
 	
 	private Optional<UserModel> findByAllFields (UserModel user){
 		return userRepository.findByAllFields(user.getEmail(),user.getSenha(), user.getNome(), user.getDepartamento(),
-				user.getAdminConta(), user.getEditaModelo(), user.getEditaConexão(), user.getEditaSenha());
+				user.getEditaModelo(), user.getEditaConexao(), user.getNivelAcesso());
 	}
 }

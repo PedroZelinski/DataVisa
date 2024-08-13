@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.DataVisa.Models.UserModel;
-import com.DataVisa.Services.UserService;
+import com.DataVisa.Models.DocumentModel;
+import com.DataVisa.Services.DocumentService;
 
 
 @RestController
@@ -22,44 +22,38 @@ import com.DataVisa.Services.UserService;
 public class DocumentController {
 	
 	@Autowired
-	UserService userService;
+	DocumentService documentService;
 	
-	@GetMapping("/dataVisa/user/login/{email}/{senha}")
-	public ResponseEntity<String> login(@PathVariable String email,@PathVariable int senha){
-		return userService.findByEmailAndSenha(email, senha)
-				.map(message -> ResponseEntity.ok(message))
-				.orElse(ResponseEntity.notFound().build());
-	}
 	
-	@GetMapping("/dataVisa/user/getUser/{id}")
-	public ResponseEntity<UserModel> getUser(@PathVariable String id){
-		return userService.findById(id)
+	@GetMapping("/dataVisa/document/getDocument/{id}")
+	public ResponseEntity<DocumentModel> getDocument(@PathVariable Long id){
+		return documentService.findById(id)
 				.map(record -> ResponseEntity.ok().body(record))
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@PostMapping("/dataVisa/user/addUser")
-    public ResponseEntity<String> addUser(@RequestBody UserModel user){
-        return  userService.save(user)
+	@PostMapping("/dataVisa/document/addDocument")
+    public ResponseEntity<String> addDocument(@RequestBody DocumentModel document){
+        return  documentService.save(document)
     		.map(message -> ResponseEntity.ok(message))
             .orElse(ResponseEntity.internalServerError().build());
     }
 	
-	@PutMapping("/dataVisa/user/updateUser")
-    public ResponseEntity<String> updateUser(@RequestBody UserModel user){
-		return  userService.save(user)
+	@PutMapping("/dataVisa/document/updateDocument")
+    public ResponseEntity<String> updateDocument(@RequestBody DocumentModel document){
+		return  documentService.save(document)
 	    		.map(message -> ResponseEntity.ok(message))
 	            .orElse(ResponseEntity.internalServerError().build());          
     }
 	
-    @DeleteMapping("/dataVisa/user/deleteUser")
-    public String deleteUser(@RequestBody UserModel user){
-        return  userService.delete(user);
+    @DeleteMapping("/dataVisa/document/deleteDocument")
+    public String deleteDocument(@RequestBody DocumentModel document){
+        return  documentService.delete(document);
     }
     
-    @GetMapping("/dataVisa/user/getAll")
-	public List<UserModel> getAll(){
-		return userService.findAll();
+    @GetMapping("/dataVisa/document/getAll")
+	public List<DocumentModel> getAll(){
+		return documentService.findAll();
 	}
 	
 }

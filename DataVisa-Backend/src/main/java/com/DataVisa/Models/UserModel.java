@@ -2,6 +2,7 @@ package com.DataVisa.Models;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,18 +24,16 @@ public class UserModel implements Serializable {
 	
 	//senha teste
 	//1234
-	private int senha;
+	private String senha;
 
 	private String nome;
 	
 	private String departamento;
 	
-	private int adminConta;
-	
 	private int editaModelo;
 	
-	private int editaConexão;
+	private int editaConexao;
 	
-	private int editaSenha;
+	private int nivelAcesso;
 	
 }
