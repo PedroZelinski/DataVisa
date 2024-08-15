@@ -12,7 +12,7 @@ import com.DataVisa.Models.UserModel;
 public interface UserRepository extends JpaRepository<UserModel, String>{
 
 	@Query("SELECT user FROM UserModel user WHERE user.email = ?1 AND user.senha = ?2")
-	Optional<UserModel> findByEmailAndSenha(String email, int senha);
+	Optional<UserModel> findByEmailAndSenha(String email, String senha);
 
 	Optional<UserModel> findByEmail(String email);
 

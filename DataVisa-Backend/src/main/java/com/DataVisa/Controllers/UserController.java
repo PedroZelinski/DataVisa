@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.DataVisa.Models.UserModel;
@@ -24,9 +25,9 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@GetMapping("/dataVisa/user/login/{email}/{senha}")
-	public ResponseEntity<String> login(@PathVariable String email,@PathVariable int senha){
-		return userService.findByEmailAndSenha(email, senha)
+	@GetMapping("/dataVisa/user/login")
+	public ResponseEntity<String> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
+		return userService.login(email, senha)
 				.map(message -> ResponseEntity.ok(message))
 				.orElse(ResponseEntity.notFound().build());
 	}

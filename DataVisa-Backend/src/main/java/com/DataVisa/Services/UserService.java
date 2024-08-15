@@ -54,7 +54,7 @@ public class UserService {
 	}
 
 	
-	public Optional<String> findByEmailAndSenha(String email, int senha){
+	public Optional<String> login(String email, String senha){
 		if (userRepository.findByEmailAndSenha(email, senha).isPresent()) {
 			return Optional.of("Login efetuado com sucesso!");
 		}
