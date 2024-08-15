@@ -1,16 +1,26 @@
 import React, { Component } from 'react'
 
 export default class LoginCadastro extends Component {
+
+    cadastroUsuario = (nome, email, senha, confsenha) => {
+
+        //
+        // Comunicação e cadastro no banco com Axios
+        //
+
+        this.props.alteraModo(4)
+    }
+
     render() {
         return (
             <div>
-                <h1></h1>
-                <form>
+                <h1>Cadastre-se</h1>
+                <form onSubmit={() => this.cadastroUsuario()}>
                     <div>
-                        <label for="email">Nome Completo</label>
+                        <label for="nome">Nome Completo</label>
                         <input class="input-field"
-                            type="email" 
-                            id="email" 
+                            type="text" 
+                            id="nome" 
                             placeholder="felix@fatec.sp.gov.br"></input>
                     </div>
                     <div>
@@ -30,28 +40,23 @@ export default class LoginCadastro extends Component {
                     </div>
                     <div>
                         <label class="text" 
-                            for="password">Confirmar a Senha</label>
+                            for="confpassword">Confirmar a Senha</label>
                         <input class="input-field" 
                             type="password" 
-                            id="password" 
+                            id="confpassword" 
                             placeholder="your-password"></input>
                     </div>
 
                     <div>
                         <input class="input-button" 
                             type="submit" 
-                            value="Acessar"></input>
+                            value="Cadastrar"></input>
                     </div>
 
                     <div>
-                        Esqueceu sua senha?
-                        <a onClick={() => this.props.alteraModo(2)} 
-                            class="link"> Cadastre-se</a>
-                    </div>
-                    <div>
-                        Ainda não possui conta?
-                        <a onClick={() => this.props.alteraModo(3)} 
-                            class="link"> Cadastre-se</a>
+                        Já possui conta?
+                        <a onClick={() => this.props.alteraModo(1)} 
+                            class="link"> Clique aqui</a>
                     </div>
                 </form>
             </div>

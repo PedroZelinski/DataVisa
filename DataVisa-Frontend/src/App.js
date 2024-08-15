@@ -2,9 +2,10 @@ import React from 'react'
 import './App.css'
 import logo from './assets/logoOriginal.png'
 import waves from './assets/login.jpg'
-import Login from './components/Login'
+import LoginHome from './components/LoginHome'
 import LoginCadastro from './components/LoginCadastro'
 import LoginSenha from './components/LoginSenha'
+import LoginConfirmacao from './components/LoginConfirmacao'
 
 export default class App extends React.Component {
 
@@ -23,11 +24,14 @@ export default class App extends React.Component {
       
           <div className='col-6 text-left'>
             <img src={logo} alt="Logo" />
-            {this.state.modo == 1 ? <Login alteraModo={this.alteraModo}/> 
+            {this.state.modo == 1 ? <LoginHome alteraModo={this.alteraModo}/> 
             : 
             this.state.modo == 2 ? <LoginSenha alteraModo={this.alteraModo}/> 
             : 
-            <LoginCadastro alteraModo={this.alteraModo}/>}
+            this.state.modo == 3 ? <LoginCadastro alteraModo={this.alteraModo}/>
+            :
+            <LoginConfirmacao alteraModo={this.alteraModo}/>
+            }
             
           </div>
           <div className='col-6 p-0 h-full'>

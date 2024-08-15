@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Login extends Component {
+export default class LoginHome extends Component {
     render() {
         return (
             <div>
@@ -29,7 +29,7 @@ export default class Login extends Component {
                     <div>
                         Esqueceu sua senha?
                         <a onClick={() => this.props.alteraModo(2)} 
-                            class="link"> Cadastre-se</a>
+                            class="link"> Clique aqui</a>
                     </div>
                     <div>
                         Ainda não possui conta?
