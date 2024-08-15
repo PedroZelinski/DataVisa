@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
+import DBClient from '../utils/DBClient'
 
 export default class LoginCadastro extends Component {
 
-    cadastroUsuario = (nome, email, senha, confsenha) => {
-
-        //
-        // Comunicação e cadastro no banco com Axios
-        //
-
-        this.props.alteraModo(4)
+    cadastroUsuario = async (nome, email, senha, confsenha) => {
+        const dadosUsuario = {
+            email: "rafael@gmail.com",
+            senha: "123456",
+            nome: "Rafael",
+            departamento: "Desenvolvimento",
+            editaModelo: null,
+            editaConexao: null,
+            nivelAcesso: null
+        }
+        const cadastro = await DBClient.post('/dataVisa/user/addUser',
+            dadosUsuario
+        ).then(this.props.alteraModo(4));
+        
     }
 
     render() {

@@ -16,6 +16,17 @@ export default class App extends React.Component {
     this.setState({modo : newModo})
   }
 
+  fazerLogin = () => {
+    alert("to do")
+    //
+    //Fazer validação de senha
+    //
+
+    //
+    //Configurar route pro menu inicial
+    //
+  } 
+
   render() {
     return (
       <div className='grid justify-content-center' id='background'>
@@ -24,11 +35,15 @@ export default class App extends React.Component {
       
           <div className='col-6 text-left'>
             <img src={logo} alt="Logo" />
-            {this.state.modo == 1 ? <LoginHome alteraModo={this.alteraModo}/> 
+            {this.state.modo == 1 ? 
+              <LoginHome alteraModo={this.alteraModo}
+              fazerLogin={this.fazerLogin}/> 
             : 
-            this.state.modo == 2 ? <LoginSenha alteraModo={this.alteraModo}/> 
+            this.state.modo == 2 ? 
+              <LoginSenha alteraModo={this.alteraModo}/> 
             : 
-            this.state.modo == 3 ? <LoginCadastro alteraModo={this.alteraModo}/>
+            this.state.modo == 3 ? 
+              <LoginCadastro alteraModo={this.alteraModo}/>
             :
             <LoginConfirmacao alteraModo={this.alteraModo}/>
             }
