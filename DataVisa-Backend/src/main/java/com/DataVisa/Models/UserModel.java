@@ -34,13 +34,10 @@ public class UserModel implements Serializable {
 	
 	private String departamento;
 	
-	@Column(name = "edita_modelo")
 	private int editaModelo;
 	
-	@Column(name = "edita_conexao")
 	private int editaConexao;
 
-	@Column(name = "nivel_acesso")
 	private int nivelAcesso;
 	
 }
