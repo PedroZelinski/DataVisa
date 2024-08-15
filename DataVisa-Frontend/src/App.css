@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter');
+
 html, body {
     font-family: 'Inter';
 }
+label, input{
+    display:flex;
+    flex-direction:column;
+}
 .input-field{
-    width: 90%;
+    width: 80%;
     height: 30px;
     opacity: 0.60;
     background: #C1C7CB;
@@ -12,20 +18,20 @@ html, body {
     font-size: 14px;
     font-weight: 400;
 }
-
 .link{
     text-decoration: none; 
     color: #044BD9;
     cursor: pointer;
 }
-
+#logo{
+    margin-top: 20px;
+    margin-left: 20px;
+}
 #panel{
     background: white;
     border-radius: 5px;
-    width: 80%;
+    width: 70%;
     height: 80%;
-    left: 10%;
-    top: 10%;
     text-align: right;
 }
 #waves{

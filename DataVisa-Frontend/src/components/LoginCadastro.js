@@ -3,60 +3,71 @@ import DBClient from '../utils/DBClient'
 
 export default class LoginCadastro extends Component {
 
-    cadastroUsuario = async (nome, email, senha, confsenha) => {
-        const dadosUsuario = {
-            email: "rafael@gmail.com",
-            senha: "123456",
-            nome: "Rafael",
-            departamento: "Desenvolvimento",
-            editaModelo: null,
-            editaConexao: null,
-            nivelAcesso: null
-        }
-        const cadastro = await DBClient.post('/dataVisa/user/addUser',
-            dadosUsuario
-        ).then(this.props.alteraModo(4));
+    cadastroUsuario = async () => {
         
+
+        const senha = document.getElementById('senha').value
+        const confsenha = document.getElementById('confsenha').value
+
+        if (senha == confsenha) {
+            const dadosUsuario = {
+                email: document.getElementById('email').value,
+                senha: senha,
+                nome: document.getElementById('nome').value,
+                departamento: "Desenvolvimento",
+            }
+
+            const cadastro = await DBClient.post('/dataVisa/user/addUser',
+                dadosUsuario
+            ).then(this.props.alteraModo(4));
+        } else {
+            //
+            // Ajustar pra não dar refresh na pagina
+            //
+            alert("Senhas digitadas não conferem");
+        }
     }
 
     render() {
         return (
-            <div>
-                <h1>Cadastre-se</h1>
+            <div style={{marginLeft: 20}}>
+                <a style={{fontWeight: 'bold'}}>Cadastre-se</a>
                 <form onSubmit={() => this.cadastroUsuario()}>
                     <div>
-                        <label for="nome">Nome Completo</label>
-                        <input class="input-field"
-                            type="text" 
-                            id="nome" 
-                            placeholder="felix@fatec.sp.gov.br"></input>
+                        <label>Nome Completo
+                            <input className="input-field"
+                                type="text" 
+                                id="nome" 
+                                placeholder="felix@fatec.sp.gov.br"></input>
+                        </label>
                     </div>
                     <div>
-                        <label for="email">Email</label>
-                        <input class="input-field"
-                            type="email" 
-                            id="email" 
-                            placeholder="felix@fatec.sp.gov.br"></input>
+                        <label>Email
+                            <input className="input-field"
+                                type="email" 
+                                id="email" 
+                                placeholder="felix@fatec.sp.gov.br"></input>
+                        </label>
                     </div>
                     <div>
-                        <label class="text" 
-                            for="password">Senha</label>
-                        <input class="input-field" 
-                            type="password" 
-                            id="password" 
-                            placeholder="your-password"></input>
+                        <label>Senha
+                            <input className="input-field" 
+                                type="password" 
+                                id="senha" 
+                                placeholder="your-password"></input>
+                        </label>
                     </div>
                     <div>
-                        <label class="text" 
-                            for="confpassword">Confirmar a Senha</label>
-                        <input class="input-field" 
-                            type="password" 
-                            id="confpassword" 
-                            placeholder="your-password"></input>
+                        <label>Confirmar a Senha
+                            <input className="input-field" 
+                                type="password" 
+                                id="confsenha" 
+                                placeholder="your-password"></input>
+                        </label>
                     </div>
 
                     <div>
-                        <input class="input-button" 
+                        <input className="input-button" 
                             type="submit" 
                             value="Cadastrar"></input>
                     </div>
@@ -64,7 +75,7 @@ export default class LoginCadastro extends Component {
                     <div>
                         Já possui conta?
                         <a onClick={() => this.props.alteraModo(1)} 
-                            class="link"> Clique aqui</a>
+                            className="link"> Clique aqui</a>
                     </div>
                 </form>
             </div>

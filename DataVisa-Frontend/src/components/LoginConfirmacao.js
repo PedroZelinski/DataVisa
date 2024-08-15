@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 export default class LoginConfirmacao extends Component {
     render() {
         return (
-            <div>
-                <h1>Cadastro Realizado com Sucesso</h1>
+            <div style={{marginLeft: 20}}>
+                <a style={{fontWeight: 'bold'}}>Cadastro Realizado com Sucesso</a>
                 <p>
                     Seu cadastro foi concluido com êxito! <br/>
                     <br/>

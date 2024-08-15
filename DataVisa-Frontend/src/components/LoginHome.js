@@ -3,21 +3,24 @@ import React, { Component } from 'react'
 export default class LoginHome extends Component {
     render() {
         return (
-            <div>
-                <h1>Digite seu e-mail e senha, para acessar sua conta</h1>
+            <div style={{marginLeft: 20}}>
+                <a style={{fontWeight: 'bold'}}>
+                    Digite seu e-mail e senha, para acessar sua conta</a>
                 <form onSubmit={() => this.props.fazerLogin()}>
                     <div>
-                        <label htmlFor="email">Email</label>
-                        <input className="input-field"
-                            type="email" id="email" 
-                            placeholder="felix@fatec.sp.gov.br"></input>
+                        <label>Email
+                            <input className="input-field"
+                                type="email" id="email" 
+                                placeholder="felix@fatec.sp.gov.br"></input>
+                        </label>
                     </div>
                     <div>
-                        <label className="text" htmlFor="password">Senha</label>
-                        <input className="input-field" 
-                            type="password" 
-                            id="password" 
-                            placeholder="your-password"></input>
+                        <label>Senha
+                            <input className="input-field" 
+                                type="password" 
+                                id="password" 
+                                placeholder="your-password"></input>
+                        </label>
                     </div>
 
                     <div>

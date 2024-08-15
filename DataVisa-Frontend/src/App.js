@@ -31,10 +31,10 @@ export default class App extends React.Component {
     return (
       <div className='grid justify-content-center' id='background'>
 
-        <div className='grid  m-8' id="panel">
+        <div className='grid mt-6' id="panel">
       
           <div className='col-6 text-left'>
-            <img src={logo} alt="Logo" />
+            <img src={logo} alt="Logo" id="logo"/>
             {this.state.modo == 1 ? 
               <LoginHome alteraModo={this.alteraModo}
               fazerLogin={this.fazerLogin}/> 
