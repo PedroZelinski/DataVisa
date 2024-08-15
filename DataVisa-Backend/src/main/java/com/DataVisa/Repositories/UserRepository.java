@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<UserModel, String>{
 	    @Param("nome") String nome,
 	    @Param("departamento") String departamento,
 	    @Param("editaModelo") int editaModelo,
-	    @Param("editaConexao") int editaConexão,
+	    @Param("editaConexao") int editaConexao,
 	    @Param("nivelAcesso") int nivelAcesso
 	);
 	
