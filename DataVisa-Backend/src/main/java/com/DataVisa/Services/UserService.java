@@ -21,7 +21,6 @@ public class UserService {
 			if (userRepository.findByEmail(user.getEmail()).isPresent()) {
 				throw new IllegalArgumentException("Usuário já existente.");
 			}
-			
 			userRepository.save(user);
 			
 		} catch (Exception ex){

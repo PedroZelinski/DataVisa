@@ -14,7 +14,11 @@ import lombok.Data;
 @Table(name = "usuarios")
 @Data
 public class UserModel implements Serializable {
-
+	public UserModel() {
+		this.setEditaConexao(0);
+		this.setEditaModelo(0);
+		this.setNivelAcesso(2);
+	}
 	private static final long serialVersionUID = 1L;
 
 	//email teste
