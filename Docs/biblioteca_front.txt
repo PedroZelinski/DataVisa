@@ -1,0 +1,4 @@
+Bibliotecas usadas no front
+
+primeflex - npm i primeflex
+primereact - npm i primereact
