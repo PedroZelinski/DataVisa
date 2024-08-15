@@ -18,7 +18,7 @@ import com.DataVisa.Services.DocumentService;
 
 
 @RestController
-@CrossOrigin("origins = *")
+@CrossOrigin(origins = "*")
 public class DocumentController {
 	
 	@Autowired

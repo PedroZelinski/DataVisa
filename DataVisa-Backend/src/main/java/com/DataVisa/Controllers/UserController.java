@@ -18,7 +18,7 @@ import com.DataVisa.Services.UserService;
 
 
 @RestController
-@CrossOrigin("origins = *")
+@CrossOrigin(origins = "*")
 public class UserController {
 	
 	@Autowired
