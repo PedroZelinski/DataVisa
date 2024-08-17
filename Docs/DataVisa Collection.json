@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"pedro@fatecz.com\",\r\n  \"senha\": 1234,\r\n  \"nome\": \"Pedro\",\r\n  \"nivelAcesso\": 1\r\n}",
+					"raw": "{\r\n  \"email\": \"leticia@fatec.sp.gov.br\",\r\n  \"senha\": \"4321\",\r\n  \"nome\": \"Leticia\",\r\n  \"departamento\":\"Atendimento\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -118,19 +118,190 @@
 			"response": []
 		},
 		{
-			"name": "Get Table Collumns",
+			"name": "Get Table",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "secret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "login",
+						"value": "hasuiedha",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "senha",
+						"value": "123123",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "token",
+						"value": "559",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{DataVisa}}/database/tablesaw/usuarios",
+					"raw": "{{DataVisa}}/database/tablesaw/empresas",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
 						"database",
 						"tablesaw",
-						"usuarios"
+						"empresas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Table Collumns",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "secret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "login",
+						"value": "hasuiedha",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "senha",
+						"value": "123123",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "token",
+						"value": "559",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/database/tablesaw/empresas",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"database",
+						"tablesaw",
+						"empresas"
 					]
 				}
 			},
@@ -142,14 +313,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DataVisa}}/database/tablesaw/usuarios",
+					"raw": "{{DataVisa}}/document/tablesaw/Colaboradores/email",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"database",
+						"document",
 						"tablesaw",
-						"usuarios"
+						"Colaboradores",
+						"email"
 					]
 				}
 			},
