@@ -1,7 +1,6 @@
 package com.DataVisa.Models;
 
 import java.io.Serializable;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,4 +39,5 @@ public class DBModel implements Serializable {
 	
 	private String caminhoDb;
 	
+	private Long empresaId;
 }

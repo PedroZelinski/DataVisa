@@ -24,9 +24,9 @@ public class DBController {
 	@Autowired
 	DBService databaseService;
 	
-	@GetMapping("/dataVisa/database/getDB/{nome}")
-	public ResponseEntity<DBModel> getDB(@PathVariable String nome){
-		return databaseService.findById(nome)
+	@GetMapping("/dataVisa/database/getDB/{id}")
+	public ResponseEntity<DBModel> getDB(@PathVariable Long id){
+		return databaseService.findById(id)
 				.map(record -> ResponseEntity.ok().body(record))
 				.orElse(ResponseEntity.notFound().build());
 	}

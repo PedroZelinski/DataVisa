@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.UserRepository;
+import com.DataVisa.Session.DatavisaSession;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -15,6 +18,9 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	DatavisaSession datavisaSession;
+
 	public Optional<String> save(UserModel user) {
 		try {
 			//Verifica se o usuário já existe
@@ -54,10 +60,28 @@ public class UserService {
 
 	
 	public Optional<String> login(String email, String senha){
-		if (userRepository.findByEmailAndSenha(email, senha).isPresent()) {
-			return Optional.of("Login efetuado com sucesso!");
+		if (datavisaSession.isStatus()) {
+			return Optional.of("Usuario já logado!"
+					+ "\nUsuário: " + datavisaSession.getNome());
+		} 			
+		try{
+			UserModel user= userRepository.findByEmailAndSenha(email, senha).get();
+			startSession(user);
+			return Optional.of("Login efetuado com sucesso!"
+					+ "\nUsuário: " + datavisaSession.getNome());
+			
+		} catch (Exception e) {
+			datavisaSession.setStatus(false);
+			return Optional.of("Credenciais inválidas!");
 		}
-		return Optional.of("Credenciais inválidas!");
+	}
+	
+	public Optional<String> logout(){
+		if (datavisaSession.isStatus()) {
+			datavisaSession.setStatus(false);
+			return Optional.of("Logout realizado com sucesso!");
+		}
+		return Optional.of("Usuário não logado.");
 	}
 	
 	public Optional<UserModel> findById(String email){
@@ -69,7 +93,19 @@ public class UserService {
 	}
 	
 	private Optional<UserModel> findByAllFields (UserModel user){
-		return userRepository.findByAllFields(user.getEmail(),user.getSenha(), user.getNome(), user.getDepartamento(),
+		return userRepository.findByAllFields(user.getEmail(),user.getSenha(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(),
 				user.getEditaModelo(), user.getEditaConexao(), user.getNivelAcesso());
 	}
+	
+	private void startSession (UserModel user) {
+		datavisaSession.setStatus(true);
+		datavisaSession.setEmail(user.getEmail());
+		datavisaSession.setNome(user.getNome());
+		datavisaSession.setEmpresaId(user.getEmpresaId());
+		datavisaSession.setPermissaoTabela(user.getPermissaoTabela());
+		datavisaSession.setEditaModelo(user.getEditaModelo());
+		datavisaSession.setEditaConexao(user.getEditaConexao());
+		datavisaSession.setNivelAcesso(user.getNivelAcesso());		
+	}
+
 }

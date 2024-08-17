@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Services.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -28,6 +30,13 @@ public class UserController {
 	@GetMapping("/dataVisa/user/login")
 	public ResponseEntity<String> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
 		return userService.login(email, senha)
+				.map(message -> ResponseEntity.ok(message))
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping("/dataVisa/user/logout")
+	public ResponseEntity<String> logout(){
+		return userService.logout()
 				.map(message -> ResponseEntity.ok(message))
 				.orElse(ResponseEntity.notFound().build());
 	}

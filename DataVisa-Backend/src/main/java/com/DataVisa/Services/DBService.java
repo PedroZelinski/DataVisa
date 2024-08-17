@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.DataVisa.Models.DBModel;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.DBRepository;
+import com.DataVisa.Session.DatavisaSession;
 
 import tech.tablesaw.api.Table;
 
@@ -23,6 +24,9 @@ public class DBService {
 	
 	@Autowired
 	DBRepository databaseRepository;
+
+	@Autowired
+	DatavisaSession datavisaSession;	
 	
 	private Connection conn() throws SQLException{
 		//String url = "jdbc:mysql://localhost:3306/dataVisa";
@@ -36,7 +40,7 @@ public class DBService {
 	public Optional<String> save(DBModel database) {
 		try {
 			//Verifica se o banco já existe
-			if (databaseRepository.findById(database.getNomeConexao()).isPresent()) {
+			if (databaseRepository.findById(database.getId()).isPresent()) {
 				throw new IllegalArgumentException("Banco já cadastrado.");
 			}
 			
@@ -52,14 +56,14 @@ public class DBService {
 		try {
 			
 			//Verifica se o banco existe
-			if (databaseRepository.findById(database.getNomeConexao()).isEmpty()) {
+			if (databaseRepository.findById(database.getId()).isEmpty()) {
                 throw new RuntimeException("Usuário não encontrado.");
             }
 			
 			databaseRepository.delete(database);
 			
 			//Verifica se o banco foi excluido
-            if (databaseRepository.findById(database.getNomeConexao()).isPresent()) {
+            if (databaseRepository.findById(database.getId()).isPresent()) {
                 throw new RuntimeException("Falha ao excluir o banco.");
             }
             
@@ -75,11 +79,16 @@ public class DBService {
 		return databaseRepository.findAll();
 	}
 	
-	public Optional<DBModel> findById(String id){
+	public Optional<DBModel> findById(Long id){
 		return databaseRepository.findById(id);
 	}
 	
-	
+	public void setSessionConection(DBModel db) {
+		datavisaSession.setConexaoAtiva(db.getId());				
+		datavisaSession.setUrl("jdbc:mysql://localhost:3306"+ db.getCaminhoDb());
+		datavisaSession.setUser(db.getUsuarioDb());
+		datavisaSession.setPassword(db.getSenhaDb());			
+	}
 	
 	
 }

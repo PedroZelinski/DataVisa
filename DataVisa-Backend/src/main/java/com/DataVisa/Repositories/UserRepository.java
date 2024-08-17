@@ -16,12 +16,13 @@ public interface UserRepository extends JpaRepository<UserModel, String>{
 
 	Optional<UserModel> findByEmail(String email);
 
-	@Query("SELECT u FROM UserModel u WHERE u.email = :email AND u.senha = :senha AND u.nome = :nome AND u.departamento = :departamento AND u.editaModelo = :editaModelo AND u.editaConexao = :editaConexao AND u.nivelAcesso = :nivelAcesso")
+	@Query("SELECT u FROM UserModel u WHERE u.email = :email AND u.senha = :senha AND u.nome = :nome AND u.empresaId = :empresaId  AND u.permissaoTabela = :permissaoTabela AND u.editaModelo = :editaModelo AND u.editaConexao = :editaConexao AND u.nivelAcesso = :nivelAcesso")
 	Optional<UserModel> findByAllFields(
 	    @Param("email") String email, 
 	    @Param("senha") String senha, 
 	    @Param("nome") String nome,
-	    @Param("departamento") String departamento,
+	    @Param("empresaId") Long empresaId,
+	    @Param("permissaoTabela") int permissaoTabela,
 	    @Param("editaModelo") int editaModelo,
 	    @Param("editaConexao") int editaConexao,
 	    @Param("nivelAcesso") int nivelAcesso

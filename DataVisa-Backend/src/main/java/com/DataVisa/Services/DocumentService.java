@@ -11,9 +11,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.DataVisa.Models.DBModel;
 import com.DataVisa.Models.DocumentModel;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.DocumentRepository;
+import com.DataVisa.Session.DatavisaSession;
 
 import tech.tablesaw.api.Table;
 
@@ -23,6 +25,11 @@ public class DocumentService {
 	@Autowired
 	DocumentRepository documentRepository;
 	
+	@Autowired
+	DatavisaSession datavisaSession;	
+	
+	@Autowired
+	DBService dBService;
 	
 	public Optional<String> save(DocumentModel document) {
 		try {
@@ -69,78 +76,112 @@ public class DocumentService {
 		return documentRepository.findAll();
 	}
 	
-	public String getTable(String tabela){
+	public String getTable(Long conexao, String tabela){
+		if (!datavisaSession.isStatus())
+			return "Erro: Login não efetuado!";
+		if (!hasPermit(conexao, tabela))
+			return "Erro: Acesso negado!";
 		
 		String query = "select * from " + tabela;
 		
-		try (Connection conn = conn()){
-			PreparedStatement stmt = conn.prepareStatement(query);
-			ResultSet rs = stmt.executeQuery();
-			
-			Table table = Table.read().db(rs, tabela);
-			
-			conn.close();
+		try{
+			Table table = getClientTable(query, tabela);
 			return table.printAll();
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			return "Erro: " + e.getMessage();
 		}
 	}
 	
-	public String getTableCollumns(String tabela){
+	public String getTableCollumns(Long conexao, String tabela){
+		if (!datavisaSession.isStatus())
+			return "Erro: Login não efetuado!";
+		if (!hasPermit(conexao, tabela))
+			return "Erro: Acesso negado!";
 		
 		String query = "select * from " + tabela;
-		StringBuilder retornoArray = new StringBuilder();
+		StringBuilder retorno = new StringBuilder();
 		
-		try (Connection conn = conn()){
-			PreparedStatement stmt = conn.prepareStatement(query);
-			ResultSet rs = stmt.executeQuery();
-			
-			Table table = Table.read().db(rs, tabela);
+		try {
+			Table table = getClientTable(query, tabela);
 			
 			for (int i = 0; i < table.columnCount(); i++) {
 			//retorna os nomes das colunas existentes na tabbela
-			retornoArray.append("Nome da coluna: " + table.columnNames().get(i) );
+			retorno.append("Nome da coluna: " + table.columnNames().get(i) );
 			//retorna os tipos das colunas existentes na tabela
-			retornoArray.append(". Tipo da coluna: " + table.typeArray()[i] + "\n");
+			retorno.append(" | Tipo da coluna: " + table.typeArray()[i] + "\n");
 			}
-			conn.close();
-			return retornoArray.toString();
+			return retorno.toString();
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			return "Erro: " + e.getMessage();
 		}
 	}
 	
-	public String getCollumnFields(String tabela, String campo){
+	public String getCollumnFields(Long conexao, String tabela, String campo){
+			if (!datavisaSession.isStatus())
+				return "Erro: Login não efetuado!";
+			if (!hasPermit(conexao, tabela))
+				return "Erro: Acesso negado!";
 			
 			String query = "select * from " + tabela;
-			String retorno = "";		
 			
-			try (Connection conn = conn()){
-				PreparedStatement stmt = conn.prepareStatement(query);
-				ResultSet rs = stmt.executeQuery();
-				
-				Table table = Table.read().db(rs, tabela);
-				
+			try {
 				//retorna os dados de uma coluna específica da tabela
-				retorno = table.stringColumn(campo).print();
+				String retorno = getClientTable(query, tabela).stringColumn(campo).print();
 				//retira o cabeçalho do retorno
 				retorno = retorno.contains("\n") ? retorno.substring(retorno.indexOf('\n') + 1): retorno;
 				
-				conn.close();
 				return retorno.trim();
 				
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				return "Erro: " + e.getMessage();
 			}
 	}
 	
+	private boolean hasPermit(Long conexao, String tabela) {
+		try {
+			DBModel db = dBService.findById(conexao).get();
+			if(dBService.findById(conexao).get().getEmpresaId().equals(datavisaSession.getEmpresaId())) {
+				dBService.setSessionConection(db);	
+				
+				String query = "select permissaoAcesso from  tabelas_" + db.getNomeDb() + " where nome = '" + tabela + "'";
+				
+				int campo = getDatavisaTable(query, "tabelas_" + db.getNomeDb()).intColumn("permissaoAcesso").getInt(0);
+				return campo >= datavisaSession.getPermissaoTabela() ? true: false;
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+		
+	private Connection ClientConnection() throws SQLException{
+		return DriverManager.getConnection(datavisaSession.getUrl(), datavisaSession.getUser(), datavisaSession.getPassword());
+	}
 	
-	private Connection conn() throws SQLException{
-		String url = "jdbc:mysql://localhost:3306/pizzaria_db";
+	private Connection DatavisaConnection() throws SQLException{
+		String url = "jdbc:mysql://localhost:3306/datavisa";
 		String user = "root";
 		String password = "1234";
 		return DriverManager.getConnection(url, user, password);
+	}
+	
+	public Table getDatavisaTable(String query, String tableName) throws Exception {
+		Connection datavisaConnection = DatavisaConnection();
+		PreparedStatement stmt = datavisaConnection.prepareStatement(query);
+		ResultSet rs = stmt.executeQuery();
+		Table table = Table.read().db(rs, tableName);
+		datavisaConnection.close();
+		return table;
+	}
+	
+	public Table getClientTable(String query, String tableName) throws Exception {
+		Connection clientConnection = ClientConnection();
+		PreparedStatement stmt = clientConnection.prepareStatement(query);
+		ResultSet rs = stmt.executeQuery();
+		Table table = Table.read().db(rs, tableName);
+		clientConnection.close();
+		return table;
 	}
 }

@@ -56,18 +56,18 @@ public class DocumentController {
 		return documentService.findAll();
 	}
 	
-    @GetMapping("/dataVisa/document/tablesaw/{tabela}")
-    public String getTable(@PathVariable String tabela){
-    	return documentService.getTable(tabela);
+    @GetMapping("/dataVisa/document/tablesaw/{conexao}/{tabela}")
+    public String getTable(@PathVariable Long conexao, @PathVariable String tabela){
+    	return documentService.getTable(conexao, tabela);
     }
 	
-    @GetMapping("/dataVisa/document/tablesaw/columns/{tabela}")
-	public String getTableColumns(@PathVariable String tabela){
-		return documentService.getTableCollumns(tabela);
+    @GetMapping("/dataVisa/document/tablesaw/columns/{conexao}/{tabela}")
+	public String getTableColumns(@PathVariable Long conexao, @PathVariable String tabela){
+		return documentService.getTableCollumns(conexao, tabela);
 	}
     
-    @GetMapping("/dataVisa/document/tablesaw/{tabela}/{campo}")
-	public String getColumnFields(@PathVariable String tabela, @PathVariable String campo){
-		return documentService.getCollumnFields(tabela, campo);
+    @GetMapping("/dataVisa/document/tablesaw/{conexao}/{tabela}/{campo}")
+	public String getColumnFields(@PathVariable Long conexao, @PathVariable String tabela, @PathVariable String campo){
+		return documentService.getCollumnFields(conexao, tabela, campo);
 	}
 }

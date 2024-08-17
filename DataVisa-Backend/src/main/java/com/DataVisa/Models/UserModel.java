@@ -31,8 +31,10 @@ public class UserModel implements Serializable {
 	private String senha;
 
 	private String nome;
+
+	private Long empresaId;
 	
-	private String departamento;
+	private int permissaoTabela;
 	
 	private int editaModelo;
 	
