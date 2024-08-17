@@ -25,7 +25,8 @@ public class DBService {
 	DBRepository databaseRepository;
 	
 	private Connection conn() throws SQLException{
-		String url = "jdbc:mysql://localhost:3306/dataVisa";
+		//String url = "jdbc:mysql://localhost:3306/dataVisa";
+		String url = "jdbc:mysql://localhost:3306/pizzaria_db";
 		String user = "root";
 		String password = "1234";
 		return DriverManager.getConnection(url, user, password);
@@ -78,50 +79,7 @@ public class DBService {
 		return databaseRepository.findById(id);
 	}
 	
-	public String getTableCollumns(String tabela){
-		
-		String query = "select * from " + tabela;
-		List<String> retornoArray = new ArrayList<>();
-		
-		try (Connection conn = conn()){
-			PreparedStatement stmt = conn.prepareStatement(query);
-			ResultSet rs = stmt.executeQuery();
-			
-			Table t = Table.read().db(rs, tabela);
-			
-			//retorna as colunas existentes na tabbela
-			for (int i = 0; i < t.columnCount(); i++)
-				retornoArray.add(t.columnNames().get(i));
-			
-			conn.close();
-			return retornoArray.toString();
-			
-		} catch (SQLException e) {
-			return "Erro: " + e.getMessage();
-		}
-	}
 	
-	public String getCollumnFields(String tabela, String campo){
-			
-			String query = "select * from " + tabela;
-			String retorno = "";		
-			
-			try (Connection conn = conn()){
-				PreparedStatement stmt = conn.prepareStatement(query);
-				ResultSet rs = stmt.executeQuery();
-				
-				Table t = Table.read().db(rs, tabela);
-				
-				//retorna os dados de uma coluna específica da tabela
-				retorno = t.stringColumn(campo).print();
-				retorno = retorno.contains("\n") ? retorno.substring(retorno.indexOf('\n') + 1): retorno;
-				
-				conn.close();
-				return retorno.trim();
-				
-			} catch (SQLException e) {
-				return "Erro: " + e.getMessage();
-			}
-	}
+	
 	
 }

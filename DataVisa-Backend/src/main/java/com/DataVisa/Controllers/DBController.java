@@ -54,15 +54,6 @@ public class DBController {
 	public List<DBModel> getAll(){
 		return databaseService.findAll();
 	}
-	
-    @GetMapping("/dataVisa/database/tablesaw/{tabela}")
-	public String tablesawTest(@PathVariable String tabela){
-		return databaseService.getTableCollumns(tabela);
-	}
     
-    @GetMapping("/dataVisa/database/tablesaw/{tabela}/{campo}")
-	public String tablesawFieldTest(@PathVariable String tabela, @PathVariable String campo){
-		return databaseService.getCollumnFields(tabela, campo);
-	}
     
 }
