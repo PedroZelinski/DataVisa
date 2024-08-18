@@ -321,13 +321,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/document/tablesaw/Colaboradores",
+					"raw": "{{DataVisa}}/table/tabela/Colaboradores",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"document",
-						"tablesaw",
+						"table",
+						"tabela",
 						"Colaboradores"
 					]
 				}
@@ -397,13 +397,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/document/tablesaw/columns/Colaboradores",
+					"raw": "{{DataVisa}}/table/columns/Colaboradores",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"document",
-						"tablesaw",
+						"table",
 						"columns",
 						"Colaboradores"
 					]
@@ -417,13 +416,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DataVisa}}/document/tablesaw/Colaboradores/nome",
+					"raw": "{{DataVisa}}/table/columnFields/Colaboradores/nome",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"document",
-						"tablesaw",
+						"table",
+						"columnFields",
 						"Colaboradores",
 						"nome"
 					]
