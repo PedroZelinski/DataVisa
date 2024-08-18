@@ -63,8 +63,10 @@ public class UserController {
     }
 	
     @DeleteMapping("/dataVisa/user/deleteUser")
-    public String deleteUser(@RequestBody UserModel user){
-        return  userService.delete(user);
+    public ResponseEntity<String> deleteUser(@RequestBody UserModel user){
+        return  userService.delete(user)
+	    		.map(message -> ResponseEntity.ok(message))
+	            .orElse(ResponseEntity.internalServerError().build()); 
     }
     
     @GetMapping("/dataVisa/user/getAll")

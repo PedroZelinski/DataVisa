@@ -34,9 +34,14 @@ public class UserService {
 		return Optional.of("Usuário cadastrado com sucesso!");
 	}
 
-	public String delete(UserModel user){
+	public Optional<String> delete(UserModel user){
+		
+		String status;
+		if (!(status = checkStatus()).isEmpty())
+			return  Optional.of(status);
+		if (!(status = checkUserPermition()).isEmpty())
+			return  Optional.of(status);
 		try {
-			
 			//Verifica se o registro existe
 			Optional<UserModel> optionalUser = findByAllFields(user);
 			if (optionalUser.isEmpty()) {
@@ -51,14 +56,14 @@ public class UserService {
             }
             
 		} catch (Exception ex){
-			return "Ocorreu um erro! " + ex.getMessage();			
+			return Optional.of("Ocorreu um erro! " + ex.getMessage());			
 		}
 		
-		return "Usuário excluído com sucesso!";
+		return Optional.of("Usuário excluído com sucesso!");
 	}
 
 	public Optional<String> login(String email, String senha){
-		if (datavisaSession.isStatus()) {
+		if (checkStatus().isEmpty()) {
 			return Optional.of("Usuario já logado!"
 					+ "\nUsuário: " + datavisaSession.getNome());
 		} 			
@@ -97,11 +102,21 @@ public class UserService {
 				user.getEditaModelo(), user.getEditaConexao(), user.getNivelAcesso());
 	}
 
-	public String checkStatus(Long conexao, String tabela) {
+	public String checkStatus() {
 		if (!datavisaSession.isStatus())
 			return "Erro: Login não efetuado!";
+		return "";
+	}
+	
+	public String checkConnection(Long conexao, String tabela) {
 		if(!datavisaSession.isConexaoAtiva())
 			return "Erro: Nenhuma conexão ativa! \nConecte a um banco e tente novamente.";
+		return "";
+	}
+	
+	public String checkUserPermition() {
+		if(datavisaSession.getNivelAcesso() > 1)
+			return "Erro: O usuário não possui permissão para realizar a esta ação.";
 		return "";
 	}
 

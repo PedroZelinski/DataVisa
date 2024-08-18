@@ -79,11 +79,8 @@ public class TableService {
 	
 	public String getTable(String tabela){
 
-		String status = userService.checkStatus(datavisaSession.getConexao(), tabela);
+		String status = checkPermitions(tabela);
 		if (!status.isEmpty())
-			return status;
-		
-		if (!(status = checkPermitions(tabela)).isEmpty())
 			return status;
 		
 		String query = "select * from " + tabela;
@@ -99,11 +96,8 @@ public class TableService {
 
 	public String getTableCollumns(String tabela){
 
-		String status = userService.checkStatus(datavisaSession.getConexao(), tabela);
+		String status = checkPermitions(tabela);
 		if (!status.isEmpty())
-			return status;
-		
-		if (!(status = checkPermitions(tabela)).isEmpty())
 			return status;
 		
 		String query = "select * from " + tabela;
@@ -127,26 +121,23 @@ public class TableService {
 
 	public String getCollumnFields( String tabela, String campo){
 		
-			String status = userService.checkStatus(datavisaSession.getConexao(), tabela);
-			if (!status.isEmpty())
-				return status;
+		String status = checkPermitions(tabela);
+		if (!status.isEmpty())
+			return status;
+		
+		String query = "select * from " + tabela;
+		
+		try {
+			//retorna os dados de uma coluna específica da tabela
+			String retorno = getClientTable(query, tabela).stringColumn(campo).print();
+			//retira o cabeçalho do retorno
+			retorno = retorno.contains("\n") ? retorno.substring(retorno.indexOf('\n') + 1): retorno;
 			
-			if (!(status = checkPermitions(tabela)).isEmpty())
-				return status;
+			return retorno.trim();
 			
-			String query = "select * from " + tabela;
-			
-			try {
-				//retorna os dados de uma coluna específica da tabela
-				String retorno = getClientTable(query, tabela).stringColumn(campo).print();
-				//retira o cabeçalho do retorno
-				retorno = retorno.contains("\n") ? retorno.substring(retorno.indexOf('\n') + 1): retorno;
-				
-				return retorno.trim();
-				
-			} catch (Exception e) {
-				return "Erro: " + e.getMessage();
-			}
+		} catch (Exception e) {
+			return "Erro: " + e.getMessage();
+		}
 	}
 
 	public Table getDatavisaTable(String query, String tableName) throws Exception {
@@ -167,7 +158,13 @@ public class TableService {
 		return table;
 	}
 	
-	private String checkPermitions(String tabela) {		
+	private String checkPermitions(String tabela) {	
+		String status;
+		if (!(status = userService.checkStatus()).isEmpty())
+			return status;
+		if (!(status = userService.checkConnection(datavisaSession.getConexao(), tabela)).isEmpty())
+			return status;		
+		
 		DBModel db = dBService.findById(datavisaSession.getConexao()).get();
 		
 		String query = "select permissaoAcesso from  tabelas_" + db.getNomeDb() + " where nome = '" + tabela + "'";
