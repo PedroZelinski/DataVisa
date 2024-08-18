@@ -55,5 +55,12 @@ public class DBController {
 		return databaseService.findAll();
 	}
     
+    @GetMapping("/dataVisa/database/connect/{id}")
+	public ResponseEntity<String> Connect(@PathVariable Long id){
+    	return  databaseService.setConnection(id)
+	    		.map(message -> ResponseEntity.ok(message))
+	            .orElse(ResponseEntity.internalServerError().build());
+	}
+    
     
 }

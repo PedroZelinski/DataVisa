@@ -11,6 +11,7 @@ import lombok.Data;
 public class DatavisaSession {
 	public DatavisaSession() {
 		setStatus(false);
+		setConexaoAtiva(false);
 	}
 
 	private boolean status;
@@ -21,7 +22,9 @@ public class DatavisaSession {
 	
 	private Long empresaId;
 
-	private Long conexaoAtiva;
+	private boolean conexaoAtiva;
+	
+	private Long conexao;
 	
 	private String url;
 	

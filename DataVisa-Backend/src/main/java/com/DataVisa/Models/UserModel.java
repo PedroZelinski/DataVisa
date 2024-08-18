@@ -15,6 +15,7 @@ import lombok.Data;
 @Data
 public class UserModel implements Serializable {
 	public UserModel() {
+		this.setPermissaoTabela(100);
 		this.setEditaConexao(0);
 		this.setEditaModelo(0);
 		this.setNivelAcesso(2);

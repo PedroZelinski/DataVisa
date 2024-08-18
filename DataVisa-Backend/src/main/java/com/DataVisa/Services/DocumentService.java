@@ -76,10 +76,10 @@ public class DocumentService {
 		return documentRepository.findAll();
 	}
 	
-	public String getTable(Long conexao, String tabela){
+	public String getTable(String tabela){
 		if (!datavisaSession.isStatus())
 			return "Erro: Login não efetuado!";
-		if (!hasPermit(conexao, tabela))
+		if (!hasPermit(datavisaSession.getConexao(), tabela))
 			return "Erro: Acesso negado!";
 		
 		String query = "select * from " + tabela;
@@ -93,10 +93,10 @@ public class DocumentService {
 		}
 	}
 	
-	public String getTableCollumns(Long conexao, String tabela){
+	public String getTableCollumns(String tabela){
 		if (!datavisaSession.isStatus())
 			return "Erro: Login não efetuado!";
-		if (!hasPermit(conexao, tabela))
+		if (!hasPermit(datavisaSession.getConexao(), tabela))
 			return "Erro: Acesso negado!";
 		
 		String query = "select * from " + tabela;
@@ -118,10 +118,10 @@ public class DocumentService {
 		}
 	}
 	
-	public String getCollumnFields(Long conexao, String tabela, String campo){
+	public String getCollumnFields( String tabela, String campo){
 			if (!datavisaSession.isStatus())
 				return "Erro: Login não efetuado!";
-			if (!hasPermit(conexao, tabela))
+			if (!hasPermit(datavisaSession.getConexao(), tabela))
 				return "Erro: Acesso negado!";
 			
 			String query = "select * from " + tabela;
@@ -140,20 +140,20 @@ public class DocumentService {
 	}
 	
 	private boolean hasPermit(Long conexao, String tabela) {
-		try {
-			DBModel db = dBService.findById(conexao).get();
-			if(dBService.findById(conexao).get().getEmpresaId().equals(datavisaSession.getEmpresaId())) {
-				dBService.setSessionConection(db);	
+		if(datavisaSession.isConexaoAtiva()) {
+			try {
+				DBModel db = dBService.findById(conexao).get();
 				
 				String query = "select permissaoAcesso from  tabelas_" + db.getNomeDb() + " where nome = '" + tabela + "'";
 				
 				int campo = getDatavisaTable(query, "tabelas_" + db.getNomeDb()).intColumn("permissaoAcesso").getInt(0);
 				return campo >= datavisaSession.getPermissaoTabela() ? true: false;
+			
+			} catch (Exception e) {
+				return false;
 			}
-			return false;
-		} catch (Exception e) {
-			return false;
 		}
+		return false;
 	}
 		
 	private Connection ClientConnection() throws SQLException{

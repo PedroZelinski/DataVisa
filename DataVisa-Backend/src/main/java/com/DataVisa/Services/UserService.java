@@ -79,6 +79,7 @@ public class UserService {
 	public Optional<String> logout(){
 		if (datavisaSession.isStatus()) {
 			datavisaSession.setStatus(false);
+			datavisaSession.setConexaoAtiva(false);
 			return Optional.of("Logout realizado com sucesso!");
 		}
 		return Optional.of("Usuário não logado.");

@@ -83,8 +83,24 @@ public class DBService {
 		return databaseRepository.findById(id);
 	}
 	
+	public Optional<String> setConnection(Long id) {
+		if (!datavisaSession.isStatus())
+			return  Optional.of("Erro: Login não efetuado!");
+		try {
+			DBModel db = findById(id).get();
+			if(db.getEmpresaId().equals(datavisaSession.getEmpresaId()) || datavisaSession.getEmpresaId().equals(1L)) {
+				setSessionConection(db);
+				return Optional.of("Conexão setada com sucesso!");
+			}
+		} catch (Exception e) {
+			return Optional.of("Conexão não efetuada!\nErro: " + e.getMessage());
+		}
+		return Optional.of("Conexão não efetuada! \nErro: Usuário não percence a empresa desta conexão");
+	}
+	
 	public void setSessionConection(DBModel db) {
-		datavisaSession.setConexaoAtiva(db.getId());				
+		datavisaSession.setConexaoAtiva(true);
+		datavisaSession.setConexao(db.getId());				
 		datavisaSession.setUrl("jdbc:mysql://localhost:3306"+ db.getCaminhoDb());
 		datavisaSession.setUser(db.getUsuarioDb());
 		datavisaSession.setPassword(db.getSenhaDb());			
