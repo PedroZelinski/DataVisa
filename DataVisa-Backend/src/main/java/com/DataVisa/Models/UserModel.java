@@ -22,8 +22,12 @@ public class UserModel implements Serializable {
 	}
 	private static final long serialVersionUID = 1L;
 
-	//email teste
-	//pedro@fatec.com
+	//email teste admin
+	//pedro@fatec.sp.gov.br
+	
+	//email teste funcionario
+	//rebeca@pizzaria.com
+	
 	@Id
 	private String email;
 	

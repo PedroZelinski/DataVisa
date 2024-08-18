@@ -60,7 +60,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"leticia@gmail.com\",\r\n  \"senha\": \"4321\",\r\n  \"nome\": \"Leticia\",\r\n  \"empresaId\": 2\r\n}",
+					"raw": "{\r\n    \"email\": \"administracao@pizzaria.com\",\r\n    \"senha\": \"123456789\",\r\n    \"nome\": \"Lorena\",\r\n    \"empresaId\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -118,13 +118,13 @@
 			"response": []
 		},
 		{
-			"name": "Delete User (Não atualizado)",
+			"name": "Delete User",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"email\": \"pedro@fatecz.com\",\r\n        \"senha\": 1234,\r\n        \"nome\": \"Pedro\",\r\n        \"nivelAcesso\": 1\r\n    }",
+					"raw": "{\r\n        \"email\": \"administracao@pizzaria.com\",\r\n        \"senha\": \"123456789\",\r\n        \"nome\": \"Lorena\",\r\n        \"empresaId\": 8,\r\n        \"permissaoTabela\": 2,\r\n        \"editaModelo\": 1,\r\n        \"editaConexao\": 1,\r\n        \"nivelAcesso\": 0\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -423,6 +423,26 @@
 					"path": [
 						"table",
 						"columnFields",
+						"Colaboradores",
+						"nome"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Collumn Type",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/table/columnType/Colaboradores/nome",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"table",
+						"columnType",
 						"Colaboradores",
 						"nome"
 					]
