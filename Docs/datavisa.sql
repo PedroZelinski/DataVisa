@@ -34,7 +34,7 @@ insert into usuarios(nome, email, senha, empresaId, permissaoTabela,
 	editaModelo, editaConexao, nivelAcesso) values
     ("Pedro", "pedro@fatec.sp.gov.br","1234", 1, 0, 1, 1, 0),
     ("Rebeca", "rebeca@pizzaria.com", "1234", 8, 3, 0, 1, 1),
-    ("Cido", "cido@visitante.com", "1234", 2, 0, 0, 1, 1),
+    ("Cido", "cido@visitante.com", "1234", 2, 0, 0, 0, 2),
     ("Jorge", "analista@pizzaria.com", "qwerty", 8, 0, 0, 1, 1),
     ("Lorena", "administracao@pizzaria.com","123456789",8,2, 1, 1, 0),
     ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8, 1, 0, 1, 1),
