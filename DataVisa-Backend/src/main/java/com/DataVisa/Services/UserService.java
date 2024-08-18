@@ -8,19 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.UserRepository;
+import com.DataVisa.Services.UserService;
 import com.DataVisa.Session.DatavisaSession;
-
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
 	
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	DatavisaSession datavisaSession;
-
+	
 	public Optional<String> save(UserModel user) {
 		try {
 			//Verifica se o usuário já existe
@@ -34,7 +33,7 @@ public class UserService {
 		}
 		return Optional.of("Usuário cadastrado com sucesso!");
 	}
-	
+
 	public String delete(UserModel user){
 		try {
 			
@@ -58,7 +57,6 @@ public class UserService {
 		return "Usuário excluído com sucesso!";
 	}
 
-	
 	public Optional<String> login(String email, String senha){
 		if (datavisaSession.isStatus()) {
 			return Optional.of("Usuario já logado!"
@@ -75,7 +73,7 @@ public class UserService {
 			return Optional.of("Credenciais inválidas!");
 		}
 	}
-	
+
 	public Optional<String> logout(){
 		if (datavisaSession.isStatus()) {
 			datavisaSession.setStatus(false);
@@ -84,20 +82,29 @@ public class UserService {
 		}
 		return Optional.of("Usuário não logado.");
 	}
-	
+
 	public Optional<UserModel> findById(String email){
 		return userRepository.findById(email);
 	}
+
 	
 	public List<UserModel> findAll(){
 		return userRepository.findAll();
 	}
-	
-	private Optional<UserModel> findByAllFields (UserModel user){
+
+	public Optional<UserModel> findByAllFields (UserModel user){
 		return userRepository.findByAllFields(user.getEmail(),user.getSenha(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(),
 				user.getEditaModelo(), user.getEditaConexao(), user.getNivelAcesso());
 	}
-	
+
+	public String checkStatus(Long conexao, String tabela) {
+		if (!datavisaSession.isStatus())
+			return "Erro: Login não efetuado!";
+		if(!datavisaSession.isConexaoAtiva())
+			return "Erro: Nenhuma conexão ativa! \nConecte a um banco e tente novamente.";
+		return "";
+	}
+
 	private void startSession (UserModel user) {
 		datavisaSession.setStatus(true);
 		datavisaSession.setEmail(user.getEmail());
@@ -110,3 +117,4 @@ public class UserService {
 	}
 
 }
+

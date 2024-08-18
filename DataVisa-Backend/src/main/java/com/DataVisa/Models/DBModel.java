@@ -35,6 +35,8 @@ public class DBModel implements Serializable {
 	//1234
 	private String senhaDb;
 	
+	private String hostName;
+	
 	private int portDb;
 	
 	private String caminhoDb;
