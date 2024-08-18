@@ -18,9 +18,6 @@ INSERT INTO empresas (nome, empresa, cnpj) VALUES
 ('Riachuelo', 'Riachuelo S/A', '44.444.444/0001-44'),
 ('Pizzaria', 'Pizzaria LTDA', '31.455.862/0001-24');
 
-
-select * from empresas;
-
 create table usuarios (
     email varchar(60) primary key,
     senha varchar(60),
@@ -33,8 +30,6 @@ create table usuarios (
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
 
-select * from usuarios;
-
 insert into usuarios(nome, email, senha, empresaId, permissaoTabela, 
 	editaModelo, editaConexao, nivelAcesso) values
     ("Pedro", "pedro@fatec.sp.gov.br","1234", 1, 0, 1, 1, 0),
@@ -42,7 +37,8 @@ insert into usuarios(nome, email, senha, empresaId, permissaoTabela,
     ("Jorge", "analista@pizzaria.com", "qwerty", 8, 0, 0, 1, 1),
     ("Lorena", "administracao@pizzaria.com","123456789",8,2, 1, 1, 0),
     ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8, 1, 0, 1, 1),
-    ("Rebeca", "usuario@pizzaria.com", "1q2w3e4r5t", 8, 3, 0, 1, 1),
+    ("Rebeca", "rebeca@pizzaria.com", "1q2w3e4r5t", 8, 3, 0, 1, 1),
+    ("Luiz", "luiz@renner.com", "1234", 3, 2, 1, 1, 1),
     ("Ana", "ana@fatec.sp.gov.br","1234", 6, 2, 0, 0, 2);
 
 create table conexoes(
@@ -59,14 +55,12 @@ create table conexoes(
 );
 
 INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, portDb, caminhoDb, empresaId) VALUES
-('Renner_Conexao1', 'MySQL', 'db_renner_1', 'user_renner', 'senha123', 3306, '/db_renner_1', 3),
-('Magalu_Conexao1', 'MySQL', 'db_magalu_1', 'user_magalu', 'senha123', 3306, '/caminho/para/db1', 4),
-('Americanas_Conexao1', 'MySQL', 'db_americanas_1', 'user_americanas', 'senha123', 3306, '/caminho/para/db1', 5),
-('CasasBahia_Conexao1', 'MySQL', 'db_casasbahia_1', 'user_casasbahia', 'senha123', 3306, '/caminho/para/db1', 6),
-('Riachuelo_Conexao1', 'MySQL', 'db_riachuelo_1', 'user_riachuelo', 'senha123', 3306, '/caminho/para/db1', 7),
+('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 3306, '/db_renner_1', 3),
+('Magalu_Conexao1', 'MySQL', 'db_magalu_1', 'root', '1234', 3306, '/caminho/para/db1', 4),
+('Americanas_Conexao1', 'MySQL', 'db_americanas_1', 'root', '1234', 3306, '/caminho/para/db1', 5),
+('CasasBahia_Conexao1', 'MySQL', 'db_casasbahia_1', 'root', '1234', 3306, '/caminho/para/db1', 6),
+('Riachuelo_Conexao1', 'MySQL', 'db_riachuelo_1', 'root', '1234', 3306, '/caminho/para/db1', 7),
 ('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_bd', 'root', '1234', 3306, '/pizzaria_db', 8);
-
-select * from conexoes;
 
 CREATE TABLE tabelas_db_renner_1 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -98,9 +92,3 @@ INSERT INTO tabelas_Pizzaria_bd (nome, conexaoId, permissaoAcesso) VALUES
 ('NotasFiscais', 6, 2),
 ('Vendas', 6, 3),
 ('Financeiro', 6, 1);
-
-select * from tabelas_Pizzaria_bd;
-
-select permissaoAcesso from  tabelas_Pizzaria_bd where nome = 'NotasFiscais';
-
-
