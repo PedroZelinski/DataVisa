@@ -7,6 +7,11 @@ label, input{
     display:flex;
     flex-direction:column;
 }
+
+.field-div{
+    margin-top: 10px;
+    margin-left: 20px;
+}
 .input-field{
     width: 80%;
     height: 30px;
@@ -26,6 +31,7 @@ label, input{
 #logo{
     margin-top: 20px;
     margin-left: 20px;
+    width: 20%;
 }
 #panel{
     background: white;
