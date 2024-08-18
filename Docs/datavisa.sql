@@ -48,19 +48,20 @@ create table conexoes(
     nomeDb varchar(60),
     usuarioDb varchar(60),
     senhaDb varchar(30),
+    hostName varchar(60),
     portDb int,
     caminhoDb varchar(60),
     empresaId bigint,
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
 
-INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, portDb, caminhoDb, empresaId) VALUES
-('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 3306, '/db_renner_1', 3),
-('Magalu_Conexao1', 'MySQL', 'db_magalu_1', 'root', '1234', 3306, '/caminho/para/db1', 4),
-('Americanas_Conexao1', 'MySQL', 'db_americanas_1', 'root', '1234', 3306, '/caminho/para/db1', 5),
-('CasasBahia_Conexao1', 'MySQL', 'db_casasbahia_1', 'root', '1234', 3306, '/caminho/para/db1', 6),
-('Riachuelo_Conexao1', 'MySQL', 'db_riachuelo_1', 'root', '1234', 3306, '/caminho/para/db1', 7),
-('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_bd', 'root', '1234', 3306, '/pizzaria_db', 8);
+INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, hostName , portDb, caminhoDb, empresaId) VALUES
+('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 'localhost', 3306, '/db_renner_1', 3),
+('Magalu_Conexao1', 'MySQL', 'db_magalu_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 4),
+('Americanas_Conexao1', 'MySQL', 'db_americanas_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 5),
+('CasasBahia_Conexao1', 'MySQL', 'db_casasbahia_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 6),
+('Riachuelo_Conexao1', 'MySQL', 'db_riachuelo_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 7),
+('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_bd', 'root', '1234', 'localhost', 3306, '/pizzaria_db', 8);
 
 CREATE TABLE tabelas_db_renner_1 (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
