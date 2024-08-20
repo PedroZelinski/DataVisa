@@ -1,8 +1,11 @@
 package com.DataVisa.Controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Services.UserService;
-
-import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -41,11 +42,15 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@GetMapping("/dataVisa/user/getUser/{id}")
-	public ResponseEntity<UserModel> getUser(@PathVariable String id){
-		return userService.findById(id)
-				.map(record -> ResponseEntity.ok().body(record))
-				.orElse(ResponseEntity.notFound().build());
+	@GetMapping("/dataVisa/user/getUser/{email}")
+	public ResponseEntity<?> getUser(@PathVariable String email){
+		Pair<Optional<UserModel>, String> result = userService.findById(email);
+
+		 if (result.getLeft().isPresent()) {
+		        return ResponseEntity.ok(result.getLeft().get());
+		    } else {
+		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result.getRight());
+		    }
 	}
 	
 	@PostMapping("/dataVisa/user/addUser")
@@ -57,7 +62,7 @@ public class UserController {
 	
 	@PutMapping("/dataVisa/user/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody UserModel user){
-		return  userService.save(user)
+		return  userService.updateUser(user)
 	    		.map(message -> ResponseEntity.ok(message))
 	            .orElse(ResponseEntity.internalServerError().build());          
     }

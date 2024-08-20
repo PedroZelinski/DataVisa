@@ -3,6 +3,7 @@ package com.DataVisa.Services;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,28 @@ public class UserService {
 		}
 		return Optional.of("Usuário cadastrado com sucesso!");
 	}
+	
+	public Optional<String> updateUser(UserModel user) {
+		
+		String status;
+		if (!(status = checkStatus()).isEmpty())
+			return  Optional.of(status);
+		if (!(status = checkUserPermition()).isEmpty())
+			return  Optional.of(status);
+		
+		try {
+			//Verifica se o usuário já existe
+			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
+				throw new IllegalArgumentException("Email não cadastrado.");
+			}
+			userRepository.save(user);
+			
+		} catch (Exception ex){
+			 return Optional.of("Falhao ao atualizar usuário! \nErro: " + ex.getMessage()); 
+		}
+		return Optional.of("Usuário atualizado com sucesso!");
+	}
+
 
 	public Optional<String> delete(UserModel user){
 		
@@ -41,22 +64,23 @@ public class UserService {
 			return  Optional.of(status);
 		if (!(status = checkUserPermition()).isEmpty())
 			return  Optional.of(status);
+		
 		try {
 			//Verifica se o registro existe
-			Optional<UserModel> optionalUser = findByAllFields(user);
-			if (optionalUser.isEmpty()) {
-                throw new RuntimeException("Usuário não encontrado.");
-            }
+			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
+				throw new IllegalArgumentException("Usuário não cadastrado.");
+			}
+			UserModel optionalUser = findByAllFields(user).get();
 			
 			userRepository.delete(user);
 			
 			//Verifica se o registro foi excluido
             if (userRepository.findById(user.getEmail()).isPresent()) {
-                throw new RuntimeException("Falha ao excluir o usuário.");
+                throw new RuntimeException("Usuário não removido.");
             }
             
 		} catch (Exception ex){
-			return Optional.of("Ocorreu um erro! " + ex.getMessage());			
+			return Optional.of("Falha ao excluir o usuário! \nErro: " + ex.getMessage());			
 		}
 		
 		return Optional.of("Usuário excluído com sucesso!");
@@ -64,7 +88,7 @@ public class UserService {
 
 	public Optional<String> login(String email, String senha){
 		if (checkStatus().isEmpty()) {
-			return Optional.of("Usuario já logado!"
+			return Optional.of("Erro: Usuario já logado!"
 					+ "\nUsuário: " + datavisaSession.getNome());
 		} 			
 		try{
@@ -88,8 +112,18 @@ public class UserService {
 		return Optional.of("Usuário não logado.");
 	}
 
-	public Optional<UserModel> findById(String email){
-		return userRepository.findById(email);
+	public Pair<Optional<UserModel>, String> findById(String email){
+		
+		String status;
+		if (!(status = checkStatus()).isEmpty()) {
+	        return Pair.of(Optional.empty(), status);
+	    }
+
+	    if (!(status = checkUserPermition()).isEmpty()) {
+	        return Pair.of(Optional.empty(), status);
+	    }
+	    Optional<UserModel> user = userRepository.findById(email);
+	    return Pair.of(user, user.isPresent() ? "" : "Usuário não encontrado");
 	}
 
 	
