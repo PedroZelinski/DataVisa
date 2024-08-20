@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.UserRepository;
-import com.DataVisa.Services.UserService;
 import com.DataVisa.Session.DatavisaSession;
 
 @Service
@@ -70,7 +69,9 @@ public class UserService {
 			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
 				throw new IllegalArgumentException("Usuário não cadastrado.");
 			}
-			UserModel optionalUser = findByAllFields(user).get();
+			
+			//verifica se os dados são consistentes
+			user = findByAllFields(user).get();
 			
 			userRepository.delete(user);
 			
