@@ -30,9 +30,8 @@ public class UserController {
 	
 	@GetMapping("/dataVisa/user/login")
 	public ResponseEntity<String> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
-		return userService.login(email, senha)
-				.map(message -> ResponseEntity.ok(message))
-				.orElse(ResponseEntity.notFound().build());
+		Pair<String, HttpStatus> result = userService.login(email, senha);
+	    return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
 	@GetMapping("/dataVisa/user/logout")

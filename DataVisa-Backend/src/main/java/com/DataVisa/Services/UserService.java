@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.Models.UserModel;
@@ -29,7 +30,7 @@ public class UserService {
 			userRepository.save(user);
 			
 		} catch (Exception ex){
-			 return Optional.of("Ocorreu um erro, Usuário não cadastrado! " + ex.getMessage()); 
+			 return Optional.of("Ocorreu um erro, Usuário não cadastrado! \nErro" + ex.getMessage()); 
 		}
 		return Optional.of("Usuário cadastrado com sucesso!");
 	}
@@ -87,20 +88,21 @@ public class UserService {
 		return Optional.of("Usuário excluído com sucesso!");
 	}
 
-	public Optional<String> login(String email, String senha){
+	
+	public Pair<String, HttpStatus> login(String email, String senha){
 		if (checkStatus().isEmpty()) {
-			return Optional.of("Erro: Usuario já logado!"
-					+ "\nUsuário: " + datavisaSession.getNome());
+			return Pair.of("Usuario já logado!"
+					+ "\nUsuário: " + datavisaSession.getNome(), HttpStatus.CONFLICT);
 		} 			
 		try{
 			UserModel user= userRepository.findByEmailAndSenha(email, senha).get();
 			startSession(user);
-			return Optional.of("Login efetuado com sucesso!"
-					+ "\nUsuário: " + datavisaSession.getNome());
+			return Pair.of("Login efetuado com sucesso!"
+					+ "\nUsuário: " + datavisaSession.getNome(), HttpStatus.OK);
 			
 		} catch (Exception e) {
 			datavisaSession.setStatus(false);
-			return Optional.of("Credenciais inválidas!");
+			return Pair.of("Credenciais inválidas!", HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 
@@ -110,7 +112,7 @@ public class UserService {
 			datavisaSession.setConexaoAtiva(false);
 			return Optional.of("Logout realizado com sucesso!");
 		}
-		return Optional.of("Usuário não logado.");
+		return Optional.of("Erro: Usuário não logado.");
 	}
 
 	public Pair<Optional<UserModel>, String> findById(String email){
