@@ -1,25 +1,53 @@
 import React, { Component } from 'react'
 import { useNavigate } from 'react-router-dom';
+import DBClient from '../../utils/DBClient';
 
-const LoginHome = ({alteraModo}) => {
+const LoginHome = ({ alteraModo }) => {
     const navigate = useNavigate();
+    const [value, setValue] = React.useState('');
 
-    function fazerLogin(){
-        
-        //colocar validações de campos, senha, etc.
-        navigate('/menu')
+    const handleChange = (event) => {
+        setValue(event.target.value);
     }
+    const onFormSubmit = (event) => {
+        fazerLogin();
+        event.preventDefault();
+    }
+
+    async function fazerLogin() {
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+
+        try {
+            await DBClient.get('/dataVisa/user/login', {
+                headers: {
+                    email: email,
+                    senha: senha,
+                }
+            }).then((res) => {
+                console.log(res)
+                if (res.status == 200) {
+                    navigate('/menu')
+                }
+            });
+        } catch (error) {
+            alert("Erro "+error.response.status+" ao logar: "+error.response.data)
+            console.log(error)
+        }
+    }
+
     return (
         <div style={{ marginLeft: 20, marginTop: 10 }}>
             <a style={{ fontWeight: 'bold', marginLeft: 20 }}>
                 Digite seu e-mail e senha, para acessar sua conta</a>
 
-            <form onSubmit={() => fazerLogin()}>
+            <form onSubmit={onFormSubmit}>
                 <div className='field-div'>
                     <label>Email
                         <input className="input-field"
                             type="email" id="email"
-                            placeholder="email@email.com"></input>
+                            placeholder="email@email.com"
+                            onChange={handleChange}></input>
                     </label>
                 </div>
 
@@ -27,7 +55,7 @@ const LoginHome = ({alteraModo}) => {
                     <label>Senha
                         <input className="input-field"
                             type="password"
-                            id="password"
+                            id="senha"
                             placeholder="Senha"></input>
                     </label>
                 </div>

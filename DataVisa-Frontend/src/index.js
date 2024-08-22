@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'primeflex/primeflex.css'
 import {
-  createBrowserRouter, 
+  createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
 import Login from './pages/Login';
 import MenuInicial from './pages/MenuInicial';
+import Modelos from './pages/subpages/Modelos';
+import Perfil from './pages/subpages/Perfil';
 
 const router = createBrowserRouter([
   {
@@ -15,13 +17,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/menu",
-    element: <MenuInicial />
+    element: <MenuInicial />,
+    children: [
+      {
+        path: "modelos",
+        element: <Modelos />,
+      },
+      {
+        path: "perfil",
+        element: <Perfil />,
+      }
+    ]
   }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
