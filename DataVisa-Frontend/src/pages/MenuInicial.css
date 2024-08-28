@@ -16,7 +16,6 @@ html, body {
 #side-menu{
     border: 2px;
     border-style: solid;
-    background: blue;
     display: flex;
     flex-direction: column;
     min-height: 100%;

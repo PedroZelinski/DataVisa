@@ -31,7 +31,7 @@ const LoginHome = ({ alteraModo }) => {
                 }
             });
         } catch (error) {
-            alert("Erro "+error.response.status+" ao logar: "+error.response.data)
+            alert("Ocorreu um erro: "+error.response.status+" "+error.response.data)
             console.log(error)
         }
     }

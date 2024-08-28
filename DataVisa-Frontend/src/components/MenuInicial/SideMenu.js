@@ -21,8 +21,8 @@ const SideMenu = () => {
             </div>
             <br />
             <div>
-                <button onClick={() => navigate('/menu/modelos')}>Modelos</button><br />
-                Modelos
+                <button onClick={() => navigate('/menu/modelos')}>Pesquisar</button><br />
+                Pesquisar
             </div>
         </div>
     )

@@ -17,16 +17,11 @@ export default class MenuInicial extends Component {
   render() {
     return (
       <div className='grid flex justify-content-center' >
-
         <TopMenu />
-
         <SideMenu />
-
         <div id='border' className='col-10 flex'>
           <Outlet />
-          
-          </div>
-
+        </div>
       </div>
     )
   }

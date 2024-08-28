@@ -10,11 +10,11 @@ const TopMenu = () => {
                 Logo
             </div>
             <div className="col-8">
-                <input type="text" name="" id="" />
+                
             </div>
             <div className='col-2'>
-                <button onClick={() => alert("to do")}>Opções</button><br />
-                <button onClick={() => navigate('/menu/perfil')}>Perfil</button>
+                <button onClick={() => navigate('/menu/usuarios')}>Opções</button><br />
+                <button onClick={() => alert("to do")}>Perfil</button>
             </div>
 
         </div>

@@ -25,7 +25,7 @@ const Usuarios = () => {
         alert("Cadastro excluido")
       });
     } catch (error) {
-      alert("Ocorreu um erro: "+error.response.status+error.response.data)
+      alert("Ocorreu um erro: "+error.response.status+" "+error.response.data)
     }
   }
 

@@ -8,7 +8,7 @@ import {
 import Login from './pages/Login';
 import MenuInicial from './pages/MenuInicial';
 import Modelos from './pages/subpages/Modelos';
-import Perfil from './pages/subpages/Perfil';
+import Usuarios from './pages/subpages/Usuarios';
 
 const router = createBrowserRouter([
   {
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
         element: <Modelos />,
       },
       {
-        path: "perfil",
-        element: <Perfil />,
+        path: "usuarios",
+        element: <Usuarios />,
       }
     ]
   }
