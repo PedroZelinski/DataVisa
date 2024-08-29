@@ -76,7 +76,7 @@ public class DBService{
 			DBModel db = findById(id).get();
 			if(db.getEmpresaId().equals(datavisaSession.getEmpresaId()) || datavisaSession.getEmpresaId().equals(1L)) {
 				setSessionConection(db);
-				return Optional.of("Conetado ao banco " + db.getNomeConexao() + "!");
+				return Optional.of("Banco " + db.getNomeConexao() + " selecionado!");
 			}
 		} catch (NoSuchElementException e) {
 			return  Optional.of("Conexão não efetuada! \nErro: A conexão informada não existe!");
