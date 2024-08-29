@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.DataVisa.DTO.DatavisaResponseDTO;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Services.UserService;
+import com.DataVisa.Session.DatavisaSession;
 
 
 @RestController
@@ -28,9 +30,10 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	
 	@GetMapping("/dataVisa/user/login")
-	public ResponseEntity<String> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
-		Pair<String, HttpStatus> result = userService.login(email, senha);
+	public ResponseEntity<DatavisaResponseDTO> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
+		Pair<DatavisaResponseDTO, HttpStatus> result = userService.login(email, senha);
 	    return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	

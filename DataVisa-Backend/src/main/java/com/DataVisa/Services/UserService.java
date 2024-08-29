@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.DataVisa.DTO.DatavisaResponseDTO;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.UserRepository;
 import com.DataVisa.Session.DatavisaSession;
@@ -89,20 +90,25 @@ public class UserService {
 	}
 
 	
-	public Pair<String, HttpStatus> login(String email, String senha){
+	public Pair<DatavisaResponseDTO, HttpStatus> login(String email, String senha){
+		DatavisaResponseDTO datavisaResponse = new DatavisaResponseDTO(datavisaSession);
 		if (checkStatus().isEmpty()) {
-			return Pair.of("Usuario já logado!"
-					+ "\nUsuário: " + datavisaSession.getNome(), HttpStatus.CONFLICT);
+			datavisaResponse.setMensagemRetorno("Usuario já logado!"
+					+ "\nUsuário: " + datavisaSession.getNome());
+			return Pair.of(datavisaResponse, HttpStatus.CONFLICT);
 		} 			
 		try{
 			UserModel user= userRepository.findByEmailAndSenha(email, senha).get();
 			startSession(user);
-			return Pair.of("Login efetuado com sucesso!"
-					+ "\nUsuário: " + datavisaSession.getNome(), HttpStatus.OK);
+			datavisaResponse.setMensagemRetorno("Login efetuado com sucesso!"
+					+ "\nUsuário: " + datavisaSession.getNome());
+			return Pair.of(datavisaResponse, HttpStatus.OK);
 			
 		} catch (Exception e) {
 			datavisaSession.setStatus(false);
-			return Pair.of("Credenciais inválidas!", HttpStatus.NOT_ACCEPTABLE);
+			datavisaResponse.setStatus(false);
+			datavisaResponse.setMensagemRetorno("Credenciais inválidas!");
+			return Pair.of(datavisaResponse, HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 

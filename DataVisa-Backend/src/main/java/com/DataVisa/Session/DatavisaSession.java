@@ -30,8 +30,6 @@ public class DatavisaSession {
 	
 	private String user;
 	
-	private String password;
-	
 	private int permissaoTabela;
 	
 	private int editaModelo;
@@ -40,4 +38,5 @@ public class DatavisaSession {
 
 	private int nivelAcesso;
 
+	private String documentosRecentes [];
 }
