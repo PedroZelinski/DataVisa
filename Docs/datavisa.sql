@@ -47,6 +47,7 @@ create table usuarios (
     editaModelo int not null default 0,
     editaConexao int not null default 0,
     nivelAcesso int not null default 0,
+    templates json default ('[]'),
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
 
@@ -138,3 +139,11 @@ INSERT INTO tabelas_Pizzaria_bd (nome, conexaoId, permissaoAcesso) VALUES
 ('NotasFiscais', 6, 1),
 ('Vendas', 6, 2),
 ('Financeiro', 6, 0);
+
+CREATE TABLE templates (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(60),
+    corpo varchar(255),
+    empresaId bigint,
+	FOREIGN KEY (empresaId) REFERENCES empresas(id)
+);
