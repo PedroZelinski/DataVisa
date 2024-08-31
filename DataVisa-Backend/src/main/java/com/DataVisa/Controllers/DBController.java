@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.DataVisa.Models.DBModel;
@@ -18,7 +20,6 @@ import com.DataVisa.Services.DBService;
 
 
 @RestController
-@CrossOrigin(origins = "*") 
 public class DBController {
 	
 	@Autowired
@@ -61,6 +62,5 @@ public class DBController {
 	    		.map(message -> ResponseEntity.ok(message))
 	            .orElse(ResponseEntity.internalServerError().build());
 	}
-    
     
 }

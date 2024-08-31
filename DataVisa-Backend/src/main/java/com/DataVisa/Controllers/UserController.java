@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.DataVisa.DTO.DatavisaResponseDTO;
+import com.DataVisa.DTO.DatavisaSessionDTO;
+import com.DataVisa.DTO.DatavisaUserDTO;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Services.UserService;
 import com.DataVisa.Session.DatavisaSession;
@@ -34,53 +35,45 @@ public class UserController {
 	
 	
 	@GetMapping("/dataVisa/user/login")
-	public ResponseEntity<DatavisaResponseDTO> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
-		Pair<DatavisaResponseDTO, HttpStatus> result = userService.login(email, senha);
+	public ResponseEntity<DatavisaSessionDTO> login(@RequestHeader("email") String email, @RequestHeader("senha") String senha){
+		Pair<DatavisaSessionDTO, HttpStatus> result = userService.login(email, senha);
 	    return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
 	@GetMapping("/dataVisa/user/logout")
 	public ResponseEntity<String> logout(){
-		return userService.logout()
-				.map(message -> ResponseEntity.ok(message))
-				.orElse(ResponseEntity.notFound().build());
+		Pair<String, HttpStatus> result =  userService.logout();
+		return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
 	@GetMapping("/dataVisa/user/getUser/{email}")
-	public ResponseEntity<?> getUser(@PathVariable String email){
-		Pair<Optional<UserModel>, String> result = userService.findById(email);
-
-		 if (result.getLeft().isPresent()) {
-		        return ResponseEntity.ok(result.getLeft().get());
-		    } else {
-		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result.getRight());
-		    }
+	public ResponseEntity<DatavisaUserDTO> getUser(@PathVariable String email){
+		Pair<DatavisaUserDTO, HttpStatus> result = userService.findById(email);
+		return new ResponseEntity<DatavisaUserDTO>(result.getLeft(), result.getRight());
 	}
 	
 	@PostMapping("/dataVisa/user/addUser")
     public ResponseEntity<String> addUser(@RequestBody UserModel user){
-        return  userService.save(user)
-    		.map(message -> ResponseEntity.ok(message))
-            .orElse(ResponseEntity.internalServerError().build());
+		Pair<String, HttpStatus> result = userService.create(user);
+        return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
 	
 	@PutMapping("/dataVisa/user/updateUser")
     public ResponseEntity<String> updateUser(@RequestBody UserModel user){
-		return  userService.updateUser(user)
-	    		.map(message -> ResponseEntity.ok(message))
-	            .orElse(ResponseEntity.internalServerError().build());          
+		Pair<String, HttpStatus> result = userService.update(user);
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());        
     }
 	
     @DeleteMapping("/dataVisa/user/deleteUser")
     public ResponseEntity<String> deleteUser(@RequestBody UserModel user){
-        return  userService.delete(user)
-	    		.map(message -> ResponseEntity.ok(message))
-	            .orElse(ResponseEntity.internalServerError().build()); 
+    	Pair<String, HttpStatus> result = userService.delete(user);
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
     
     @GetMapping("/dataVisa/user/getAll")
-	public List<UserModel> getAll(){
-		return userService.findAll();
+	public ResponseEntity<?> getAll(){
+    	Pair<Object, HttpStatus> result = userService.findAll();
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
 	@RequestMapping(method = RequestMethod.OPTIONS, value = "/**")
