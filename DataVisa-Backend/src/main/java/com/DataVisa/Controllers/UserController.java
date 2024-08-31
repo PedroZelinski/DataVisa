@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.DataVisa.DTO.DatavisaResponseDTO;
@@ -24,7 +26,7 @@ import com.DataVisa.Session.DatavisaSession;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = {"email", "senha"})
 public class UserController {
 	
 	@Autowired
@@ -81,4 +83,8 @@ public class UserController {
 		return userService.findAll();
 	}
 	
+	@RequestMapping(method = RequestMethod.OPTIONS, value = "/**")
+	public ResponseEntity<?> handleOptions() {         
+		return ResponseEntity.ok().build(); 
+	}
 }
