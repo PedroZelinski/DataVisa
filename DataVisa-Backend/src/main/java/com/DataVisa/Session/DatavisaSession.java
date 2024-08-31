@@ -21,6 +21,8 @@ public class DatavisaSession {
 	private String nome;
 	
 	private Long empresaId;
+	
+	private String empresaNome;
 
 	private boolean conexaoAtiva;
 	
@@ -33,6 +35,8 @@ public class DatavisaSession {
 	private String password;
 	
 	private int permissaoTabela;
+	
+	private String departamento;
 	
 	private int editaModelo;
 	

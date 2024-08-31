@@ -2,7 +2,9 @@ package com.DataVisa.Controllers;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.DataVisa.DTO.DatavisaSessionDTO;
 import com.DataVisa.Models.DBModel;
 import com.DataVisa.Services.DBService;
 
@@ -57,10 +60,9 @@ public class DBController {
 	}
     
     @GetMapping("/dataVisa/database/connect/{id}")
-	public ResponseEntity<String> Connect(@PathVariable Long id){
-    	return  databaseService.setConnection(id)
-	    		.map(message -> ResponseEntity.ok(message))
-	            .orElse(ResponseEntity.internalServerError().build());
+	public ResponseEntity<DatavisaSessionDTO> Connect(@PathVariable Long id){
+    	Pair<DatavisaSessionDTO, HttpStatus> result =  databaseService.setConnection(id);
+		return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
     
 }

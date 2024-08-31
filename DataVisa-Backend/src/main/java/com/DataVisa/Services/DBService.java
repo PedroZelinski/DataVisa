@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.DataVisa.DTO.DatavisaSessionDTO;
 import com.DataVisa.Models.DBModel;
 import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Session.DatavisaSession;
@@ -21,7 +24,7 @@ public class DBService{
 	DBRepository databaseRepository;
 	
 	@Autowired
-	DatavisaSession datavisaSession;	
+	DatavisaSession datavisaSession;
 	
 
 	public Optional<String> save(DBModel database) {
@@ -69,21 +72,32 @@ public class DBService{
 		return databaseRepository.findById(id);
 	}
 
-	public Optional<String> setConnection(Long id) {
-		if (!datavisaSession.isStatus())
-			return  Optional.of("Erro: Login não efetuado!");
+	public Pair<DatavisaSessionDTO, HttpStatus> setConnection(Long id) {
+		
+		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
+		if (!datavisaSession.isStatus()) {
+			datavisaResponse.setMensagemRetorno("Erro: Login não efetuado!");
+			return  Pair.of(datavisaResponse, HttpStatus.UNAUTHORIZED);
+		}
+		
 		try {
 			DBModel db = findById(id).get();
 			if(db.getEmpresaId().equals(datavisaSession.getEmpresaId()) || datavisaSession.getEmpresaId().equals(1L)) {
 				setSessionConection(db);
-				return Optional.of("Banco " + db.getNomeConexao() + " selecionado!");
+				datavisaResponse.setConexaoAtiva(true);
+				datavisaResponse.setConexao(db.getNomeConexao());
+				datavisaResponse.setMensagemRetorno("Banco " + db.getNomeConexao() + " selecionado!");
+				return Pair.of(datavisaResponse, HttpStatus.OK);
 			}
 		} catch (NoSuchElementException e) {
-			return  Optional.of("Conexão não efetuada! \nErro: A conexão informada não existe!");
+			datavisaResponse.setMensagemRetorno("Conexão não efetuada! \nErro: A conexão informada não existe!");
+			return  Pair.of(datavisaResponse, HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return Optional.of("Conexão não efetuada! \nErro: " + e.getMessage() + " " + e.getClass().toString());
+			datavisaResponse.setMensagemRetorno("Conexão não efetuada! \nErro: " + e.getMessage() + " " + e.getClass().toString());
+			return Pair.of(datavisaResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return Optional.of("Conexão não efetuada! \nErro: Usuário não percence a empresa desta conexão");
+		datavisaResponse.setMensagemRetorno("Conexão não efetuada! \nErro: Usuário não percence a empresa desta conexão");
+		return Pair.of(datavisaResponse, HttpStatus.FORBIDDEN);
 	}
 
 	public Connection DatavisaConnection() throws SQLException{

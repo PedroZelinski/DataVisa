@@ -1,7 +1,5 @@
 package com.DataVisa.Services;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -197,23 +195,24 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		datavisaSession.setEditaConexao(user.getEditaConexao());
 		datavisaSession.setNivelAcesso(user.getNivelAcesso());
 		datavisaSession.setTemplates(user.getTemplates());
-		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
 		
 		if (datavisaSession.getPermissaoTabela() != 100) {
 				String query = "select nome from empresas where id = " + String.valueOf(user.getEmpresaId());
 				String nomeEmpresa = tableService.getDatavisaTable(query, "empresas").stringColumn("nome").print();
 				nomeEmpresa = nomeEmpresa.substring(nomeEmpresa.indexOf('\n') + 1).trim();
-				datavisaResponse.setEmpresa(nomeEmpresa);
+				datavisaSession.setEmpresaNome(nomeEmpresa);
 				
 				query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(user.getPermissaoTabela());
 				String departamento = tableService.getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
 				departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
 				
-				datavisaResponse.setDepartamento(departamento);
+				datavisaSession.setDepartamento(departamento);
 		} else {
-			datavisaResponse.setEmpresa("Sem empresa");
-			datavisaResponse.setDepartamento("Pendente");
+			datavisaSession.setEmpresaNome("Sem empresa");
+			datavisaSession.setDepartamento("Pendente");
 		}
+
+		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
 		
 		datavisaResponse.setMensagemRetorno("Login efetuado com sucesso!"
 				+ "\nUsuário: " + datavisaSession.getNome());
