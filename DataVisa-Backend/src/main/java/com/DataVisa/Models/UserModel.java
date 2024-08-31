@@ -44,4 +44,6 @@ public class UserModel implements Serializable {
 
 	private int nivelAcesso;
 	
+	private String templates;
+	
 }

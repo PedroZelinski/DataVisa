@@ -1,17 +1,21 @@
 package com.DataVisa.Services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.DataVisa.DTO.DatavisaResponseDTO;
+import com.DataVisa.DTO.DatavisaSessionDTO;
+import com.DataVisa.DTO.DatavisaUserDTO;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.UserRepository;
 import com.DataVisa.Session.DatavisaSession;
+import com.DataVisa.Utils.DatavisaMapper;
 
 @Service
 public class UserService {
@@ -22,76 +26,13 @@ public class UserService {
 	@Autowired
 	DatavisaSession datavisaSession;
 	
-	public Optional<String> save(UserModel user) {
-		try {
-			//Verifica se o usuário já existe
-			if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-				throw new IllegalArgumentException("Usuário já existente.");
-			}
-			userRepository.save(user);
-			
-		} catch (Exception ex){
-			 return Optional.of("Ocorreu um erro, Usuário não cadastrado! \nErro" + ex.getMessage()); 
-		}
-		return Optional.of("Usuário cadastrado com sucesso!");
-	}
+	@Autowired
+	@Lazy
+	TableService tableService;
 	
-	public Optional<String> updateUser(UserModel user) {
+public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		
-		String status;
-		if (!(status = checkStatus()).isEmpty())
-			return  Optional.of(status);
-		if (!(status = checkUserPermition()).isEmpty())
-			return  Optional.of(status);
-		
-		try {
-			//Verifica se o usuário já existe
-			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
-				throw new IllegalArgumentException("Email não cadastrado.");
-			}
-			userRepository.save(user);
-			
-		} catch (Exception ex){
-			 return Optional.of("Falhao ao atualizar usuário! \nErro: " + ex.getMessage()); 
-		}
-		return Optional.of("Usuário atualizado com sucesso!");
-	}
-
-
-	public Optional<String> delete(UserModel user){
-		
-		String status;
-		if (!(status = checkStatus()).isEmpty())
-			return  Optional.of(status);
-		if (!(status = checkUserPermition()).isEmpty())
-			return  Optional.of(status);
-		
-		try {
-			//Verifica se o registro existe
-			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
-				throw new IllegalArgumentException("Usuário não cadastrado.");
-			}
-			
-			//verifica se os dados são consistentes
-			user = findByAllFields(user).get();
-			
-			userRepository.delete(user);
-			
-			//Verifica se o registro foi excluido
-            if (userRepository.findById(user.getEmail()).isPresent()) {
-                throw new RuntimeException("Usuário não removido.");
-            }
-            
-		} catch (Exception ex){
-			return Optional.of("Falha ao excluir o usuário! \nErro: " + ex.getMessage());			
-		}
-		
-		return Optional.of("Usuário excluído com sucesso!");
-	}
-
-	
-	public Pair<DatavisaResponseDTO, HttpStatus> login(String email, String senha){
-		DatavisaResponseDTO datavisaResponse = new DatavisaResponseDTO(datavisaSession);
+		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
 		if (checkStatus().isEmpty()) {
 			datavisaResponse.setMensagemRetorno("Usuario já logado!"
 					+ "\nUsuário: " + datavisaSession.getNome());
@@ -99,9 +40,8 @@ public class UserService {
 		} 			
 		try{
 			UserModel user= userRepository.findByEmailAndSenha(email, senha).get();
-			startSession(user);
-			datavisaResponse.setMensagemRetorno("Login efetuado com sucesso!"
-					+ "\nUsuário: " + datavisaSession.getNome());
+			datavisaResponse = startSession(user);
+			
 			return Pair.of(datavisaResponse, HttpStatus.OK);
 			
 		} catch (Exception e) {
@@ -112,36 +52,120 @@ public class UserService {
 		}
 	}
 
-	public Optional<String> logout(){
+	public Pair<String, HttpStatus> logout(){
 		if (datavisaSession.isStatus()) {
 			datavisaSession.setStatus(false);
 			datavisaSession.setConexaoAtiva(false);
-			return Optional.of("Logout realizado com sucesso!");
+			return Pair.of("Logout realizado com sucesso!", HttpStatus.OK);
 		}
-		return Optional.of("Erro: Usuário não logado.");
+		return Pair.of("Erro: Usuário não logado.", HttpStatus.BAD_REQUEST);
 	}
-
-	public Pair<Optional<UserModel>, String> findById(String email){
+	
+	public Pair<String, HttpStatus> create(UserModel user) {
+		
+		try {
+			//Verifica se o usuário já existe
+			if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+				throw new IllegalArgumentException("Usuário já existente.");
+			}
+			userRepository.save(user);
+			
+		} catch (Exception ex){
+			 return Pair.of("Usuário não cadastrado! \nErro: " + ex.getMessage(), HttpStatus.NOT_FOUND); 
+		}
+		return Pair.of("Usuário cadastrado com sucesso!", HttpStatus.OK);
+	}
+	
+	public Pair<String, HttpStatus> update(UserModel user) {
 		
 		String status;
-		if (!(status = checkStatus()).isEmpty()) {
-	        return Pair.of(Optional.empty(), status);
-	    }
+		if (!(status = checkStatus()).isEmpty())
+			return Pair.of(status, HttpStatus.UNAUTHORIZED);
+		if (!(status = checkUserPermition()).isEmpty())
+			return Pair.of(status, HttpStatus.FORBIDDEN);
+		
+		try {
+			
+			//Verifica se o registro existe
+			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
+				return Pair.of("Erro: Usuário informado não encontrado. Verifique os valores fornecidos.", HttpStatus.NOT_FOUND);
+			}
+			
+			userRepository.save(user);
+			
+		} catch (Exception ex){
+			 return Pair.of("Falhao ao atualizar usuário! \nErro: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return Pair.of("Usuário atualizado com sucesso!", HttpStatus.OK);
+	}
 
-	    if (!(status = checkUserPermition()).isEmpty()) {
-	        return Pair.of(Optional.empty(), status);
+
+	public Pair<String, HttpStatus> delete(UserModel user){
+		
+		String status;
+		if (!(status = checkStatus()).isEmpty())
+			return Pair.of(status, HttpStatus.UNAUTHORIZED);
+		if (!(status = checkUserPermition()).isEmpty())
+			return Pair.of(status, HttpStatus.FORBIDDEN);
+		
+			//Verifica se o registro existe
+			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
+				return Pair.of("Erro: Usuário informado não encontrado. Verifique os valores fornecidos.", HttpStatus.NOT_FOUND);
+			}
+			
+			//verifica se os dados são consistentes
+			try {
+				user = findByAllFields(user).get();
+			
+				userRepository.delete(user);
+				
+				//Verifica se o registro foi excluido
+	            if (userRepository.findById(user.getEmail()).isPresent()) {
+	            	return Pair.of("Erro: Erro interno.", HttpStatus.INTERNAL_SERVER_ERROR);
+	            }
+            
+            		
+	            return Pair.of("Usuário excluído com sucesso!", HttpStatus.OK);
+			} catch (Exception e) {
+	            return Pair.of("Erro: Usuário inválido. Verifique os valores fornecidos e tente novamente.", HttpStatus.NOT_FOUND);
+			}
+	}
+
+	public Pair<DatavisaUserDTO, HttpStatus> findById(String email){
+		DatavisaUserDTO user = new DatavisaUserDTO();
+		String status;
+		if (!(status = checkStatus()).isEmpty()) {
+			user.setMensagemRetorno(status);
+	        return Pair.of(user,  HttpStatus.UNAUTHORIZED);
 	    }
-	    Optional<UserModel> user = userRepository.findById(email);
-	    return Pair.of(user, user.isPresent() ? "" : "Usuário não encontrado");
+	    if (!(status = checkUserPermition()).isEmpty()) {
+			user.setMensagemRetorno(status);
+	        return Pair.of(user, HttpStatus.FORBIDDEN);
+	    }
+	    try {
+	    	user = new DatavisaUserDTO(userRepository.findById(email).get());
+	    } catch (Exception e) {
+	    	user.setMensagemRetorno("Usuário não encontrado");
+		    return Pair.of(user,HttpStatus.NOT_FOUND);
+	    }
+	    return Pair.of(user,HttpStatus.OK);
 	}
 
 	
-	public List<UserModel> findAll(){
-		return userRepository.findAll();
+	public Pair<Object, HttpStatus> findAll(){
+		String status;
+		if (!(status = checkStatus()).isEmpty()) {
+	        return Pair.of(status,  HttpStatus.UNAUTHORIZED);
+	    }
+	    if (!(status = checkUserPermition()).isEmpty()) {
+	        return Pair.of(status, HttpStatus.FORBIDDEN);
+	    }
+		
+		return  Pair.of(DatavisaMapper.convertToDTOList(userRepository.findAll()), HttpStatus.OK);
 	}
 
 	public Optional<UserModel> findByAllFields (UserModel user){
-		return userRepository.findByAllFields(user.getEmail(),user.getSenha(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(),
+		return userRepository.findByAllFields(user.getEmail(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(),
 				user.getEditaModelo(), user.getEditaConexao(), user.getNivelAcesso());
 	}
 
@@ -163,7 +187,7 @@ public class UserService {
 		return "";
 	}
 
-	private void startSession (UserModel user) {
+	private DatavisaSessionDTO startSession (UserModel user) throws Exception {
 		datavisaSession.setStatus(true);
 		datavisaSession.setEmail(user.getEmail());
 		datavisaSession.setNome(user.getNome());
@@ -171,7 +195,30 @@ public class UserService {
 		datavisaSession.setPermissaoTabela(user.getPermissaoTabela());
 		datavisaSession.setEditaModelo(user.getEditaModelo());
 		datavisaSession.setEditaConexao(user.getEditaConexao());
-		datavisaSession.setNivelAcesso(user.getNivelAcesso());		
+		datavisaSession.setNivelAcesso(user.getNivelAcesso());
+		datavisaSession.setTemplates(user.getTemplates());
+		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
+		
+		if (datavisaSession.getPermissaoTabela() != 100) {
+				String query = "select nome from empresas where id = " + String.valueOf(user.getEmpresaId());
+				String nomeEmpresa = tableService.getDatavisaTable(query, "empresas").stringColumn("nome").print();
+				nomeEmpresa = nomeEmpresa.substring(nomeEmpresa.indexOf('\n') + 1).trim();
+				datavisaResponse.setEmpresa(nomeEmpresa);
+				
+				query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(user.getPermissaoTabela());
+				String departamento = tableService.getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
+				departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
+				
+				datavisaResponse.setDepartamento(departamento);
+		} else {
+			datavisaResponse.setEmpresa("Sem empresa");
+			datavisaResponse.setDepartamento("Pendente");
+		}
+		
+		datavisaResponse.setMensagemRetorno("Login efetuado com sucesso!"
+				+ "\nUsuário: " + datavisaSession.getNome());
+		
+		return datavisaResponse;
 	}
 
 }
