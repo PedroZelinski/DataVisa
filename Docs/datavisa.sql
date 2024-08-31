@@ -26,7 +26,7 @@ create table DataVisa_permissoes(
 );
 
 INSERT INTO DataVisa_permissoes (permissao_tabela, nome, empresaId) VALUES
-(0, 'DataVisa', 1);
+(0, 'Admin DataVisa', 1);
 
 create table Sem_empresa_permissoes(
 	permissao_tabela int primary key,	
@@ -72,6 +72,7 @@ create table conexoes(
     hostName varchar(60),
     portDb int,
     caminhoDb varchar(60),
+    isActive TINYINT(1) DEFAULT 1,
     empresaId bigint,
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
