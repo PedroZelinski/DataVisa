@@ -5,7 +5,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom'
 const Usuarios = () => {
   const [users, setUsers] = useState([])
   const [controle, setControle] = useState(0);
-  const session = useOutletContext();
+  const [session, alteraModo] = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +41,10 @@ const Usuarios = () => {
           <input type="text" />
         </div>
         <div className='col-2'>
-          <button onClick={() => navigate('/menu')}>Menu</button>
+          <button onClick={() => {
+            alteraModo(1)
+            navigate('/menu')
+          }}>Menu</button>
           <button onClick={() => navigate('/menu/cadastro', {
             state: {
               nome: "",

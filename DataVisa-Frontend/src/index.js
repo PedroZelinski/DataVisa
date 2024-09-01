@@ -10,6 +10,7 @@ import MenuInicial from './pages/MenuInicial';
 import Modelos from './pages/subpages/Modelos';
 import Usuarios from './pages/subpages/Usuarios';
 import Cadastro from './pages/subpages/Cadastro';
+import Auditoria from './pages/subpages/Auditoria';
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,11 @@ const router = createBrowserRouter([
       {
         path: "cadastro",
         element: <Cadastro />
-      }
+      },
+      {
+        path: "audit",
+        element: <Auditoria />
+      },
     ]
   }
 ])

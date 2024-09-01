@@ -22,9 +22,9 @@ const LoginHome = ({ alteraModo }) => {
                     senha: document.getElementById('senha').value,
                 }
             }).then((res) => {
-                console.log(res)
                 if (res.status == 200) {
                     localStorage.setItem('session', JSON.stringify(res.data));
+                    localStorage.setItem('modo', 1)
                     navigate('/menu')
                 }
             });

@@ -20,6 +20,13 @@ html, body {
     flex-direction: column;
     min-height: 100%;
 }
+#side-config{
+    border: 2px;
+    border-style: solid;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
 #top-menu{
     background-color: #5786E6;
 }

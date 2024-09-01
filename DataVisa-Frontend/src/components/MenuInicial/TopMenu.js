@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 
-const TopMenu = () => {
+const TopMenu = ({ alteraModo }) => {
     const navigate = useNavigate();
 
     async function deslogar() {
@@ -33,7 +33,10 @@ const TopMenu = () => {
 
             </div>
             <div className='col-2'>
-                <button onClick={() => navigate('/menu/usuarios')}>Opções</button><br />
+                <button onClick={() => {
+                    alteraModo(2)
+                    navigate('/menu/usuarios')
+                }}>Opções</button><br />
                 <button onClick={() => alert("to do")}>Perfil</button>
                 <button onClick={() => deslogar()}>Sair</button>
             </div>
