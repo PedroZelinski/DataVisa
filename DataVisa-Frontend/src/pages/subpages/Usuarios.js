@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import DBClient from '../../utils/DBClient.js'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 
@@ -44,9 +44,13 @@ const Usuarios = () => {
           <button onClick={() => navigate('/menu')}>Menu</button>
           <button onClick={() => navigate('/menu/cadastro', {
             state: {
-              nome: "Nome",
-              email: "E-mail",
-              senha: "Senha"
+              nome: "",
+              email: "",
+              senha: "",
+              departamento: "",
+              editaConexao: false,
+              editaModelo: false,
+              editaSenha: false,
             }
           }
           )}>Adicionar</button>
@@ -64,7 +68,7 @@ const Usuarios = () => {
 
       <div className="grid col-12" id='user-list'>
         {users.map((user) => (
-          <React.Fragment key={user.email}>
+          <Fragment key={user.email}>
             <div className='col-1'>{users.indexOf(user) + 1}</div>
             <div className='col-2'>{user.nome}</div>
             <div className='col-3'>{user.email}</div>
@@ -79,7 +83,7 @@ const Usuarios = () => {
               )}>Editar</button>
               <button onClick={() => deletarUser(user)}>Deletar</button>
             </div>
-          </React.Fragment>
+          </Fragment>
         ))}
       </div>
 
