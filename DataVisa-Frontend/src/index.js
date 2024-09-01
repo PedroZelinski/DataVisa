@@ -11,6 +11,9 @@ import Modelos from './pages/subpages/Modelos';
 import Usuarios from './pages/subpages/Usuarios';
 import Cadastro from './pages/subpages/Cadastro';
 import Auditoria from './pages/subpages/Auditoria';
+import Perfil from './pages/subpages/Perfil';
+import Templates from './pages/subpages/Templates';
+import Conexoes from './pages/subpages/Conexoes';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +40,18 @@ const router = createBrowserRouter([
         path: "audit",
         element: <Auditoria />
       },
+      {
+        path: "perfil",
+        element: <Perfil />
+      },
+      {
+        path: "templates",
+        element: <Templates />
+      },
+      {
+        path: "conexoes",
+        element: <Conexoes />
+      } 
     ]
   }
 ])

@@ -16,7 +16,7 @@ const Usuarios = () => {
       })
     }
     load()
-  },[controle])
+  }, [controle])
 
   async function deletarUser(user) {
     try {
@@ -28,14 +28,14 @@ const Usuarios = () => {
         alert(res.data)
       });
     } catch (error) {
-      alert("Ocorreu um erro: " + error.response.status + "\n" 
+      alert("Ocorreu um erro: " + error.response.status + "\n"
         + error.response.data)
     }
   }
 
   return (
     <div>
-      <div className='grid col-12'>
+      <div className='grid col-12 font-bold'>
 
         <div className='col-10'>Gerenciamento de usuarios
           <input type="text" />
@@ -59,27 +59,27 @@ const Usuarios = () => {
           )}>Adicionar</button>
         </div>
 
-        <div className='col-1'>N°</div>
-        <div className='col-2'>Nome</div>
-        <div className='col-3'>Email</div>
-        <div className='col-1'>Nivel</div>
-        <div className='col-1'>Status</div>
-        <div className='col-2'>Departamento</div>
-        <div className='col-1'>Data</div>
-        <div className='col-1'>Ações</div>
+        <div className='col-1 text-center'>N°</div>
+        <div className='col-2 text-center'>Nome</div>
+        <div className='col-3 text-center'>Email</div>
+        <div className='col-1 text-center'>Nivel</div>
+        <div className='col-1 text-center'>Status</div>
+        <div className='col-2 text-center'>Departamento</div>
+        <div className='col-1 text-center'>Data</div>
+        <div className='col-1 text-center'>Ações</div>
       </div>
-
-      <div className="grid col-12" id='user-list'>
+      <hr/>
+      <div className="grid col-12 flex justify-content-center" id='user-list'>
         {users.map((user) => (
           <Fragment key={user.email}>
-            <div className='col-1'>{users.indexOf(user) + 1}</div>
-            <div className='col-2'>{user.nome}</div>
-            <div className='col-3'>{user.email}</div>
-            <div className='col-1'>{user.nivelAcesso}</div>
-            <div className='col-1'>Status</div>
-            <div className='col-2'>Departamento</div>
-            <div className='col-1'>Data</div>
-            <div className='col-1'>
+            <div className='col-1 text-center'>{users.indexOf(user) + 1}</div>
+            <div className='col-2 text-center'>{user.nome}</div>
+            <div className='col-3 text-center'>{user.email}</div>
+            <div className='col-1 text-center'>{user.nivelAcesso}</div>
+            <div className='col-1 text-center'>Status</div>
+            <div className='col-2 text-center'>Departamento</div>
+            <div className='col-1 text-center'>Data</div>
+            <div className='col-1 text-center'>
               <button onClick={() => navigate('/menu/cadastro', {
                 state: user
               }

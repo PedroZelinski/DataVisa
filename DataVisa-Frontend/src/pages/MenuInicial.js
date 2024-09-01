@@ -31,7 +31,7 @@ export default class MenuInicial extends Component {
         <SideConfig alteraModo={this.alteraModo}/>
         }
         
-        <div id='border' className='col-10 flex'>
+        <div className='col-10 flex'>
           <Outlet context={[this.state.session, this.alteraModo]}/>
         </div>
       </div>

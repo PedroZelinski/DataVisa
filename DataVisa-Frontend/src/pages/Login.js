@@ -3,7 +3,7 @@ import LoginHome from '../components/Login/LoginHome'
 import LoginCadastro from '../components/Login/LoginCadastro'
 import LoginConfirmacao from '../components/Login/LoginConfirmacao'
 import LoginSenha from '../components/Login/LoginSenha'
-import logo from '../assets/logoOriginal.jpg'
+import logo from '../assets/logoOriginal.png'
 import waves from '../assets/login.jpg'
 import './Login.css'
 
@@ -24,7 +24,7 @@ export default class Login extends Component {
 
           <div className='col-6 text-left'>
 
-            <img src={logo} alt="Logo" id="logo" />
+            <img src={logo} alt="Logo" id="logo-login" />
 
             {this.state.modo == 1 ?
               <LoginHome alteraModo={this.alteraModo} />

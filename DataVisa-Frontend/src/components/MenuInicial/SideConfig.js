@@ -15,6 +15,14 @@ const SideConfig = ({ alteraModo }) => {
             </div>
             <br />
             <div>
+                <button onClick={() => navigate('/menu/conexoes')}>Conexões</button>
+            </div>
+            <br />
+            <div>
+                <button onClick={() => navigate('/menu/templates')}>Templates</button>
+            </div>
+            <br />
+            <div>
                 <button onClick={() => {
                     alteraModo(1)
                     navigate('/menu')

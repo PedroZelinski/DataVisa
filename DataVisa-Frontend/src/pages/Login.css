@@ -2,6 +2,8 @@
 
 html, body {
     font-family: 'Inter';
+    height: 100%;
+    margin: 0
 }
 label, input{
     display:flex;
@@ -28,7 +30,7 @@ label, input{
     color: #044BD9;
     cursor: pointer;
 }
-#logo{
+#logo-login{
     margin-top: 20px;
     margin-left: 20px;
     width: 20%;
