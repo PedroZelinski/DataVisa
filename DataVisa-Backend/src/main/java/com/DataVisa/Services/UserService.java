@@ -175,8 +175,9 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	    if (!(status = checkUserPermition()).isEmpty()) {
 	        return Pair.of(status, HttpStatus.FORBIDDEN);
 	    }
-		
-		return  Pair.of(DatavisaMapper.convertToDTOList(userRepository.findAll()), HttpStatus.OK);
+		if (datavisaSession.getEmpresaId().equals(1L))
+			return  Pair.of(DatavisaMapper.convertToDTOList(userRepository.findAll()), HttpStatus.OK);
+		return  Pair.of(DatavisaMapper.convertToDTOList(userRepository.findAllByEmpresaId(datavisaSession.getEmpresaId())), HttpStatus.OK);
 	}
 
 	public Optional<UserModel> findByAllFields (UserModel user){

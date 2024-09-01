@@ -31,6 +31,8 @@ public class DatavisaUserDTO {
 
 	private Long empresaId;
 	
+	private Long empresaNome;
+	
 	private int permissaoTabela;
 	
 	private int editaModelo;

@@ -1,5 +1,6 @@
 package com.DataVisa.Repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,5 +27,7 @@ public interface UserRepository extends JpaRepository<UserModel, String>{
 	    @Param("editaConexao") int editaConexao,
 	    @Param("nivelAcesso") int nivelAcesso
 	);
+	
+	List<UserModel> findAllByEmpresaId(Long empresaId);
 	
 }
