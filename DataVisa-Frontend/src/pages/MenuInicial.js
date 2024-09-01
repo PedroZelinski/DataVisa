@@ -7,11 +7,10 @@ import TopMenu from '../components/MenuInicial/TopMenu'
 export default class MenuInicial extends Component {
 
   state = {
-    modo: 1
+    session: JSON.parse(localStorage.getItem('session'))
   }
-  alteraModo = (newModo) => {
-    this.setState({ modo: newModo })
-    console.log(this.state.modo)
+  componentDidMount(){
+    console.log(this.state.session)
   }
 
   render() {
@@ -20,7 +19,7 @@ export default class MenuInicial extends Component {
         <TopMenu />
         <SideMenu />
         <div id='border' className='col-10 flex'>
-          <Outlet />
+          <Outlet context={this.state.session}/>
         </div>
       </div>
     )

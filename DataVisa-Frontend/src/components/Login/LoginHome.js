@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 
@@ -27,11 +27,13 @@ const LoginHome = ({ alteraModo }) => {
             }).then((res) => {
                 console.log(res)
                 if (res.status == 200) {
+                    localStorage.setItem('session', JSON.stringify(res.data));
                     navigate('/menu')
                 }
             });
         } catch (error) {
-            alert("Ocorreu um erro: "+error.response.status+" "+error.response.data)
+            alert("Ocorreu um erro: "+error.response.status+"\n"+
+                error.response.data.mensagemRetorno)
             console.log(error)
         }
     }

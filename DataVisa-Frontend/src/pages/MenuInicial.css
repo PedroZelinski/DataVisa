@@ -20,3 +20,10 @@ html, body {
     flex-direction: column;
     min-height: 100%;
 }
+#top-menu{
+    background-color: #5786E6;
+}
+#user-list{
+    height: 350px;
+    overflow-y:auto;
+}

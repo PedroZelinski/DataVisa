@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import MenuInicial from './pages/MenuInicial';
 import Modelos from './pages/subpages/Modelos';
 import Usuarios from './pages/subpages/Usuarios';
+import Cadastro from './pages/subpages/Cadastro';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "usuarios",
         element: <Usuarios />,
+      },
+      {
+        path: "cadastro",
+        element: <Cadastro />
       }
     ]
   }
