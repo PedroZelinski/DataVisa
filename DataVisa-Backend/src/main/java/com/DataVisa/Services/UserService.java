@@ -140,10 +140,23 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 			userDTO.setMensagemRetorno(status);
 	        return Pair.of(userDTO, HttpStatus.FORBIDDEN);
 	    }
+	    
 	    try {
-	    	userDTO = new DatavisaUserDTO(userRepository.findById(email).get());
+	    	UserModel user = userRepository.findById(email).get();
+	    	userDTO = new DatavisaUserDTO(user);
 	    	
-	    	userDTO.setDepartamentos(tableService.getDatavisaCollumnFields(datavisaSession.getEmpresaNome() + "_permissoes", "nome"));
+	    	if (user.getPermissaoTabela() == 100) {
+	    		userDTO.setDepartamentos("Pendente");
+	    		return Pair.of(userDTO,HttpStatus.OK);
+	    	}
+	    		
+	    	if (!(status = checkEmpresaPermition(user)).isEmpty()) {
+	    		userDTO = new DatavisaUserDTO();
+	    		userDTO.setMensagemRetorno(status);
+	    		return  Pair.of(userDTO,HttpStatus.FORBIDDEN);
+	    	}
+	    	
+	    	userDTO.setDepartamentos(tableService.getDatavisaCollumnFields(getNomeEmpresa(user) + "_permissoes", "nome"));
 	    	
 	    	
 	    } catch (Exception e) {
@@ -185,6 +198,12 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	
 	public String checkUserPermition() {
 		if(datavisaSession.getNivelAcesso() > 1)
+			return "Erro: O usuário não possui permissão para realizar a esta ação.";
+		return "";
+	}
+	
+	public String checkEmpresaPermition(UserModel user) {
+		if(user.getEmpresaId() != datavisaSession.getEmpresaId() && !datavisaSession.getEmpresaId().equals(1L))
 			return "Erro: O usuário não possui permissão para realizar a esta ação.";
 		return "";
 	}
