@@ -14,6 +14,7 @@ import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Services.TableService;
 import com.DataVisa.Session.DatavisaSession;
+import com.DataVisa.Utils.DatavisaMapper;
 
 import tech.tablesaw.api.Table;
 
@@ -119,7 +120,7 @@ public class TableService {
 		}
 	}
 
-	public String getCollumnFields( String tabela, String campo){
+	public String getCollumnFields(String tabela, String campo){
 		
 		String status = checkPermitions(tabela);
 		if (!status.isEmpty())
@@ -140,6 +141,26 @@ public class TableService {
 		}
 	}
 
+public String getDatavisaCollumnFields(String tabela, String campo){
+		
+		String query = "select " + campo + " from " + tabela;
+		
+		try {
+			//retorna os dados de uma coluna específica da tabela
+			String retorno = getDatavisaTable(query, tabela).stringColumn(campo).print();
+			//retira o cabeçalho do retorno
+			retorno = retorno.contains("\n") ? retorno.substring(retorno.indexOf('\n') + 1): retorno;
+			
+			retorno = retorno.replaceAll("\\r\\n", ",").trim();
+			retorno = retorno.substring(0, retorno.length()-1);
+			
+			return retorno;
+			
+		} catch (Exception e) {
+			return "Erro: " + e.getMessage();
+		}
+	}
+	
 	public Table getDatavisaTable(String query, String tableName) throws Exception {
 		Connection datavisaConnection = dBService.DatavisaConnection();
 		PreparedStatement stmt = datavisaConnection.prepareStatement(query);

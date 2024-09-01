@@ -130,23 +130,40 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	}
 
 	public Pair<DatavisaUserDTO, HttpStatus> findById(String email){
-		DatavisaUserDTO user = new DatavisaUserDTO();
+		DatavisaUserDTO userDTO = new DatavisaUserDTO();
 		String status;
 		if (!(status = checkStatus()).isEmpty()) {
-			user.setMensagemRetorno(status);
-	        return Pair.of(user,  HttpStatus.UNAUTHORIZED);
+			userDTO.setMensagemRetorno(status);
+	        return Pair.of(userDTO,  HttpStatus.UNAUTHORIZED);
 	    }
 	    if (!(status = checkUserPermition()).isEmpty()) {
-			user.setMensagemRetorno(status);
-	        return Pair.of(user, HttpStatus.FORBIDDEN);
+			userDTO.setMensagemRetorno(status);
+	        return Pair.of(userDTO, HttpStatus.FORBIDDEN);
 	    }
+	    
 	    try {
-	    	user = new DatavisaUserDTO(userRepository.findById(email).get());
+	    	UserModel user = userRepository.findById(email).get();
+	    	userDTO = new DatavisaUserDTO(user);
+	    	
+	    	if (user.getPermissaoTabela() == 100) {
+	    		userDTO.setDepartamentos("Pendente");
+	    		return Pair.of(userDTO,HttpStatus.OK);
+	    	}
+	    		
+	    	if (!(status = checkEmpresaPermition(user)).isEmpty()) {
+	    		userDTO = new DatavisaUserDTO();
+	    		userDTO.setMensagemRetorno(status);
+	    		return  Pair.of(userDTO,HttpStatus.FORBIDDEN);
+	    	}
+	    	
+	    	userDTO.setDepartamentos(tableService.getDatavisaCollumnFields(getNomeEmpresa(user) + "_permissoes", "nome"));
+	    	
+	    	
 	    } catch (Exception e) {
-	    	user.setMensagemRetorno("Usuário não encontrado");
-		    return Pair.of(user,HttpStatus.NOT_FOUND);
+	    	userDTO.setMensagemRetorno("Usuário não encontrado");
+		    return Pair.of(userDTO,HttpStatus.NOT_FOUND);
 	    }
-	    return Pair.of(user,HttpStatus.OK);
+	    return Pair.of(userDTO,HttpStatus.OK);
 	}
 
 	
@@ -184,6 +201,12 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 			return "Erro: O usuário não possui permissão para realizar a esta ação.";
 		return "";
 	}
+	
+	public String checkEmpresaPermition(UserModel user) {
+		if(user.getEmpresaId() != datavisaSession.getEmpresaId() && !datavisaSession.getEmpresaId().equals(1L))
+			return "Erro: O usuário não possui permissão para realizar a esta ação.";
+		return "";
+	}
 
 	private DatavisaSessionDTO startSession (UserModel user) throws Exception {
 		datavisaSession.setStatus(true);
@@ -197,16 +220,9 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		datavisaSession.setTemplates(user.getTemplates());
 		
 		if (datavisaSession.getPermissaoTabela() != 100) {
-				String query = "select nome from empresas where id = " + String.valueOf(user.getEmpresaId());
-				String nomeEmpresa = tableService.getDatavisaTable(query, "empresas").stringColumn("nome").print();
-				nomeEmpresa = nomeEmpresa.substring(nomeEmpresa.indexOf('\n') + 1).trim();
+				String nomeEmpresa = getNomeEmpresa(user);
 				datavisaSession.setEmpresaNome(nomeEmpresa);
-				
-				query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(user.getPermissaoTabela());
-				String departamento = tableService.getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
-				departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
-				
-				datavisaSession.setDepartamento(departamento);
+				datavisaSession.setDepartamento(getDepartamento(user, nomeEmpresa));
 		} else {
 			datavisaSession.setEmpresaNome("Sem empresa");
 			datavisaSession.setDepartamento("Pendente");
@@ -220,5 +236,21 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		return datavisaResponse;
 	}
 
+	private String getNomeEmpresa (UserModel user) throws Exception {
+		String query = "select nome from empresas where id = " + String.valueOf(user.getEmpresaId());
+		String nomeEmpresa = tableService.getDatavisaTable(query, "empresas").stringColumn("nome").print();
+		nomeEmpresa = nomeEmpresa.substring(nomeEmpresa.indexOf('\n') + 1).trim();
+		return nomeEmpresa;
+	}
+	
+	private String getDepartamento (UserModel user, String nomeEmpresa) throws Exception {
+		String query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(user.getPermissaoTabela());
+		String departamento = tableService.getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
+		departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
+		return departamento;
+		
+	}
+	
+	
 }
 

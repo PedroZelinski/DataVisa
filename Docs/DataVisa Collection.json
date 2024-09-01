@@ -60,7 +60,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"administracao@pizzaria.com\",\r\n    \"senha\": \"123456789\",\r\n    \"nome\": \"Lorena\",\r\n    \"empresaId\": 2\r\n}",
+					"raw": "{\r\n    \"email\": \"administracao@pizzaria.com\",\r\n    \"senha\": \"1234\",\r\n    \"nome\": \"Lorena\",\r\n    \"empresaId\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -104,14 +104,41 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DataVisa}}/user/getUser/552",
+					"raw": "{{DataVisa}}/user/getUser/administracao@pizzaria.com",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
 						"user",
 						"getUser",
-						"552"
+						"administracao@pizzaria.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"administracao@pizzaria.com\",\r\n    \"senha\": \"123456789\",\r\n    \"nome\": \"Lorena\",\r\n    \"empresaId\": 8,\r\n    \"permissaoTabela\": 2,\r\n    \"editaModelo\": 1,\r\n    \"editaConexao\": 1,\r\n    \"nivelAcesso\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/user/updateUser",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"user",
+						"updateUser"
 					]
 				}
 			},
@@ -124,7 +151,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"email\": \"administracao@pizzaria.com\",\r\n        \"senha\": \"123456789\",\r\n        \"nome\": \"Lorena\",\r\n        \"empresaId\": 8,\r\n        \"permissaoTabela\": 2,\r\n        \"editaModelo\": 1,\r\n        \"editaConexao\": 1,\r\n        \"nivelAcesso\": 0\r\n    }",
+					"raw": "{\r\n        \"email\": \"administracao@pizzaria.com\",\r\n        \"nome\": \"Lorena\",\r\n        \"empresaId\": 2,\r\n        \"permissaoTabela\": 100,\r\n        \"editaModelo\": 0,\r\n        \"editaConexao\": 0,\r\n        \"nivelAcesso\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -423,26 +450,6 @@
 					"path": [
 						"table",
 						"columnFields",
-						"Colaboradores",
-						"nome"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Collumn Type",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{DataVisa}}/table/columnType/Colaboradores/nome",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"table",
-						"columnType",
 						"Colaboradores",
 						"nome"
 					]

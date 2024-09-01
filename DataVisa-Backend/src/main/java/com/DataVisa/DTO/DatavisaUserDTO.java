@@ -41,6 +41,8 @@ public class DatavisaUserDTO {
 
 	private String templates;
 	
+	private String departamentos;
+	
 	private String mensagemRetorno;
 	
 	
