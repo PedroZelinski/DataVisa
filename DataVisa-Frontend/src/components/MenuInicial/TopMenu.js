@@ -42,7 +42,10 @@ const TopMenu = ({ alteraModo }) => {
     return (
         <div id='top-menu' className='grid col-12 flex align-content-center'>
             <div className='col-2 flex align-items-center justify-content-center mt-3'>
-                <img src={logo} alt="Logo" id="logo-menu" onClick={() => navigate('/menu')}/>
+                <img src={logo} alt="Logo" id="logo-menu" onClick={() => {
+                    alteraModo(1)
+                    navigate('/menu')
+                }}/>
             </div>
             
             <div className='col-3 col-offset-7 flex align-items-center justify-content-center mt-3'>
