@@ -46,10 +46,4 @@ public class DatavisaSession {
 
 	private String templates;
 	
-	public void setTemplates(String templates) {
-		if (templates == null || templates.isEmpty())
-			this.templates = "{}";
-		else
-			this.templates = templates;
-	}
 }

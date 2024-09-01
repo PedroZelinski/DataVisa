@@ -46,4 +46,10 @@ public class UserModel implements Serializable {
 	
 	private String templates;
 	
+	public String getTemplates() {
+		if (templates == null)
+			return "[]";
+		return templates;
+	}
+	
 }
