@@ -13,8 +13,6 @@ import lombok.Data;
 public class UserModel implements Serializable {
 	public UserModel() {
 		this.setPermissaoTabela(100);
-		this.setEditaConexao(0);
-		this.setEditaModelo(0);
 		this.setNivelAcesso(2);
 	}
 	private static final long serialVersionUID = 1L;
@@ -37,10 +35,6 @@ public class UserModel implements Serializable {
 	private Long empresaId;
 	
 	private int permissaoTabela;
-	
-	private int editaModelo;
-	
-	private int editaConexao;
 
 	private int nivelAcesso;
 	

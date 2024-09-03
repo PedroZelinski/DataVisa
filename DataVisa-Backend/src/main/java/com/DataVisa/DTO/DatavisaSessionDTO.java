@@ -14,8 +14,6 @@ public class DatavisaSessionDTO  {
 	        this.setStatus(session.isStatus());
 	        this.setEmail(session.getEmail());
 	        this.setNome(session.getNome());
-	        this.setEmpresa(session.getEmpresaNome());
-	        this.setDepartamento(session.getDepartamento());
 	        this.setConexaoAtiva(session.isConexaoAtiva());
 	        this.setTemplates(session.getTemplates());
 	    }

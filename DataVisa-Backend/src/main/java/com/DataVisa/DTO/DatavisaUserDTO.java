@@ -13,10 +13,9 @@ public class DatavisaUserDTO {
 	public DatavisaUserDTO(UserModel userModel) {
         this.email = userModel.getEmail();
         this.nome = userModel.getNome();
+        this.senha = userModel.getSenha();
         this.empresaId = userModel.getEmpresaId();
         this.permissaoTabela = userModel.getPermissaoTabela();
-        this.editaModelo = userModel.getEditaModelo();
-        this.editaConexao = userModel.getEditaConexao();
         this.nivelAcesso = userModel.getNivelAcesso();
         this.templates = userModel.getTemplates();
     }
@@ -28,6 +27,8 @@ public class DatavisaUserDTO {
 	private String email;
 
 	private String nome;
+	
+	private String senha;
 
 	private Long empresaId;
 	

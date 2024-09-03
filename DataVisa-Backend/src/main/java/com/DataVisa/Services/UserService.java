@@ -181,8 +181,7 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	}
 
 	public Optional<UserModel> findByAllFields (UserModel user){
-		return userRepository.findByAllFields(user.getEmail(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(),
-				user.getEditaModelo(), user.getEditaConexao(), user.getNivelAcesso());
+		return userRepository.findByAllFields(user.getEmail(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(), user.getNivelAcesso());
 	}
 
 	public String checkStatus() {
@@ -215,8 +214,6 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		datavisaSession.setNome(user.getNome());
 		datavisaSession.setEmpresaId(user.getEmpresaId());
 		datavisaSession.setPermissaoTabela(user.getPermissaoTabela());
-		datavisaSession.setEditaModelo(user.getEditaModelo());
-		datavisaSession.setEditaConexao(user.getEditaConexao());
 		datavisaSession.setNivelAcesso(user.getNivelAcesso());
 		datavisaSession.setTemplates(user.getTemplates());
 		
