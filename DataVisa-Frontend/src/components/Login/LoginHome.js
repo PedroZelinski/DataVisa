@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 
@@ -15,23 +15,22 @@ const LoginHome = ({ alteraModo }) => {
     }
 
     async function fazerLogin() {
-        const email = document.getElementById('email').value;
-        const senha = document.getElementById('senha').value;
-
         try {
             await DBClient.get('/dataVisa/user/login', {
                 headers: {
-                    email: email,
-                    senha: senha,
+                    email:document.getElementById('email').value,
+                    senha: document.getElementById('senha').value,
                 }
             }).then((res) => {
-                console.log(res)
                 if (res.status == 200) {
+                    localStorage.setItem('session', JSON.stringify(res.data));
+                    localStorage.setItem('modo', 1)
                     navigate('/menu')
                 }
             });
         } catch (error) {
-            alert("Ocorreu um erro: "+error.response.status+" "+error.response.data)
+            alert("Ocorreu um erro: "+error.response.status+"\n"+
+                error.response.data.mensagemRetorno)
             console.log(error)
         }
     }
@@ -41,29 +40,25 @@ const LoginHome = ({ alteraModo }) => {
             <a style={{ fontWeight: 'bold', marginLeft: 20 }}>
                 Digite seu e-mail e senha, para acessar sua conta</a>
 
-            <form onSubmit={onFormSubmit}>
+            <form onSubmit={onFormSubmit} onChange={handleChange}>
                 <div className='field-div'>
                     <label>Email
-                        <input className="input-field"
-                            type="email" id="email"
-                            placeholder="email@email.com"
-                            onChange={handleChange}></input>
+                        <input className="input-field" placeholder="email@email.com" 
+                            type="email" id="email" />
                     </label>
                 </div>
 
                 <div className='field-div'>
                     <label>Senha
-                        <input className="input-field"
-                            type="password"
-                            id="senha"
-                            placeholder="Senha"></input>
+                        <input className="input-field" placeholder="Senha"
+                            type="password" id="senha" />
                     </label>
                 </div>
 
                 <div className='field-div'>
                     <input className="input-button"
                         type="submit"
-                        value="Acessar"></input>
+                        value="Acessar" />
                 </div>
 
                 <div className='field-div'>

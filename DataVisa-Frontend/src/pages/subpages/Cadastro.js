@@ -1,36 +1,91 @@
-import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Dropdown } from 'primereact/dropdown'
+import { InputSwitch } from 'primereact/inputswitch'
+import DBClient from '../../utils/DBClient'
 
 const Cadastro = () => {
-    const [value, setValue] = React.useState('');
+    const navigate = useNavigate();
+    const [value, setValue] = useState('');
+    const [nivel, setNivel] = useState('');
+    const [edTemplate, setEdTemplate] = useState(false)
+    const [edConexao, setEdConexao] = useState(false)
+    const [edSenha, setEdSenha] = useState(false)
     const location = useLocation();
+    const niveis = ["0 - Administrador", "1 - Gerente", "2- Operador"]
     let user = location.state;
 
-    // useEffect(() => {
-    //     console.log(location)
-    // })
+    useEffect(() => {
+        if (user.editaModelo == 1) {
+            setEdTemplate(true)
+        }
+        if (user.editaConexao == 1) {
+            setEdConexao(true)
+        }
+        if (user.editaSenha == 1) {
+            setEdSenha(true)
+        }
+    }, [])
 
     const handleChange = (event) => {
         setValue(event.target.value);
     }
     const onFormSubmit = (event) => {
-        salvarCadastro();
+        const dadosUsuario = {
+            nome: document.getElementById('nome').value,
+            email: document.getElementById('email').value,
+            senha: document.getElementById('senha').value,
+            empresaId: user.empresaId ? user.empresaId : 8,
+            //departamento: document.getElementById('departamento'),
+            editaModelo: edTemplate == true ? 1 : 0,
+            editaConexao: edConexao == true ? 1 : 0,
+            //editaSenha: edS = edSenha == true ? 1 : 0,
+            permissaoTabela: user.permissaoTabela ? user.permissaoTabela : 0,
+            nivelAcesso: user.nivelAcesso ? user.nivelAcesso : 0,
+        }
+        user.email == "" ? criarCadastro(dadosUsuario) : salvarCadastro(dadosUsuario);
         event.preventDefault();
     }
+    async function criarCadastro(dadosUsuario) {
+        try {
+            await DBClient.post('/dataVisa/user/addUser',
+                dadosUsuario
+            ).then((res) => {
+                console.log(res)
+                alert(res.data)
+                navigate("/menu/usuarios")
+            })
 
-    async function salvarCadastro(){
+        } catch (error) {
+            alert("Ocorreu um erro: " + error.response.status + "\n"
+                + error.response.data)
+        }
+    }
+    async function salvarCadastro(dadosUsuario) {
         alert("to do")
+        try {
+            await DBClient.put('/dataVisa/user/updateUser', 
+                dadosUsuario
+            ).then((res) => {
+                console.log(res)
+                alert(res.data)
+                navigate("/menu/usuarios")
+            })
+        } catch (error) {
+            alert("Ocorreu um erro: " + error.response.status + "\n"
+                + error.response.data)
+        }
     }
 
     return (
         <div>
-            <h1>Cadastro de Usuario</h1> {/* Colocar texto variavel */}
+            <h1>{user.email == "" ? "Cadastro de usuário" : "Alterar dados do usuário"}</h1>
             <form onSubmit={onFormSubmit}>
                 <div className='grid col-12' id='border'>
                     <div className="grid col-5">
-
                         <label>Nome Completo
-                            <input type="text" defaultValue={user.nome} onChange={handleChange}/>
+                            <input type="text" id="nome"
+                                placeholder="Nome" defaultValue={user.nome} onChange={handleChange} />
                         </label>
                         <label>Matricula
                             <input type="text" defaultValue={"Matricula"} />
@@ -39,7 +94,8 @@ const Cadastro = () => {
                             <input type="text" defaultValue={"11 99999-9999"} />
                         </label>
                         <label>E-mail
-                            <input type="text" defaultValue={user.email} />
+                            <input type="text" id="email"
+                                placeholder="E-mail" defaultValue={user.email} onChange={handleChange} />
                         </label>
 
                     </div>
@@ -49,13 +105,15 @@ const Cadastro = () => {
                             <input type="text" defaultValue={"01/01/2024"} />
                         </label>
                         <label>Departamento
-                            <input type="text" defaultValue={"Departamento"} />
+                            <input type="text" id="departamento"
+                                placeholder="Departamento" defaultValue={"Departamento"} onChange={handleChange} />
                         </label>
                         <label>Localidade
                             <input type="text" defaultValue={"Localidade"} />
                         </label>
                         <label>Senha
-                            <input type="text" defaultValue={user.senha} />
+                            <input type="text" id="senha"
+                                placeholder="Senha" defaultValue={user.senha} onChange={handleChange} />
                         </label>
                     </div>
                     <div className="col-2">
@@ -65,7 +123,27 @@ const Cadastro = () => {
                     </div>
                 </div>
             </form>
-            <h1>Permissões do Usuario</h1>
+            <h1>Permissões do usuario</h1>
+            <form onSubmit={onFormSubmit}>
+                <div className='grid col-12' id='border'>
+                    <div className='col-6'>
+                        <label>Nivel de acesso
+                            <Dropdown value={nivel} options={niveis} onChange={(e) => setNivel(e.value)}/>
+                        </label>
+                    </div>
+                    <div className="col-6">
+                        <label>Edita Templates
+                            <InputSwitch checked={edTemplate} onChange={(e) => setEdTemplate(e.value)} />
+                        </label>
+                        <label>Edita Conexões
+                            <InputSwitch checked={edConexao} onChange={(e) => setEdConexao(e.value)} />
+                        </label>
+                        <label>Edita Senha
+                            <InputSwitch checked={edSenha} onChange={(e) => setEdSenha(e.value)} />
+                        </label>
+                    </div>
+                </div>
+            </form>
         </div>
     )
 }
