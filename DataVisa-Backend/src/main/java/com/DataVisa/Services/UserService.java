@@ -1,6 +1,8 @@
 package com.DataVisa.Services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import com.DataVisa.DTO.DatavisaUserDTO;
 import com.DataVisa.Models.UserModel;
 import com.DataVisa.Repositories.UserRepository;
 import com.DataVisa.Session.DatavisaSession;
-import com.DataVisa.Utils.DatavisaMapper;
 
 @Service
 public class UserService {
@@ -175,9 +176,34 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	    if (!(status = checkUserPermition()).isEmpty()) {
 	        return Pair.of(status, HttpStatus.FORBIDDEN);
 	    }
-		if (datavisaSession.getEmpresaId().equals(1L))
-			return  Pair.of(DatavisaMapper.convertToDTOList(userRepository.findAll()), HttpStatus.OK);
-		return  Pair.of(DatavisaMapper.convertToDTOList(userRepository.findAllByEmpresaId(datavisaSession.getEmpresaId())), HttpStatus.OK);
+
+	    List<UserModel> userList;
+	    if (datavisaSession.getEmpresaId().equals(1L)) {
+	        userList = userRepository.findAll();
+	    } else {
+	        userList = userRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
+	    }
+	    
+	    try {
+	        List<DatavisaUserDTO> dtoList = userList.stream().map(userModel -> {
+	            DatavisaUserDTO dto = new DatavisaUserDTO(userModel);
+	            try {
+	                String nomeEmpresa = getNomeEmpresa(userModel);
+	                dto.setEmpresaNome(nomeEmpresa);
+	                dto.setDepartamento(getDepartamento(userModel, nomeEmpresa));
+	            } catch (Exception e) {
+	                // Tratar exceção de forma apropriada, como logar o erro e definir valores padrão
+	                dto.setEmpresaNome("Erro ao obter nome da empresa");
+	                dto.setDepartamento("Erro ao obter departamento");
+	            }
+	            return dto;
+	        }).collect(Collectors.toList());
+
+	        return Pair.of(dtoList, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return Pair.of("Erro ao processar a lista de usuários", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	    
 	}
 
 	public Optional<UserModel> findByAllFields (UserModel user){
@@ -234,14 +260,14 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		return datavisaResponse;
 	}
 
-	private String getNomeEmpresa (UserModel user) throws Exception {
+	public String getNomeEmpresa (UserModel user) throws Exception {
 		String query = "select nome from empresas where id = " + String.valueOf(user.getEmpresaId());
 		String nomeEmpresa = tableService.getDatavisaTable(query, "empresas").stringColumn("nome").print();
 		nomeEmpresa = nomeEmpresa.substring(nomeEmpresa.indexOf('\n') + 1).trim();
 		return nomeEmpresa;
 	}
 	
-	private String getDepartamento (UserModel user, String nomeEmpresa) throws Exception {
+	public String getDepartamento (UserModel user, String nomeEmpresa) throws Exception {
 		String query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(user.getPermissaoTabela());
 		String departamento = tableService.getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
 		departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DatavisaUserDTO {
-	public DatavisaUserDTO(UserModel userModel) {
+	public DatavisaUserDTO(UserModel userModel){
         this.email = userModel.getEmail();
         this.nome = userModel.getNome();
         this.senha = userModel.getSenha();
@@ -23,7 +23,6 @@ public class DatavisaUserDTO {
 		this.mensagemRetorno = mensagemRetorno;
 	}
 	
-	
 	private String email;
 
 	private String nome;
@@ -32,21 +31,18 @@ public class DatavisaUserDTO {
 
 	private Long empresaId;
 	
-	private Long empresaNome;
+	private String empresaNome;
 	
 	private int permissaoTabela;
-	
-	private int editaModelo;
-	
-	private int editaConexao;
 
 	private int nivelAcesso;
 
 	private String templates;
 	
+	private String departamento;
+	
 	private String departamentos;
 	
 	private String mensagemRetorno;
-	
 	
 }
