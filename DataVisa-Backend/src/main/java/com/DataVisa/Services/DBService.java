@@ -206,9 +206,5 @@ public class DBService{
 		
 		datavisaSession.setConexaoAtiva(true);
 	}
-
-	public Connection ClientConnection() throws SQLException{
-		return DriverManager.getConnection(datavisaSession.getUrl(), datavisaSession.getUser(), datavisaSession.getPassword());
-	}
 	
 }

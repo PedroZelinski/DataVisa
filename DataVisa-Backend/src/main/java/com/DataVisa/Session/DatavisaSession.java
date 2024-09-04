@@ -1,11 +1,17 @@
 package com.DataVisa.Session;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
 import lombok.Data;
+import tech.tablesaw.api.Table;
 
 @Component
 @SessionScope
@@ -79,4 +85,14 @@ public class DatavisaSession {
 			return Pair.of("Erro: Nenhuma conexão ativa! \nConecte a um banco e tente novamente.", HttpStatus.BAD_REQUEST);
 		return Pair.of("", HttpStatus.ACCEPTED);
 	}
+
+	public Table getClientTable(String query, String tableName) throws Exception {
+		Connection clientConnection = DriverManager.getConnection(getUrl(), getUser(), getPassword());
+		PreparedStatement stmt = clientConnection.prepareStatement(query);
+		ResultSet rs = stmt.executeQuery();
+		Table table = Table.read().db(rs, tableName);
+		clientConnection.close();
+		return table;
+	}
+	
 }

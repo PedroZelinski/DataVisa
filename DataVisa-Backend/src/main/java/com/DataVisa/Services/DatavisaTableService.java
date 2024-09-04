@@ -20,7 +20,7 @@ import com.DataVisa.Session.DatavisaSession;
 import tech.tablesaw.api.Table;
 
 @Service
-public class TableService {
+public class DatavisaTableService {
 
 	@Autowired
 	TableRepository tableRepository;
@@ -213,7 +213,7 @@ public String getDatavisaCollumnFields(String tabela, String campo){
 		datavisaConnection.close();
 		return table;
 	}
-	
+
 	private Pair<String, HttpStatus> checkTablePermitions(String tabela) {	
 		Pair<String, HttpStatus> response;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED) || 
