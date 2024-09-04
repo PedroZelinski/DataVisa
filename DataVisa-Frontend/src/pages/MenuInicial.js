@@ -17,22 +17,22 @@ export default class MenuInicial extends Component {
     localStorage.setItem("modo", newModo)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     console.log(this.state.session)
   }
 
   render() {
     return (
-      <div className='grid flex justify-content-center' >
-        <TopMenu alteraModo={this.alteraModo}/>
-        {this.state.modo == 1 ? 
-        <SideMenu alteraModo={this.alteraModo}/> 
-        :
-        <SideConfig alteraModo={this.alteraModo}/>
+      <div className='grid'>
+        <TopMenu alteraModo={this.alteraModo} />
+
+        {this.state.modo == 1 ?
+          <SideMenu alteraModo={this.alteraModo} />
+          :
+          <SideConfig alteraModo={this.alteraModo} />
         }
-        
-        <div className='col-10 flex'>
-          <Outlet context={[this.state.session, this.alteraModo]}/>
+        <div className='col-10' id="outlet">
+          <Outlet context={[this.state.session, this.alteraModo]} />
         </div>
       </div>
     )

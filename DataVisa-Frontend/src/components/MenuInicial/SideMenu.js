@@ -5,7 +5,7 @@ const SideMenu = () => {
     const navigate = useNavigate();
 
     return (
-        <div id='side-menu' className='col-2 flex-1'>
+        <div id='side-menu' className='col-2 text-center'>
             <div>
                 <button>Criar</button>
             </div>
