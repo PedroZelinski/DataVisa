@@ -32,7 +32,7 @@ public class UserService {
 public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		
 		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
-		if (checkStatus().isEmpty()) {
+		if (datavisaSession.checkStatus().getRight().equals(HttpStatus.ACCEPTED)) {
 			datavisaResponse.setMensagemRetorno("Usuario já logado!"
 					+ "\nUsuário: " + datavisaSession.getNome());
 			return Pair.of(datavisaResponse, HttpStatus.CONFLICT);
@@ -77,11 +77,11 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	
 	public Pair<String, HttpStatus> update(UserModel user) {
 		
-		String status;
-		if (!(status = checkStatus()).isEmpty())
-			return Pair.of(status, HttpStatus.UNAUTHORIZED);
-		if (!(status = checkUserPermition()).isEmpty())
-			return Pair.of(status, HttpStatus.FORBIDDEN);
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED))
+			return Pair.of(response);
+		if (!(response = datavisaSession.checkDatavisaPermition(3)).getRight().equals(HttpStatus.ACCEPTED))
+			return Pair.of(response);
 		
 		try {
 			
@@ -101,11 +101,11 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 
 	public Pair<String, HttpStatus> delete(UserModel user){
 		
-		String status;
-		if (!(status = checkStatus()).isEmpty())
-			return Pair.of(status, HttpStatus.UNAUTHORIZED);
-		if (!(status = checkUserPermition()).isEmpty())
-			return Pair.of(status, HttpStatus.FORBIDDEN);
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED))
+			return Pair.of(response);
+		if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED))
+			return Pair.of(response);
 		
 			//Verifica se o registro existe
 			if (userRepository.findByEmail(user.getEmail()).isEmpty()) {
@@ -131,64 +131,65 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	}
 
 	public Pair<DatavisaUserDTO, HttpStatus> findById(String email){
-		DatavisaUserDTO userDTO = new DatavisaUserDTO();
-		String status;
-		if (!(status = checkStatus()).isEmpty()) {
-			userDTO.setMensagemRetorno(status);
-	        return Pair.of(userDTO,  HttpStatus.UNAUTHORIZED);
+		
+		DatavisaUserDTO userResponseDTO = new DatavisaUserDTO();
+		Pair<String, HttpStatus> response;
+		
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+			userResponseDTO.setMensagemRetorno(response.getLeft());
+	        return Pair.of(userResponseDTO,  response.getRight());
 	    }
-	    if (!(status = checkUserPermition()).isEmpty()) {
-			userDTO.setMensagemRetorno(status);
-	        return Pair.of(userDTO, HttpStatus.FORBIDDEN);
+	    if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED)) {
+			userResponseDTO.setMensagemRetorno(response.getLeft());
+	        return Pair.of(userResponseDTO, response.getRight());
 	    }
 	    
 	    try {
 	    	UserModel user = userRepository.findById(email).get();
-	    	userDTO = new DatavisaUserDTO(user);
+	    	userResponseDTO = new DatavisaUserDTO(user);
 	    	
 	    	if (user.getPermissaoTabela() == 100) {
-	    		userDTO.setDepartamentos("Pendente");
-	    		return Pair.of(userDTO,HttpStatus.OK);
-	    	}
-	    		
-	    	if (!(status = checkEmpresaPermition(user)).isEmpty()) {
-	    		userDTO = new DatavisaUserDTO();
-	    		userDTO.setMensagemRetorno(status);
-	    		return  Pair.of(userDTO,HttpStatus.FORBIDDEN);
+	    		userResponseDTO.setDepartamentos("Pendente");
+	    		return Pair.of(userResponseDTO,HttpStatus.OK);
 	    	}
 	    	
-	    	userDTO.setDepartamentos(tableService.getDatavisaCollumnFields(getNomeEmpresa(user) + "_permissoes", "nome"));
-	    	
+	    	if (!(response = datavisaSession.checkEmpresaPermition(user.getEmpresaId())).getRight().equals(HttpStatus.ACCEPTED)) {
+	    		userResponseDTO = new DatavisaUserDTO(response.getLeft());
+	    		return  Pair.of(userResponseDTO, response.getRight());
+	    	}
+	    	String nomeEmpresa = tableService.getNomeEmpresa(user.getEmpresaId());
+	    	userResponseDTO.setEmpresaNome(nomeEmpresa);
+	    	userResponseDTO.setDepartamentos(tableService.getDatavisaCollumnFields(nomeEmpresa + "_permissoes", "nome"));
+	    	userResponseDTO.setDepartamento(getDepartamento(user, nomeEmpresa));
+
 	    	
 	    } catch (Exception e) {
-	    	userDTO.setMensagemRetorno("Usuário não encontrado");
-		    return Pair.of(userDTO,HttpStatus.NOT_FOUND);
+	    	userResponseDTO = new DatavisaUserDTO("Usuário não encontrado");
+		    return Pair.of(userResponseDTO,HttpStatus.NOT_FOUND);
 	    }
-	    return Pair.of(userDTO,HttpStatus.OK);
+	    return Pair.of(userResponseDTO,HttpStatus.OK);
 	}
 
 	
 	public Pair<Object, HttpStatus> findAll(){
-		String status;
-		if (!(status = checkStatus()).isEmpty()) {
-	        return Pair.of(status,  HttpStatus.UNAUTHORIZED);
+		
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response,  response.getRight());
 	    }
-	    if (!(status = checkUserPermition()).isEmpty()) {
-	        return Pair.of(status, HttpStatus.FORBIDDEN);
+	    if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response, response.getRight());
 	    }
 
-	    List<UserModel> userList;
-	    if (datavisaSession.getEmpresaId().equals(1L)) {
-	        userList = userRepository.findAll();
-	    } else {
-	        userList = userRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
-	    }
+	    List<UserModel> userList = datavisaSession.getEmpresaId().equals(1L) ?
+	        userRepository.findAll():
+	        userRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
 	    
 	    try {
 	        List<DatavisaUserDTO> dtoList = userList.stream().map(userModel -> {
 	            DatavisaUserDTO dto = new DatavisaUserDTO(userModel);
 	            try {
-	                String nomeEmpresa = getNomeEmpresa(userModel);
+	                String nomeEmpresa = tableService.getNomeEmpresa(userModel.getEmpresaId());
 	                dto.setEmpresaNome(nomeEmpresa);
 	                dto.setDepartamento(getDepartamento(userModel, nomeEmpresa));
 	            } catch (Exception e) {
@@ -209,31 +210,7 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	public Optional<UserModel> findByAllFields (UserModel user){
 		return userRepository.findByAllFields(user.getEmail(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(), user.getNivelAcesso());
 	}
-
-	public String checkStatus() {
-		if (!datavisaSession.isStatus())
-			return "Erro: Login não efetuado!";
-		return "";
-	}
 	
-	public String checkConnection(Long conexao, String tabela) {
-		if(!datavisaSession.isConexaoAtiva())
-			return "Erro: Nenhuma conexão ativa! \nConecte a um banco e tente novamente.";
-		return "";
-	}
-	
-	public String checkUserPermition() {
-		if(datavisaSession.getNivelAcesso() > 1)
-			return "Erro: O usuário não possui permissão para realizar a esta ação.";
-		return "";
-	}
-	
-	public String checkEmpresaPermition(UserModel user) {
-		if(user.getEmpresaId() != datavisaSession.getEmpresaId() && !datavisaSession.getEmpresaId().equals(1L))
-			return "Erro: O usuário não possui permissão para realizar a esta ação.";
-		return "";
-	}
-
 	private DatavisaSessionDTO startSession (UserModel user) throws Exception {
 		datavisaSession.setStatus(true);
 		datavisaSession.setEmail(user.getEmail());
@@ -244,7 +221,7 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		datavisaSession.setTemplates(user.getTemplates());
 		
 		if (datavisaSession.getPermissaoTabela() != 100) {
-				String nomeEmpresa = getNomeEmpresa(user);
+				String nomeEmpresa =  tableService.getNomeEmpresa(user.getEmpresaId());
 				datavisaSession.setEmpresaNome(nomeEmpresa);
 				datavisaSession.setDepartamento(getDepartamento(user, nomeEmpresa));
 		} else {
@@ -258,13 +235,6 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 				+ "\nUsuário: " + datavisaSession.getNome());
 		
 		return datavisaResponse;
-	}
-
-	public String getNomeEmpresa (UserModel user) throws Exception {
-		String query = "select nome from empresas where id = " + String.valueOf(user.getEmpresaId());
-		String nomeEmpresa = tableService.getDatavisaTable(query, "empresas").stringColumn("nome").print();
-		nomeEmpresa = nomeEmpresa.substring(nomeEmpresa.indexOf('\n') + 1).trim();
-		return nomeEmpresa;
 	}
 	
 	public String getDepartamento (UserModel user, String nomeEmpresa) throws Exception {

@@ -20,6 +20,10 @@ public class DatavisaSessionDTO  {
 	        this.setTemplates(session.getTemplates());
 	    }
 	 
+	 public DatavisaSessionDTO(String mensagemRetorno) {
+	        this.setMensagemRetorno(mensagemRetorno);
+	    }
+	 
 	private boolean status;
 	
 	private String email;
