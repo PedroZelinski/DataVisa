@@ -34,7 +34,7 @@ const Usuarios = () => {
   }
 
   return (
-    <div>
+    <div id='form' style={{backgroundColor: 'white'}}>
       <div className='grid col-12 font-bold'>
 
         <div className='col-3'>Gerenciamento de usuarios

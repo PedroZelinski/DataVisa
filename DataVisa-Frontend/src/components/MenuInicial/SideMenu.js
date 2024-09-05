@@ -7,22 +7,23 @@ const SideMenu = () => {
     return (
         <div id='side-menu' className='col-2 text-center'>
             <div>
-                <button>Criar</button>
+                <button id='create' className='side-menu-btn' 
+                style={{fontWeight: 'bolder', border: 'solid 2px', fontSize: '20px'}}>Criar</button>
             </div>
             <br />
             <div>
-                <button>Recentes</button><br />
-                Recentes
+                <button className='side-menu-btn'>
+                <i className='fi fi-rr-clock' /><br />Recentes</button>
             </div>
             <br />
             <div>
-                <button>Compartilhados</button><br />
-                Compartilhados
+                <button className='side-menu-btn'>
+                <i className='fi fi-rr-share' /><br />Compartilhados</button>
             </div>
             <br />
             <div>
-                <button onClick={() => navigate('/menu/modelos')}>Pesquisar</button><br />
-                Pesquisar
+                <button className='side-menu-btn' onClick={() => navigate('/menu/modelos')}>
+                <i className='fi fi-rr-search' /><br />Pesquisar</button>
             </div>
         </div>
     )

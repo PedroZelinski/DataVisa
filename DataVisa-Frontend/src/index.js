@@ -14,6 +14,7 @@ import Auditoria from './pages/subpages/Auditoria';
 import Perfil from './pages/subpages/Perfil';
 import Templates from './pages/subpages/Templates';
 import Conexoes from './pages/subpages/Conexoes';
+import Pendentes from './pages/subpages/Pendentes';
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,11 @@ const router = createBrowserRouter([
       {
         path: "conexoes",
         element: <Conexoes />
-      } 
+      },
+      {
+        path: "pendentes",
+        element: <Pendentes />
+      }
     ]
   }
 ])

@@ -84,8 +84,8 @@ const Cadastro = () => {
                 <div className='grid col-12' id='border'>
                     <div className="grid col-5">
                         <label>Nome Completo
-                            <input type="text" id="nome"
-                                placeholder="Nome" defaultValue={user.nome} onChange={handleChange} />
+                            <input type="text" id="nome" placeholder="Nome" 
+                                defaultValue={user.nome} onChange={handleChange} required/>
                         </label>
                         <label>Matricula
                             <input type="text" defaultValue={"Matricula"} />
@@ -94,8 +94,8 @@ const Cadastro = () => {
                             <input type="text" defaultValue={"11 99999-9999"} />
                         </label>
                         <label>E-mail
-                            <input type="text" id="email"
-                                placeholder="E-mail" defaultValue={user.email} onChange={handleChange} />
+                            <input type="email" id="email" placeholder="E-mail" 
+                                defaultValue={user.email} onChange={handleChange} required/>
                         </label>
 
                     </div>
@@ -112,8 +112,8 @@ const Cadastro = () => {
                             <input type="text" defaultValue={"Localidade"} />
                         </label>
                         <label>Senha
-                            <input type="text" id="senha"
-                                placeholder="Senha" defaultValue={user.senha} onChange={handleChange} />
+                            <input type="password" id="senha" placeholder="Senha" 
+                                defaultValue={user.senha} onChange={handleChange} required/>
                         </label>
                     </div>
                     <div className="col-2">
