@@ -45,7 +45,7 @@ public class DBService{
 		
 		try {
 			//Verifica se o banco já existe
-			if (databaseRepository.findById(database.getId()).isPresent()) {
+			if (database.getId() != null && databaseRepository.findById(database.getId()).isPresent()) {
 				throw new IllegalArgumentException("Banco já cadastrado.");
 			}
 			
@@ -54,7 +54,7 @@ public class DBService{
 			Pair.of("Banco cadastrado com sucesso!",HttpStatus.OK);
 			
 		} catch (Exception ex){
-			Pair.of("Ocorreu um erro, Banco não cadastrado! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			response = Pair.of("Ocorreu um erro, Banco não cadastrado! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			return response; 
 		}
 		return response;

@@ -33,7 +33,7 @@ public class DBController {
 	@PostMapping("/dataVisa/database/addDB")
     public ResponseEntity<String> addDB(@RequestBody DBModel database){
 		Pair<String, HttpStatus> result = databaseService.save(database);
-        return new ResponseEntity<>(result.getLeft(), result.getRight());
+        return new ResponseEntity<String>(result.getLeft(), result.getRight());
     }
 	
 	@PutMapping("/dataVisa/database/updateDB")
