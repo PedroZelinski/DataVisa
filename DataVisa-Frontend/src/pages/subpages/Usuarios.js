@@ -37,26 +37,14 @@ const Usuarios = () => {
     <div>
       <div className='grid col-12 font-bold'>
 
-        <div className='col-10'>Gerenciamento de usuarios
+        <div className='col-3'>Gerenciamento de usuarios
           <input type="text" />
         </div>
-        <div className='col-2'>
+        <div className='col-1 col-offset-8'>
           <button onClick={() => {
             alteraModo(1)
             navigate('/menu')
           }}>Menu</button>
-          <button onClick={() => navigate('/menu/cadastro', {
-            state: {
-              nome: "",
-              email: "",
-              senha: "",
-              departamento: "",
-              editaConexao: false,
-              editaModelo: false,
-              editaSenha: false,
-            }
-          }
-          )}>Adicionar</button>
         </div>
 
         <div className='col-1 text-center'>N°</div>
@@ -69,16 +57,17 @@ const Usuarios = () => {
         <div className='col-1 text-center'>Ações</div>
       </div>
       <hr/>
-      <div className="grid col-12 flex justify-content-center" id='user-list'>
+
+      <div className="grid col-12 overflow-auto text-center" id='list'>
         {users.map((user) => (
           <Fragment key={user.email}>
-            <div className='col-1 text-center'>{users.indexOf(user) + 1}</div>
-            <div className='col-2 text-center'>{user.nome}</div>
-            <div className='col-3 text-center'>{user.email}</div>
-            <div className='col-1 text-center'>{user.nivelAcesso}</div>
-            <div className='col-1 text-center'>Status</div>
-            <div className='col-2 text-center'>Departamento</div>
-            <div className='col-1 text-center'>Data</div>
+            <div className='col-1'>{users.indexOf(user) + 1}</div>
+            <div className='col-2'>{user.nome}</div>
+            <div className='col-3'>{user.email}</div>
+            <div className='col-1'>{user.nivelAcesso}</div>
+            <div className='col-1'>Status</div>
+            <div className='col-2'>Departamento</div>
+            <div className='col-1'>Data</div>
             <div className='col-1 text-center'>
               <button onClick={() => navigate('/menu/cadastro', {
                 state: user

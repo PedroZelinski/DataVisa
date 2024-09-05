@@ -40,7 +40,7 @@ const TopMenu = ({ alteraModo }) => {
     }
 
     return (
-        <div id='top-menu' className='grid col-12 flex align-content-center'>
+        <div id='top-menu' className='grid col-12'>
             <div className='col-2 flex align-items-center justify-content-center mt-3'>
                 <img src={logo} alt="Logo" id="logo-menu" onClick={() => {
                     alteraModo(1)
@@ -50,6 +50,7 @@ const TopMenu = ({ alteraModo }) => {
             
             <div className='col-3 col-offset-7 flex align-items-center justify-content-center mt-3'>
                 <button className="top-menu-btn" onClick={(e) => inspect.current.toggle(e)}>Inspecionar</button>
+
                     <OverlayPanel ref={inspect}>
                         <button onClick={(e) => {
                             navegar(e, inspect, "conexoes")
@@ -80,7 +81,6 @@ const TopMenu = ({ alteraModo }) => {
                         <button onClick={() => deslogar()}>Sair</button>
                     </OverlayPanel>
             </div>
-
         </div>
     )
 }
