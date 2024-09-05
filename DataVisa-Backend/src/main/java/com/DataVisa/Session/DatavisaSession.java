@@ -26,6 +26,8 @@ public class DatavisaSession {
 	
 	private String email;
 	
+	private String password;
+	
 	private String nome;
 	
 	private Long empresaId;
@@ -36,11 +38,13 @@ public class DatavisaSession {
 	
 	private Long conexao;
 	
-	private String url;
+	private String dbUrl;
 	
-	private String user;
+	private String dbUser;
 	
-	private String password;
+	private String dbName;
+
+	private String dbPassword;
 	
 	private int permissaoTabela;
 	
@@ -80,14 +84,14 @@ public class DatavisaSession {
 	return Pair.of("", HttpStatus.ACCEPTED);
 	}
 	
-	public Pair<String, HttpStatus> checkConnection(Long conexao, String tabela) {
+	public Pair<String, HttpStatus> checkConnection() {
 		if(!isConexaoAtiva())
 			return Pair.of("Erro: Nenhuma conexão ativa! \nConecte a um banco e tente novamente.", HttpStatus.BAD_REQUEST);
 		return Pair.of("", HttpStatus.ACCEPTED);
 	}
 
-	public Table getClientTable(String query, String tableName) throws Exception {
-		Connection clientConnection = DriverManager.getConnection(getUrl(), getUser(), getPassword());
+	public Table getCustomerConnection(String query, String tableName) throws Exception {
+		Connection clientConnection = DriverManager.getConnection(getDbUrl(), getDbUser(), getDbPassword());
 		PreparedStatement stmt = clientConnection.prepareStatement(query);
 		ResultSet rs = stmt.executeQuery();
 		Table table = Table.read().db(rs, tableName);

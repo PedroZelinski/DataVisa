@@ -20,7 +20,7 @@ import com.DataVisa.Session.DatavisaSession;
 import tech.tablesaw.api.Table;
 
 @Service
-public class TableService {
+public class TableSawService {
 
 	@Autowired
 	TableRepository tableRepository;
@@ -35,89 +35,6 @@ public class TableService {
 	@Autowired
 	UserService userService;
 	
-	public Pair<String, HttpStatus> save(TableModel database) {
-		Pair<String, HttpStatus> response;
-		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED))
-			return Pair.of(response);
-		if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED))
-			return Pair.of(response);
-		
-		try {
-			//Verifica se a tabela já existe
-			if (tableRepository.findById(database.getId()).isPresent()) {
-				throw new IllegalArgumentException("Tabela já cadastrada.");
-			}
-			
-			tableRepository.save(database);
-			
-		} catch (Exception ex){
-			return Pair.of("Ocorreu um erro, Tabela não cadastrada! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); 
-		}
-		return Pair.of("Tabela cadastrada com sucesso!", HttpStatus.OK);
-	}
-
-//	public Optional<String> addBusinessTables(TableModel database) {
-//
-//			String status = checkPermitions(tabela);
-//			if (!status.isEmpty())
-//				return status;
-//			
-//			String query = "select * from " + tabela;
-//			StringBuilder retorno = new StringBuilder();
-//			
-//			try {
-//				Table table = getClientTable(query, tabela);
-//				
-//				for (int i = 0; i < table.columnCount(); i++) {
-//				//retorna os nomes das colunas existentes na tabbela
-//				retorno.append("Nome da coluna: " + table.columnNames().get(i) );
-//				//retorna os tipos das colunas existentes na tabela
-//				retorno.append(" | Tipo: " + table.typeArray()[i] + "\n");
-//				}
-//				return retorno.toString();
-//				
-//			} catch (Exception e) {
-//				return "Erro: " + e.getMessage();
-//			}
-//		}
-	
-	public Pair<String, HttpStatus> delete(TableModel database){
-		
-		Pair<String, HttpStatus> response;
-		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED))
-			return Pair.of(response);
-		if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED))
-			return Pair.of(response);
-		
-		try {
-			
-			//Verifica se a tabela existe
-			if (tableRepository.findById(database.getId()).isEmpty()) {
-                throw new RuntimeException("Tabela não encontrada.");
-            }
-			
-			tableRepository.delete(database);
-			
-			//Verifica se a tabela foi excluida
-            if (tableRepository.findById(database.getId()).isPresent()) {
-                throw new RuntimeException("Falha ao excluir a tabela.");
-            }
-            
-		} catch (Exception ex){
-			return Pair.of("Ocorreu um erro! " + ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);			
-		}
-		
-		return Pair.of("Tabela excluída com sucesso!",HttpStatus.OK);
-	}
-
-	public List<TableModel> findAll(){
-		return tableRepository.findAll();
-	}
-
-	public Optional<TableModel> findById(Long id){
-		return tableRepository.findById(id);
-	}
-	
 	public Pair<String, HttpStatus> getTable(String tabela){
 
 		Pair<String, HttpStatus> response = checkTablePermitions(tabela);
@@ -127,13 +44,37 @@ public class TableService {
 		String query = "select * from " + tabela;
 		
 		try{
-			Table responsetable = datavisaSession.getClientTable(query, tabela);
+			Table responsetable = datavisaSession.getCustomerConnection(query, tabela);
 			response = Pair.of(responsetable.printAll(), HttpStatus.OK);
 			return response;
 			
 		} catch (Exception e) {
 			response = Pair.of("Erro: Tabela não encontrada!", HttpStatus.OK);
 			return response;
+		}
+	}
+	
+	public Pair<String, HttpStatus> getConnecionTables(){
+		Pair<String, HttpStatus> response ;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED) || 
+				!(response = datavisaSession.checkConnection()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }		
+		String tableNameColuumn = "table_name";
+		String schemaName = "information_schema.tables";
+		String query = "SELECT " + tableNameColuumn + " FROM " + schemaName + " WHERE table_schema = '" + datavisaSession.getDbName() + "'";
+		
+		try {
+			//retorna os dados de uma coluna específica da tabela
+			String stringTable = datavisaSession.getCustomerConnection(query, schemaName).stringColumn(tableNameColuumn).print();
+			//retira o cabeçalho do retorno
+			stringTable = stringTable.contains("\n") ? stringTable.substring(stringTable.indexOf('\n') + 1): stringTable;
+			
+			response = Pair.of(stringTable.trim(), HttpStatus.OK);
+			return response;
+			
+		} catch (Exception e) {
+			return Pair.of("Erro: " + e.getMessage() + "\n" + e.getClass().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -147,7 +88,7 @@ public class TableService {
 		StringBuilder tablesCollumns = new StringBuilder();
 		
 		try {
-			Table table = datavisaSession.getClientTable(query, tabela);
+			Table table = datavisaSession.getCustomerConnection(query, tabela);
 			
 			for (int i = 0; i < table.columnCount(); i++) {
 			//retorna os nomes das colunas existentes na tabbela
@@ -173,7 +114,7 @@ public class TableService {
 		
 		try {
 			//retorna os dados de uma coluna específica da tabela
-			String stringTable = datavisaSession.getClientTable(query, tabela).stringColumn(campo).print();
+			String stringTable = datavisaSession.getCustomerConnection(query, tabela).stringColumn(campo).print();
 			//retira o cabeçalho do retorno
 			stringTable = stringTable.contains("\n") ? stringTable.substring(stringTable.indexOf('\n') + 1): stringTable;
 			
@@ -185,7 +126,7 @@ public class TableService {
 		}
 	}
 
-public String getDatavisaCollumnFields(String tabela, String campo){
+	public String getDatavisaCollumnFields(String tabela, String campo){
 		
 		String query = "select " + campo + " from " + tabela;
 		
@@ -205,6 +146,32 @@ public String getDatavisaCollumnFields(String tabela, String campo){
 		}
 	}
 	
+	
+//	public Optional<String> addBusinessTables(TableModel database) {
+//
+//			String status = checkPermitions(tabela);
+//			if (!status.isEmpty())
+//				return status;
+//			
+//			String query = "select * from " + tabela;
+//			StringBuilder retorno = new StringBuilder();
+//			
+//			try {
+//				Table table = getClientTable(query, tabela);
+//				
+//				for (int i = 0; i < table.columnCount(); i++) {
+//				//retorna os nomes das colunas existentes na tabbela
+//				retorno.append("Nome da coluna: " + table.columnNames().get(i) );
+//				//retorna os tipos das colunas existentes na tabela
+//				retorno.append(" | Tipo: " + table.typeArray()[i] + "\n");
+//				}
+//				return retorno.toString();
+//				
+//			} catch (Exception e) {
+//				return "Erro: " + e.getMessage();
+//			}
+//		}
+	
 	public Table getDatavisaTable(String query, String tableName) throws Exception {
 		Connection datavisaConnection = dBService.DatavisaConnection();
 		PreparedStatement stmt = datavisaConnection.prepareStatement(query);
@@ -217,7 +184,7 @@ public String getDatavisaCollumnFields(String tabela, String campo){
 	private Pair<String, HttpStatus> checkTablePermitions(String tabela) {	
 		Pair<String, HttpStatus> response;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED) || 
-				!(response = datavisaSession.checkConnection(datavisaSession.getConexao(), tabela)).getRight().equals(HttpStatus.ACCEPTED)) {
+				!(response = datavisaSession.checkConnection()).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response);
 	    }
 		

@@ -35,6 +35,8 @@ public class DatavisaSessionDTO  {
 	private boolean conexaoAtiva;
 	
 	private String conexao;
+	
+	private String nomeDb;
 
 	private String departamento;
 	

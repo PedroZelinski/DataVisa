@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.DataVisa.DTO.DatavisaDbDTO;
 import com.DataVisa.DTO.DatavisaSessionDTO;
 import com.DataVisa.Models.DBModel;
+import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Session.DatavisaSession;
 
@@ -31,7 +32,7 @@ public class DBService{
 	UserService userService;
 
 	@Autowired
-	TableService tableService;
+	TableSawService tableSawService;
 	
 	public Pair<String, HttpStatus> save(DBModel database) {
 		
@@ -103,12 +104,11 @@ public class DBService{
 	    		databaseRepository.findAll() : 
     			databaseRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
 	    
-	    
 	    try {
 	        List<DatavisaDbDTO> dtoList = dbList.stream().map(dbModel -> {
 	            DatavisaDbDTO dto = new DatavisaDbDTO(dbModel);
 	            try {
-	                String nomeEmpresa = tableService.getNomeEmpresa(dbModel.getEmpresaId());
+	                String nomeEmpresa = tableSawService.getNomeEmpresa(dbModel.getEmpresaId());
 	                dto.setEmpresaNome(nomeEmpresa);
 	            } catch (Exception e) {
 	            	throw new RuntimeException("Erro ao obter nome da empresa");
@@ -147,7 +147,7 @@ public class DBService{
 		    		return  Pair.of(datavisaDbResponse, response.getRight());
 		    	}
 			 
-			 datavisaDbResponse = new DatavisaDbDTO(db, tableService.getNomeEmpresa(db.getEmpresaId()));
+			 datavisaDbResponse = new DatavisaDbDTO(db, tableSawService.getNomeEmpresa(db.getEmpresaId()));
 		 } catch (Exception e) {
 			 datavisaDbResponse= new DatavisaDbDTO("Banco de dados não encontrado");
 		    return Pair.of(datavisaDbResponse,HttpStatus.NOT_FOUND);
@@ -175,6 +175,7 @@ public class DBService{
 				setSessionConection(db);
 				datavisaConnectionResponse.setConexaoAtiva(true);
 				datavisaConnectionResponse.setConexao(db.getNomeConexao());
+				datavisaConnectionResponse.setNomeDb(db.getNomeDb());
 				datavisaConnectionResponse.setMensagemRetorno("Banco " + db.getNomeConexao() + " selecionado!");
 				return Pair.of(datavisaConnectionResponse, HttpStatus.OK);
 			}
@@ -188,6 +189,17 @@ public class DBService{
 		datavisaConnectionResponse.setMensagemRetorno("Conexão não efetuada! \nErro: Usuário não percence a empresa desta conexão");
 		return Pair.of(datavisaConnectionResponse, HttpStatus.FORBIDDEN);
 	}
+	
+	
+	public Pair<List<TableModel>, HttpStatus> testConnection(Long id) {
+	
+		return null;
+	}
+	
+	public Pair<List<TableModel>, HttpStatus> load(Long id) {
+		
+		return null;
+	}
 
 	public Connection DatavisaConnection() throws SQLException{
 		String url = "jdbc:mysql://localhost:3306/datavisa";
@@ -200,9 +212,10 @@ public class DBService{
 		String port = String.valueOf(db.getPortDb());
 		String typeDB = db.getTipoDb().toLowerCase();
 		datavisaSession.setConexao(db.getId());				
-		datavisaSession.setUrl("jdbc:"+ typeDB + "://"+ db.getHostName() +":" + port + db.getCaminhoDb());
-		datavisaSession.setUser(db.getUsuarioDb());
-		datavisaSession.setPassword(db.getSenhaDb());
+		datavisaSession.setDbUrl("jdbc:"+ typeDB + "://"+ db.getHostName() +":" + port + db.getCaminhoDb());
+		datavisaSession.setDbUser(db.getUsuarioDb());
+		datavisaSession.setDbName(db.getNomeDb());
+		datavisaSession.setDbPassword(db.getSenhaDb());
 		
 		datavisaSession.setConexaoAtiva(true);
 	}

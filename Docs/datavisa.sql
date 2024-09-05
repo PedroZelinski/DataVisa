@@ -83,7 +83,7 @@ INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, hostName 
 ('Americanas_Conexao1', 'MySQL', 'db_americanas_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 5),
 ('CasasBahia_Conexao1', 'MySQL', 'db_casasbahia_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 6),
 ('Riachuelo_Conexao1', 'MySQL', 'db_riachuelo_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 7),
-('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_bd', 'root', '1234', 'localhost', 3306, '/pizzaria_db', 8);
+('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db', 8);
 
 create table Renner_permissoes(
 	permissao_tabela int primary key,	
