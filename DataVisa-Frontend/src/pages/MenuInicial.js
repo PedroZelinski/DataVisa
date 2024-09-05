@@ -31,7 +31,8 @@ export default class MenuInicial extends Component {
           :
           <SideConfig alteraModo={this.alteraModo} />
         }
-        <div className='col-10' id="outlet">
+        <div className='col-10 flex justify-content-center' id="outlet" style={
+          {backgroundColor: this.state.modo == 1 ? 'white' : '#ebedee'}}>
           <Outlet context={[this.state.session, this.alteraModo]} />
         </div>
       </div>
