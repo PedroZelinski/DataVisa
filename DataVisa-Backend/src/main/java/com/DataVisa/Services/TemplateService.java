@@ -6,15 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.DataVisa.Models.DocumentModel;
-import com.DataVisa.Repositories.DocumentRepository;
+import com.DataVisa.Models.TemplateModel;
+import com.DataVisa.Repositories.TemplateRepository;
 import com.DataVisa.Session.DatavisaSession;
 
 @Service
-public class DocumentService{
+public class TemplateService{
 	
 	@Autowired
-	DocumentRepository documentRepository;
+	TemplateRepository documentRepository;
 	
 	@Autowired
 	DatavisaSession datavisaSession;	
@@ -22,7 +22,7 @@ public class DocumentService{
 	@Autowired
 	DBService dBService;
 
-	public Optional<String> save(DocumentModel document) {
+	public Optional<String> save(TemplateModel document) {
 		try {
 			//Verifica se o documento já existe
 			if (documentRepository.findById(document.getId()).isPresent()) {
@@ -37,7 +37,7 @@ public class DocumentService{
 		return Optional.of("Documento cadastrado com sucesso!");
 	}
 
-	public String delete(DocumentModel document){
+	public String delete(TemplateModel document){
 		try {
 			
 			//Verifica se o documento existe
@@ -59,11 +59,11 @@ public class DocumentService{
 		return "Documento excluído com sucesso!";
 	}
 
-	public Optional<DocumentModel> findById(Long id){
+	public Optional<TemplateModel> findById(Long id){
 		return documentRepository.findById(id);
 	}
 
-	public List<DocumentModel> findAll(){
+	public List<TemplateModel> findAll(){
 		return documentRepository.findAll();
 	}
 	

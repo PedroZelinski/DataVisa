@@ -9,9 +9,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "modelos")
+@Table(name = "templates")
 @Data
-public class DocumentModel implements Serializable {
+public class TemplateModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,6 +23,8 @@ public class DocumentModel implements Serializable {
 	
 	private String nome;
 	
-	private String json;
+	private String corpo;
 	
-}
+	private Long empresaId;
+	
+} 

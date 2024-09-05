@@ -15,45 +15,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.DataVisa.Models.DocumentModel;
-import com.DataVisa.Services.DocumentService;
+import com.DataVisa.Models.TemplateModel;
+import com.DataVisa.Services.TemplateService;
 
 
 @RestController
-public class DocumentController {
+public class TemplateController {
 	
 	@Autowired
-	DocumentService documentService;
+	TemplateService documentService;
 	
 	
 	@GetMapping("/dataVisa/document/getDocument/{id}")
-	public ResponseEntity<DocumentModel> getDocument(@PathVariable Long id){
+	public ResponseEntity<TemplateModel> getDocument(@PathVariable Long id){
 		return documentService.findById(id)
 				.map(record -> ResponseEntity.ok().body(record))
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
 	@PostMapping("/dataVisa/document/addDocument")
-    public ResponseEntity<String> addDocument(@RequestBody DocumentModel document){
+    public ResponseEntity<String> addDocument(@RequestBody TemplateModel document){
         return  documentService.save(document)
     		.map(message -> ResponseEntity.ok(message))
             .orElse(ResponseEntity.internalServerError().build());
     }
 	
 	@PutMapping("/dataVisa/document/updateDocument")
-    public ResponseEntity<String> updateDocument(@RequestBody DocumentModel document){
+    public ResponseEntity<String> updateDocument(@RequestBody TemplateModel document){
 		return  documentService.save(document)
 	    		.map(message -> ResponseEntity.ok(message))
 	            .orElse(ResponseEntity.internalServerError().build());          
     }
 	
     @DeleteMapping("/dataVisa/document/deleteDocument")
-    public String deleteDocument(@RequestBody DocumentModel document){
+    public String deleteDocument(@RequestBody TemplateModel document){
         return  documentService.delete(document);
     }
     
     @GetMapping("/dataVisa/document/getAll")
-	public List<DocumentModel> getAll(){
+	public List<TemplateModel> getAll(){
 		return documentService.findAll();
 	}
 	
