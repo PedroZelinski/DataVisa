@@ -78,7 +78,7 @@ public class TableController {
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
     
-    @GetMapping("/datavisa/tableSaw/getColumnFields/{tabela}/{campo}")
+    @GetMapping("/dataVisa/tableSaw/getColumnFields/{tabela}/{campo}")
 	public ResponseEntity<String> getColumnFields(@PathVariable String tabela, @PathVariable String campo){
     	Pair<String, HttpStatus> result =  tableSawService.getCollumnFields(tabela, campo);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
