@@ -78,12 +78,8 @@ create table conexoes(
 );
 
 INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, hostName , portDb, caminhoDb, empresaId) VALUES
-('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 'localhost', 3306, '/db_renner_1', 3),
-('Magalu_Conexao1', 'MySQL', 'db_magalu_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 4),
-('Americanas_Conexao1', 'MySQL', 'db_americanas_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 5),
-('CasasBahia_Conexao1', 'MySQL', 'db_casasbahia_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 6),
-('Riachuelo_Conexao1', 'MySQL', 'db_riachuelo_1', 'root', '1234', 'localhost', 3306, '/caminho/para/db1', 7),
-('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db', 8);
+('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db', 8),
+('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 'localhost', 3306, '/db_renner_1', 3);
 
 create table Renner_permissoes(
 	permissao_tabela int primary key,	
@@ -107,10 +103,10 @@ CREATE TABLE tabelas_db_renner_1 (
 );
 
 INSERT INTO tabelas_db_renner_1 (nome, conexaoId, permissaoAcesso) VALUES
-('clientes', 1, 3),
-('vendedores', 1, 2),
-('vendas',  1, 3),
-('entregas', 1, 3);
+('clientes', 2, 3),
+('vendedores', 2, 2),
+('vendas',  2, 3),
+('entregas', 2, 3);
 
 create table Pizzaria_permissoes(
 	permissao_tabela int primary key,	
@@ -124,7 +120,7 @@ INSERT INTO Pizzaria_permissoes (permissao_tabela, nome, empresaId) VALUES
 (1, 'Gerente', 8),
 (2, 'Atendente', 8);
 
-CREATE TABLE tabelas_Pizzaria_bd (
+CREATE TABLE tabelas_Pizzaria_db (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(60),
     conexaoId BIGINT,     
@@ -132,14 +128,14 @@ CREATE TABLE tabelas_Pizzaria_bd (
     FOREIGN KEY (conexaoId) REFERENCES conexoes(id) 
 );
 
-INSERT INTO tabelas_Pizzaria_bd (nome, conexaoId, permissaoAcesso) VALUES
-('Colaboradores', 6, 2),
-('Clientes', 6, 2),
-('Produtos', 6, 2),
-('Fornecedores', 6, 2),
-('NotasFiscais', 6, 1),
-('Vendas', 6, 2),
-('Financeiro', 6, 0);
+INSERT INTO tabelas_Pizzaria_db (nome, conexaoId, permissaoAcesso) VALUES
+('Colaboradores', 1, 2),
+('Clientes', 1, 2),
+('Produtos', 1, 2),
+('Fornecedores', 1, 2),
+('NotasFiscais', 1, 1),
+('Vendas', 1, 2),
+('Financeiro', 1, 0);
 
 CREATE TABLE templates (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
