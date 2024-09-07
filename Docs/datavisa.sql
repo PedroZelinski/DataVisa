@@ -41,12 +41,10 @@ INSERT INTO Sem_empresa_permissoes (permissao_tabela, nome, empresaId) VALUES
 
 create table usuarios (
     email varchar(60) primary key,
-    senha varchar(60),
-    nome varchar(60),
+    senha varchar(60) not null,
+    nome varchar(60) not null,
     empresaId bigint,
     permissaoTabela int not null default 0,
-    editaModelo int not null default 0,
-    editaConexao int not null default 0,
     nivelAcesso int not null default 0,
     templates json default ('[]'),
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
@@ -61,6 +59,18 @@ insert into usuarios(nome, email, senha, empresaId, permissaoTabela, nivelAcesso
     ("Lorena", "administracao@pizzaria.com","1234",8, 2, 1),
     ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8, 1, 1),
     ("Ana", "ana@fatec.sp.gov.br","1234", 6, 2, 2);
+    
+CREATE TABLE usuarios_pendentes (
+    email VARCHAR(60) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    empresaId BIGINT,
+    data_solicitacao DATE NOT NULL,
+    FOREIGN KEY (email) REFERENCES usuarios(email),
+    FOREIGN KEY (empresaId) REFERENCES empresas(id)
+);
+
+select * from usuarios_pendentes;
+select * from usuarios;
 
 create table conexoes(
 	id bigint primary key auto_increment,

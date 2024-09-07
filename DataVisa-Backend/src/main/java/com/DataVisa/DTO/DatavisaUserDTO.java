@@ -1,5 +1,8 @@
 package com.DataVisa.DTO;
 
+import java.sql.Date;
+
+import com.DataVisa.Models.PendingUserModel;
 import com.DataVisa.Models.UserModel;
 
 import lombok.Getter;
@@ -19,6 +22,14 @@ public class DatavisaUserDTO {
         this.nivelAcesso = userModel.getNivelAcesso();
         this.templates = userModel.getTemplates();
     }
+	
+	public DatavisaUserDTO(PendingUserModel pendingUserModel){
+        this.email = pendingUserModel.getEmail();
+        this.nome = pendingUserModel.getNome();
+        this.empresaId = pendingUserModel.getEmpresaId();
+        this.data_solicitacao = pendingUserModel.getData_solicitacao();
+    }
+	
 	public DatavisaUserDTO(String mensagemRetorno) {
 		this.mensagemRetorno = mensagemRetorno;
 	}
@@ -42,6 +53,8 @@ public class DatavisaUserDTO {
 	private String departamento;
 	
 	private String departamentos;
+	
+	private Date data_solicitacao;
 	
 	private String mensagemRetorno;
 	

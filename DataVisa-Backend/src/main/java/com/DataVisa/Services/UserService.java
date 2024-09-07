@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.DatavisaSessionDTO;
 import com.DataVisa.DTO.DatavisaUserDTO;
+import com.DataVisa.Models.PendingUserModel;
 import com.DataVisa.Models.UserModel;
+import com.DataVisa.Repositories.PendingUserRepository;
 import com.DataVisa.Repositories.UserRepository;
 import com.DataVisa.Session.DatavisaSession;
 
@@ -29,6 +31,9 @@ public class UserService {
 	@Lazy
 	TableSawService tableService;
 	
+	@Autowired
+	PendingUserRepository pendingUserRepository;
+	
 public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		
 		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
@@ -36,7 +41,13 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 			datavisaResponse.setMensagemRetorno("Usuario já logado!"
 					+ "\nUsuário: " + datavisaSession.getNome());
 			return Pair.of(datavisaResponse, HttpStatus.CONFLICT);
-		} 			
+		}
+		
+		if(pendingUserRepository.findById(email).isPresent()) {
+			datavisaResponse =  new DatavisaSessionDTO("Aguardando aprovação do acesso por parte da empresa.");
+			return Pair.of(datavisaResponse, HttpStatus.FORBIDDEN);
+		}
+		
 		try{
 			UserModel user= userRepository.findByEmailAndSenha(email, senha).get();
 			datavisaResponse = startSession(user);
@@ -65,9 +76,16 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		try {
 			//Verifica se o usuário já existe
 			if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+				if(pendingUserRepository.findById(user.getEmail()).isPresent()) {
+					return Pair.of("Aguardando aprovação do acesso por parte da empresa.", HttpStatus.FORBIDDEN);
+				}
 				throw new IllegalArgumentException("Usuário já existente.");
 			}
+			
+			PendingUserModel pendingUser = new PendingUserModel(user); 
+			user.setEmpresaId(2L);
 			userRepository.save(user);
+			pendingUserRepository.save(pendingUser);
 			
 		} catch (Exception ex){
 			 return Pair.of("Usuário não cadastrado! \nErro: " + ex.getMessage(), HttpStatus.NOT_FOUND); 
@@ -95,7 +113,7 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		} catch (Exception ex){
 			 return Pair.of("Falhao ao atualizar usuário! \nErro: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
-		return Pair.of("Usuário atualizado com sucesso!", HttpStatus.OK);
+		return Pair.of("Usuário atualizado com sucesso! As informações serão atualizadas ao realizar login novamente no usuário alterado.", HttpStatus.OK);
 	}
 
 
@@ -205,6 +223,87 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	        return Pair.of("Erro ao processar a lista de usuários", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	    
+	}
+	
+	public Pair<Object, HttpStatus> getAllPending(){
+		
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response,  response.getRight());
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response, response.getRight());
+	    }
+
+	    List<PendingUserModel> userList = datavisaSession.getEmpresaId().equals(1L) ?
+	        pendingUserRepository.findAll():
+        	pendingUserRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
+	    
+	    try {
+	        List<DatavisaUserDTO> dtoList = userList.stream().map(userModel -> {
+	            DatavisaUserDTO dto = new DatavisaUserDTO(userModel);
+	            try {
+	                String nomeEmpresa = tableService.getNomeEmpresa(userModel.getEmpresaId());
+	                dto.setEmpresaNome(nomeEmpresa);
+	            } catch (Exception e) {
+	                // Tratar exceção de forma apropriada, como logar o erro e definir valores padrão
+	                dto.setEmpresaNome("Erro ao obter nome da empresa");
+	            }
+	            return dto;
+	        }).collect(Collectors.toList());
+
+	        return Pair.of(dtoList, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return Pair.of("Erro ao processar a lista de usuários pendentes", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
+	public Pair<String, HttpStatus> aprovePendingUser(DatavisaUserDTO pendingUserDto){
+		
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return response;
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return response;
+	    }
+	    
+	    try {
+	    	if(pendingUserRepository.findById(pendingUserDto.getEmail()).isEmpty()) {
+				throw new IllegalArgumentException("Usuário não consta na lista de pendentes.");
+			}
+	    	
+	    	UserModel user = userRepository.findById(pendingUserDto.getEmail()).get();
+	    	String nomeEmpresa = tableService.getNomeEmpresa(user.getEmpresaId());
+	    	int permissoes = Integer.valueOf(tableService.getDatavisaTableCollumnCount(nomeEmpresa + "_permissoes").getLeft());
+	    	
+	    	//verifica se os valores são válidos
+	    	if(pendingUserDto.getNivelAcesso() < 0  || pendingUserDto.getNivelAcesso() > 3  || pendingUserDto.getPermissaoTabela() < 0  || pendingUserDto.getPermissaoTabela() > permissoes) {
+	    		throw new IllegalArgumentException("Os valores de acesso informados não são válidos");
+	    	}
+	    	
+	    	//verifica se o usuário logado é um ADM Datavisa para dar permissão total
+	    	if (pendingUserDto.getNivelAcesso() == 0 && !(response = datavisaSession.checkDatavisaPermition(0)).getRight().equals(HttpStatus.ACCEPTED)) {
+	    		return response;
+	    	}
+	    	
+	    	user.setEmpresaId(pendingUserRepository.findById(pendingUserDto.getEmail()).get().getEmpresaId());
+	    	user.setNivelAcesso(pendingUserDto.getNivelAcesso());
+	    	user.setPermissaoTabela(pendingUserDto.getPermissaoTabela());
+	    	
+	    	userRepository.save(user);
+	    	
+	    	pendingUserRepository.delete(pendingUserRepository.findById(pendingUserDto.getEmail()).get());
+	    	//Verifica se o registro foi excluido
+            if (pendingUserRepository.findById(pendingUserDto.getEmail()).isPresent()) {
+            	return Pair.of("Erro: Erro interno.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+	    	
+	    } catch (Exception e) {
+		    return Pair.of("Erro: " + e.getMessage(), HttpStatus.NOT_FOUND);
+	    }
+	    response =  Pair.of("Usuário  " + pendingUserDto.getEmail() + " aprovado com sucesso!", HttpStatus.OK);
+	    return response;
 	}
 
 	public Optional<UserModel> findByAllFields (UserModel user){

@@ -1,251 +1,212 @@
 {
 	"info": {
-		"_postman_id": "40ecd698-dbda-4912-a7cb-7a153cc2aa5f",
-		"name": "DataVisa",
+		"_postman_id": "4358bfd4-e07b-4f9d-9021-c7aedca654b5",
+		"name": "Carga SAFX Com Lote Teste",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "12507633"
 	},
 	"item": [
 		{
-			"name": "Login",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "email",
-						"value": "pedro@fatec.sp.gov.br",
-						"type": "text"
-					},
-					{
-						"key": "senha",
-						"value": "1234",
-						"type": "text"
+			"name": "Authentication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.globals.set(\"token\", pm.response.text());\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
-				],
-				"url": {
-					"raw": "{{DataVisa}}/user/login",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"login"
-					]
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Logout",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{DataVisa}}/user/logout",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddUser",
+			],
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"administracao@pizzaria.com\",\r\n    \"senha\": \"1234\",\r\n    \"nome\": \"Lorena\",\r\n    \"empresaId\": 2\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{DataVisa}}/user/addUser",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"addUser"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAll Users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{DataVisa}}/user/getAll",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"getAll"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{DataVisa}}/user/getUser/administracao@pizzaria.com",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"getUser",
-						"administracao@pizzaria.com"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update User",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"administracao@pizzaria.com\",\r\n    \"senha\": \"123456789\",\r\n    \"nome\": \"Lorena\",\r\n    \"empresaId\": 8,\r\n    \"permissaoTabela\": 2,\r\n    \"editaModelo\": 1,\r\n    \"editaConexao\": 1,\r\n    \"nivelAcesso\": 0\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{DataVisa}}/user/updateUser",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"updateUser"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete User",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"email\": \"administracao@pizzaria.com\",\r\n        \"nome\": \"Lorena\",\r\n        \"empresaId\": 2,\r\n        \"permissaoTabela\": 100,\r\n        \"editaModelo\": 0,\r\n        \"editaConexao\": 0,\r\n        \"nivelAcesso\": 2\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{DataVisa}}/user/deleteUser",
-					"host": [
-						"{{DataVisa}}"
-					],
-					"path": [
-						"user",
-						"deleteUser"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Set Connection",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "jwt",
-					"jwt": [
-						{
-							"key": "secret",
-							"value": "",
-							"type": "string"
-						},
-						{
-							"key": "algorithm",
-							"value": "HS256",
-							"type": "string"
-						},
-						{
-							"key": "isSecretBase64Encoded",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "payload",
-							"value": "{}",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "queryParamKey",
-							"value": "token",
-							"type": "string"
-						},
-						{
-							"key": "header",
-							"value": "{}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
 				"header": [
 					{
 						"key": "login",
-						"value": "hasuiedha",
-						"type": "text",
-						"disabled": true
+						"value": "pedro.henrique",
+						"type": "text"
 					},
 					{
-						"key": "senha",
-						"value": "123123",
-						"type": "text",
-						"disabled": true
-					},
+						"key": "password",
+						"value": "P@ssword02",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9003/safx/authentication/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"safx",
+						"authentication",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST cria lote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  console.log(responseJson);\r",
+							"  pm.globals.set(\"num_lote\", responseJson.num_lote);\r",
+							"  var indice = pm.globals.get(\"indice\");\r",
+							"  indice = indice + 1;\r",
+							"  pm.globals.set(\"indice\", indice)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
 					{
 						"key": "token",
-						"value": "559",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9003/safx/carga/geraNumLote/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9003",
+					"path": [
+						"safx",
+						"carga",
+						"geraNumLote",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST consulta lote improtacao",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://qa.taxone.thomsonreuters.com/safx/carga/consultaLoteImportacao",
+					"protocol": "https",
+					"host": [
+						"qa",
+						"taxone",
+						"thomsonreuters",
+						"com"
+					],
+					"path": [
+						"safx",
+						"carga",
+						"consultaLoteImportacao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - Carga Tipo 2 SAFX07",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"  const responseJson = pm.response.json();\r",
+							"  console.log(responseJson);\r",
+							"  pm.globals.set(\"num_protocolo\", responseJson.num_protocolo);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "codEmpresa",
+						"value": "076",
+						"type": "text"
+					},
+					{
+						"key": "codEstab",
+						"value": "0001",
+						"type": "text"
+					},
+					{
+						"key": "dataIni",
+						"value": "20230301",
+						"type": "text"
+					},
+					{
+						"key": "dataFim",
+						"value": "20230301",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
 						"type": "text",
 						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n\"safx\": \"SAFX07\",\r\n\t\"registros\": [\r\n\t\t{\r\n\t\t\t\"linha\": \"076|0001|1|1|NFE|1|628004460002|AA1|@|@|20230301|1|55|@|@|@|@|@|2124894985|20230301|@|25796769|40804314|000|000|3793248|@|000|@|N|@|@|@|@|@|00000|@|@|@|@|@|@|@|@|@|@|@|000|@|@|000|000|@|@|@|@|@|@|@|40804314|@|40804314|@|@|@|@|@|@|5574-839|@|@|0|@|@|20211229|@|@|@|@|@|@|N|@|@|@|00000|000|@|@|1|1|000|@|@|@|@|@|@|2|@|@|@|604332|@|2784881|@|@|@|000|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|000|00000|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|33211250|@|@|@|@|@|33211250567288000663550030000134811663134815|@|@|55|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@|@\"}\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -253,94 +214,78 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/database/connect/6",
+					"raw": "{{safx-host}}/safx/carga/2",
 					"host": [
-						"{{DataVisa}}"
+						"{{safx-host}}"
 					],
 					"path": [
-						"database",
-						"connect",
-						"6"
+						"safx",
+						"carga",
+						"2"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get Table",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "POST - Carga Tipo 2 Safx08",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
-				"auth": {
-					"type": "jwt",
-					"jwt": [
-						{
-							"key": "secret",
-							"value": "",
-							"type": "string"
-						},
-						{
-							"key": "algorithm",
-							"value": "HS256",
-							"type": "string"
-						},
-						{
-							"key": "isSecretBase64Encoded",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "payload",
-							"value": "{}",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "queryParamKey",
-							"value": "token",
-							"type": "string"
-						},
-						{
-							"key": "header",
-							"value": "{}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
-						"key": "login",
-						"value": "hasuiedha",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "senha",
-						"value": "123123",
-						"type": "text",
-						"disabled": true
-					},
-					{
 						"key": "token",
-						"value": "559",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "codEmpresa",
+						"value": "076",
+						"type": "text"
+					},
+					{
+						"key": "codEstab",
+						"value": "0001",
+						"type": "text"
+					},
+					{
+						"key": "dataIni",
+						"value": "20230301",
+						"type": "text"
+					},
+					{
+						"key": "dataFim",
+						"value": "20230301",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
 						"type": "text",
 						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n\"safx\": \"SAFX08\",\r\n\t\"registros\": [\r\n\t\t{\r\n\t\t\t\"linha\":\"076|0001|20230301|1|1|NFE|1|628004460002|AA1|@|@|N|1|000000000000028870|@                             |@     |UN      |001|@                   |@                   |@                                                                                                                                                                                                                                                              |1101|@  |00000000000000000|UN      |@         |0000000000000000000|00000000000000000|00000000000000000|0|00|00000|N|@           |@       |00000000000000|@         |@                |00000000000000000|00000000000000000|00000000000000000|0000000|00000000000000000|0000000|@                                            |@    |0000000|00000000000000000|@                                            |@    |@      |@                |@                                            |@    |1|00000000000000000|@                |1|00000000000000000|@                |@                |00000000000000000|0000000|00000000000000000|@         |@         |00000000000000000|00000000000000000|00000000000000000|@              |@       |@           |@          |00000000000000000|00000000000000000|@         |@  |@|@    |00000000000000000|00000000000000000|@|@                |@|@                |00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|0000000|00000000000000000|@|@                |00000000000000000|0000000|00000000000000000|@       |@       |@       |@       |@           |@                                            |@                                                                     |00000000000000000|00000000000000000|00000000000000000|00000000000000000|0000000|00000000000000000|@         |@              |@                   |@|@                |@           |   |  |00000000000000000|0000000|00000000000000000|00000000000000000|0000000|00000000000000000|00000000000000000|0000000|00000000000000000|0000000|0000000|@|@|00000000000000000|@|@       |00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|@|@                |00000000000000000|00000000000000000|@ |@                                                 |@       |@|00000000000000000|@|@                                                 |@                                                 |@                                                                                                   |@       |@ |@ |@             |@             |@ |@             |@|@   |00000000000000000|00000000000000000|00000000000000000|0000000|00000000000000000|@|00000000000000000|00000000000000000|00000000000000000|N|@|@ |00000000000000000|00000000000000000|@ |00000000000000000|00000000000000000|@ |00000000000000000|@|00000000000000000|@     |0000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|@   |@       |N|@|@  |@|00000000000000000|N|@                                                 |@                                                 |@                                                 |@   |@                                                 |@                                                 |00000000000000000|00000000000000000|00000000000000000|@  |00000000000000000|0000000|00000000000000000|00000000000000000|@ |@ |0000000|@         |00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|0000000|@|@           |@  |@                                                                               |@    |@|@             |@|@                                                 |@   |00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|0000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|@|@                    |@             |@|@                    |@             |00000000000000000|@         |00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|00000000000000000|@  |0000000|@\"\r\n\t\t}\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -348,75 +293,78 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/table/tabela/Colaboradores",
+					"raw": "{{safx-host}}/safx/carga/2",
 					"host": [
-						"{{DataVisa}}"
+						"{{safx-host}}"
 					],
 					"path": [
-						"table",
-						"tabela",
-						"Colaboradores"
+						"safx",
+						"carga",
+						"2"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get Table Collumns",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "POST - Carga Tipo 1 SAFX08",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
-				"auth": {
-					"type": "jwt",
-					"jwt": [
-						{
-							"key": "secret",
-							"value": "",
-							"type": "string"
-						},
-						{
-							"key": "algorithm",
-							"value": "HS256",
-							"type": "string"
-						},
-						{
-							"key": "isSecretBase64Encoded",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "payload",
-							"value": "{}",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "queryParamKey",
-							"value": "token",
-							"type": "string"
-						},
-						{
-							"key": "header",
-							"value": "{}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "codEmpresa",
+						"value": "076",
+						"type": "text"
+					},
+					{
+						"key": "codEstab",
+						"value": "0001",
+						"type": "text"
+					},
+					{
+						"key": "dataIni",
+						"value": "20220630",
+						"type": "text"
+					},
+					{
+						"key": "dataFim",
+						"value": "20220630",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n  \"safx\": \"SAFX08\",\r\n  \"registros\": [\r\n    {\r\n      \"quantidade\": \"5000000\",\r\n      \"codIndice\": \"@\",\r\n      \"chassi\": \"@\",\r\n      \"vlrDifalFrete\": \"@\",\r\n      \"data_romaneio\": \"@\",\r\n      \"cod_almox\": \"@\",\r\n      \"ind_bem_patr\": \"N\",\r\n      \"cod_medida\": \"PT\",\r\n      \"cod_und_padrao\": \"PT\",\r\n      \"cod_custo\": \"@\",\r\n      \"cod_nbm\": \"34012010\",\r\n      \"vlr_unit\": \"261700\",\r\n      \"ind_ipi_incluso\": \"@\",\r\n      \"ind_produto\": \"1\",\r\n      \"peso_liquido\": \"@\",\r\n      \"vlr_seguro\": \"@\",\r\n      \"vlr_aliq_icms\": \"70000\",\r\n      \"cod_inc_bem\": \"@\",\r\n      \"num_romaneio\": \"@\",\r\n      \"dif_aliq_icms\": \"@\",\r\n      \"cod_situacao_b\": \"00\",\r\n      \"cod_bem\": \"@\",\r\n      \"vlr_aliq_ipi\": \"0\",\r\n      \"obs_ipi\": \"@\",\r\n      \"cod_apur_ipi\": \"@\",\r\n      \"cod_produto\": \"000000000000028870\",\r\n      \"vlr_item\": \"13085\",\r\n      \"cod_situacao_a\": \"0\",\r\n      \"cod_federal\": \"@\",\r\n      \"vlr_item_conver\": \"@\",\r\n      \"obs_icms\": \"@\",\r\n      \"cod_apur_icms\": \"@\",\r\n      \"cod_natureza_op\": \"@\",\r\n      \"dat_despacho\": \"@\",\r\n      \"vlr_contab_item\": \"13085\",\r\n      \"vlr_outros_icms\": \"@\",\r\n      \"vlr_tom_servico\": \"@\",\r\n      \"vlr_outros1\": \"@\",\r\n      \"cod_trib_int\": \"@\",\r\n      \"trib_icms_aux\": \"@\",\r\n      \"num_desp_exp\": \"@\",\r\n      \"trib_ipi\": \"@\",\r\n      \"dat_embarque\": \"@\",\r\n      \"trib_icms\": \"1\",\r\n      \"base_ipi\": \"0\",\r\n      \"vlr_outros_ipi\": \"@\",\r\n      \"base_icms\": \"13085\",\r\n      \"num_ato_conces\": \"@\",\r\n      \"base_redu_ipi\": 0,\r\n      \"vlr_subst_icms\": \"0\",\r\n      \"base_ipi_aux\": \"@\",\r\n      \"cod_moeda_negoc\": \"@\",\r\n      \"trib_icmss\": \"@\",\r\n      \"base_redu_icms\": \"0\",\r\n      \"ind_cred_icmss\": \"@\",\r\n      \"num_reg_exp\": \"@\",\r\n      \"vlr_ipi_ndestac\": \"@\",\r\n      \"vlr_desc_condic\": \"@\",\r\n      \"obs_subst_icms\": \"@\",\r\n      \"base_icms_aux\": \"@\",\r\n      \"trib_ipi_aux\": \"@\",\r\n      \"qtd_embarcada\": \"@\",\r\n      \"vlr_pis_st\": \"@\",\r\n      \"vlr_cofins_st\": \"@\",\r\n      \"dat_averbacao\": \"@\",\r\n      \"vlr_aliq_csll\": \"@\",\r\n      \"vlr_aliq_cofins\": \"@\",\r\n      \"num_docfis_ref\": \"@\",\r\n      \"vlr_custo_unit\": \"@\",\r\n      \"cod_projeto\": \"@\",\r\n      \"vlr_fecp_icms\": \"@\",\r\n      \"vlr_fecp_icms_st\": \"@\",\r\n      \"trib_icmss_aux2\": \"@\",\r\n      \"base_icmss_aux2\": \"@\",\r\n      \"cod_trib_ipi\": \"49\",\r\n      \"ind_tipo_arma\": \"@\",\r\n      \"vlr_fecp_fonte\": \"@\",\r\n      \"vlr_aliq_pis_st\": \"@\",\r\n      \"num_serie_arma\": \"@\",\r\n      \"ind_docto_rec\": \"@\",\r\n      \"cod_dcr\": \"@\",\r\n      \"num_cano_arma\": \"@\",\r\n      \"vlr_base_pis_st\": \"@\",\r\n      \"vlr_csll\": \"@\",\r\n      \"dat_di\": \"@\",\r\n      \"dsc_mot_ocor\": \"@\",\r\n      \"ind_mov_fis\": \"@\",\r\n      \"vlr_aliq_pis\": \"@\",\r\n      \"num_dec_imp_ref\": \"@\",\r\n      \"vlr_base_csll\": \"@\",\r\n      \"cod_oper_oil\": \"@\",\r\n      \"vlr_pis_n_trib\": \"@\",\r\n      \"vlr_terceiros\": \"@\",\r\n      \"cod_enquad_ipi\": \"@\",\r\n      \"vlr_preco_suger\": \"@\",\r\n      \"qtd_base_cofins\": \"@\",\r\n      \"vlr_funrural\": \"@\",\r\n      \"vlr_icms_frete\": \"@\",\r\n      \"vlr_custo_dca\": \"@\",\r\n      \"cod_tp_lancto\": \"@\",\r\n      \"cod_ex_imp\": \"@\",\r\n      \"vlr_aliq_cide\": \"@\",\r\n      \"vlr_cred_out\": \"@\",\r\n      \"dsc_arma\": \"@\",\r\n      \"vlr_cofins_exp\": \"@\",\r\n      \"vlr_pis_trib\": \"@\",\r\n      \"vlr_cofins_trib\": \"@\",\r\n      \"cod_enq_legal\": \"@\",\r\n      \"cod_nat_rec\": \"@\",\r\n      \"cod_class_item\": \"@\",\r\n      \"vlr_base_cide\": \"@\",\r\n      \"cpf_operadora\": \"@\",\r\n      \"cod_oper_esp_st\": \"@\",\r\n      \"vlr_aliq_pis_r\": \"@\",\r\n      \"cnpj_operadora\": \"@\",\r\n      \"uf_operadora\": \"@\",\r\n      \"cod_ex_ncm\": \"@\",\r\n      \"vlr_cide\": \"@\",\r\n      \"item_port_tare\": \"@\",\r\n      \"qtd_base_pis\": \"@\",\r\n      \"vlr_icms_dca\": \"@\",\r\n      \"vlr_pis_exp\": \"@\",\r\n      \"num_item_ret\": \"@\",\r\n      \"num_docfis_ret\": \"@\",\r\n      \"vlr_n_ret_princ\": \"@\",\r\n      \"dsc_reservado3\": \"@\",\r\n      \"vlr_fcp_uf_dest\": \"@\",\r\n      \"dsc_reservado6\": \"@\",\r\n      \"num_doc_arrec\": \"@\",\r\n      \"dsc_reservado5\": \"@\",\r\n      \"dsc_reservado7\": \"@\",\r\n      \"vlr_base_dia_am\": \"@\",\r\n      \"vlr_aliq_dia_am\": \"@\",\r\n      \"vlr_icms_dia_am\": \"@\",\r\n      \"ind_motivo_res\": \"@\",\r\n      \"vlr_icms_uf_orig\": \"@\",\r\n      \"vlr_dif_dub\": \"@\",\r\n      \"cod_cfo_dcip\": \"@\",\r\n      \"vlr_inss_retido\": \"@\",\r\n      \"dsc_reservado4\": \"@\",\r\n      \"dsc_reservado2\": \"@\",\r\n      \"cod_trib_prod\": \"@\",\r\n      \"vlr_aduaneiro\": \"@\",\r\n      \"ind_fis_jur_ret\": \"@\",\r\n      \"cod_fis_jur_ret\": \"@\",\r\n      \"ind_tp_doc_arrec\": \"@\",\r\n      \"vlr_icms_uf_dest\": \"@\",\r\n      \"vlr_acrescimo\": \"@\",\r\n      \"dsc_reservado1\": \"@\",\r\n      \"vlr_aliq_dcip\": \"@\",\r\n      \"num_li\": \"@\",\r\n      \"dsc_reservado8\": \"@\",\r\n      \"vlr_tot_adic\": \"@\",\r\n      \"cod_susp_adic\": \"@\",\r\n      \"vlr_n_ret_adic\": \"@\",\r\n      \"vlr_serv_20\": \"@\",\r\n      \"vlr_ipi_dev\": \"@\",\r\n      \"vlr_aliq_inss\": \"@\",\r\n      \"vlr_serv_15\": \"@\",\r\n      \"vlr_ret_serv\": \"@\",\r\n      \"vlr_serv_25\": \"@\",\r\n      \"cod_beneficio\": \"@\",\r\n      \"vlr_exc_bc_pis\": \"@\",\r\n      \"cod_csosn\": \"@\",\r\n      \"cod_susp_princ\": \"@\",\r\n      \"sub_serie_docfis\": \"@\",\r\n      \"vlr_ipi\": \"0\",\r\n      \"vlr_pis\": \"@\",\r\n      \"vlr_comissao\": \"@\",\r\n      \"vlr_cofins\": \"@\",\r\n      \"vlr_icms\": \"916\",\r\n      \"cod_observacao\": \"@\",\r\n      \"cod_cfo\": 2152,\r\n      \"cod_conta\": \"@\",\r\n      \"cod_fis_jur\": \"628004460002\",\r\n      \"num_docfis\": \"18313688\",\r\n      \"data_fiscal\": 20220630,\r\n      \"ind_fis_jur\": \"1\",\r\n      \"cod_empresa\": \"076\",\r\n      \"norm_dev\": \"1\",\r\n      \"serie_docfis\": \"0\",\r\n      \"movto_e_s\": \"9\",\r\n      \"num_item\": 6,\r\n      \"cod_estab\": \"0001\",\r\n      \"vlr_outras\": \"0\",\r\n      \"cod_docto\": \"NFE\",\r\n      \"vlr_frete\": \"0\",\r\n      \"vlr_desp_moeda_exp\": \"@\",\r\n      \"base_sub_trib_icms\": \"0\",\r\n      \"cod_apur_sub_icms\": \"@\",\r\n      \"vlr_aliq_destino\": \"@\",\r\n      \"vlr_aliq_sub_icms\": \"0\",\r\n      \"descricao_compl\": \"@\",\r\n      \"vlr_contab_compl\": \"0\",\r\n      \"cod_obs_vcont_comp\": \"@\",\r\n      \"cod_obs_vcont_item\": \"@\",\r\n      \"vlr_trib_icms_dest\": \"@\",\r\n      \"vlr_icmss_n_escrit\": \"@\",\r\n      \"dat_registro_exp\": \"@\",\r\n      \"dat_pgto_gnre_darj\": \"@\",\r\n      \"base_redu_icmss\": \"@\",\r\n      \"serie_docfis_ref\": \"@\",\r\n      \"sserie_docfis_ref\": \"@\",\r\n      \"vlr_base_cofins_st\": \"@\",\r\n      \"ind_situacao_esp_st\": \"@\",\r\n      \"vlr_icms_origdest\": \"@\",\r\n      \"vlr_icms_ndestac\": \"@\",\r\n      \"vlr_custo_transf\": \"@\",\r\n      \"vlr_preco_base_st\": \"@\",\r\n      \"ind_fornec_icmss\": \"@\",\r\n      \"lote_medicamento\": \"@\",\r\n      \"valid_medicamento\": \"@\",\r\n      \"aliq_icms_origdest\": \"@\",\r\n      \"ind_base_medicamento\": \"@\",\r\n      \"vlr_preco_medicamento\": \"@\",\r\n      \"base_icms_origdest\": \"@\",\r\n      \"ind_vlr_pis_cofins\": \"N\",\r\n      \"cod_situacao_pis\": \"98\",\r\n      \"cod_situacao_cofins\": \"98\",\r\n      \"vlr_aliq_cofins_r\": \"@\",\r\n      \"cod_pais_dest_orig\": \"@\",\r\n      \"vlr_icmss_ndestac\": \"@\",\r\n      \"vlr_base_icms_dest\": \"@\",\r\n      \"vlr_aliq_cofins_st\": \"@\",\r\n      \"vlr_fecp_difaliq\": \"@\",\r\n      \"vlr_base_icmss_n_escrit\": \"@\",\r\n      \"ins_est_operadora\": \"@\",\r\n      \"ind_especif_receita\": \"@\",\r\n      \"perc_red_base_icms\": \"0\",\r\n      \"vlr_trib_icms_orig\": \"@\",\r\n      \"vlr_perc_pres_icms\": \"@\",\r\n      \"vlr_base_icms_orig\": \"@\",\r\n      \"quantidade_conv\": \"@\",\r\n      \"vlr_cofins_n_trib\": \"@\",\r\n      \"num_autentic_nfe_ret\": \"@\",\r\n      \"num_proc_adj_adic\": \"@\",\r\n      \"indice_prod_acab\": \"@\",\r\n      \"cod_situacao_pis_st\": \"@\",\r\n      \"ind_natureza_frete\": \"@\",\r\n      \"num_proc_adj_princ\": \"@\",\r\n      \"ind_tp_proc_adj_adic\": \"@\",\r\n      \"vlr_aliq_icms_nao_dest\": \"@\",\r\n      \"vlr_perc_cred_out\": \"@\",\r\n      \"vlr_desonerado_icms\": \"@\",\r\n      \"ind_nat_base_cred\": \"@\",\r\n      \"ind_tp_prod_medic\": \"@\",\r\n      \"dat_lanc_pis_cofins\": 20220630,\r\n      \"vlr_abat_ntributado\": \"@\",\r\n      \"vlr_icms_nao_dest\": \"@\",\r\n      \"cod_situacao_cofins_st\": \"@\",\r\n      \"serie_docfis_ret\": \"@\",\r\n      \"vlr_base_icms_nao_dest\": \"@\",\r\n      \"vlr_diferido_icms\": \"@\",\r\n      \"ind_ipi_ndestac_df\": \"@\",\r\n      \"ind_tp_proc_adj_princ\": \"@\",\r\n      \"vlr_credito_mva_sn\": \"@\",\r\n      \"vlr_exc_bc_cofins\": \"@\",\r\n      \"vlr_fecp_aliq_icms\": 0,\r\n      \"ind_pis_cofins_extemp\": \"N\",\r\n      \"vlr_base_pis\": \"@\",\r\n      \"vlr_base_cofins\": \"@\",\r\n      \"vlr_base_inss\": \"@\",\r\n      \"vlr_desconto\": \"@\"\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -424,34 +372,245 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/table/columns/Colaboradores",
+					"raw": "{{safx-host}}/safx/carga/1",
 					"host": [
-						"{{DataVisa}}"
+						"{{safx-host}}"
 					],
 					"path": [
-						"table",
-						"columns",
-						"Colaboradores"
+						"safx",
+						"carga",
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get Collumn Fields",
+			"name": "POST - Carga Tipo 1 SAFX07",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "codEmpresa",
+						"value": "076",
+						"type": "text"
+					},
+					{
+						"key": "codEstab",
+						"value": "0001",
+						"type": "text"
+					},
+					{
+						"key": "dataIni",
+						"value": "20220630",
+						"type": "text"
+					},
+					{
+						"key": "dataFim",
+						"value": "20220630",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"safx\": \"SAFX07\",\r\n    \"registros\": [\r\n        {\r\n            \"situacao\": \"N\",\r\n            \"insc_estad_substit\": \"@\",\r\n            \"hora_emissao\": \"@\",\r\n            \"hora_saida\": \"@\",\r\n            \"data_emissao\": 20220630,\r\n            \"cod_apur_sub_icms\": \"@\",\r\n            \"vlr_aliq_sub_icms\": \"@\",\r\n            \"sub_serie_docfis\": \"@\",\r\n            \"serie_docfis_ref\": \"@\",\r\n            \"vlr_aliq_destino\": \"@\",\r\n            \"base_sub_trib_icms\": \"@\",\r\n            \"vlr_contab_compl\": \"@\",\r\n            \"vlr_icms_ndestac\": \"@\",\r\n            \"vlr_icms_origdest\": \"@\",\r\n            \"vlr_base_cofins_st\": \"@\",\r\n            \"vlr_aliq_cofins_st\": \"@\",\r\n            \"ind_situacao_esp_st\": \"@\",\r\n            \"vlr_icmss_ndestac\": \"@\",\r\n            \"aliq_icms_origdest\": \"@\",\r\n            \"base_icms_orig_dest\": \"@\",\r\n            \"dat_pgto_gnre_darj\": \"@\",\r\n            \"ind_pis_cofins_extemp\": \"@\",\r\n            \"ind_especif_receita\": \"@\",\r\n            \"dat_lanc_pis_cofins\": \"@\",\r\n            \"vlr_abat_ntributado\": \"@\",\r\n            \"ind_nat_base_cred\": \"@\",\r\n            \"ind_ipi_ndestac_df\": \"@\",\r\n            \"vlr_iss\": \"@\",\r\n            \"vlr_base_dif_frete\": \"@\",\r\n            \"base_real_terc_iss\": \"@\",\r\n            \"vlr_produto\": 8896,\r\n            \"cod_modelo\": \"55\",\r\n            \"vlr_ir\": \"@\",\r\n            \"cod_sistema_orig\": \"@\",\r\n            \"cod_natureza_op\": \"@\",\r\n            \"cod_docto\": \"NFE\",\r\n            \"cod_situacao_a\": \"@\",\r\n            \"cod_situacao_b\": \"@\",\r\n            \"vlr_aliq_icms\": \"@\",\r\n            \"obs_ipi\": \"@\",\r\n            \"ind_cred_icmss\": \"@\",\r\n            \"obs_icms\": \"@\",\r\n            \"vlr_seguro\": \"@\",\r\n            \"base_redu_icms\": \"@\",\r\n            \"vlr_tom_servico\": \"@\",\r\n            \"dif_aliq_icms\": \"@\",\r\n            \"vlr_subst_icms\": \"@\",\r\n            \"cod_apur_icms\": \"@\",\r\n            \"cod_apur_ipi\": \"@\",\r\n            \"obs_subst_icms\": \"@\",\r\n            \"vlr_outros1\": \"@\",\r\n            \"base_redu_ipi\": \"@\",\r\n            \"vlr_outros_icms\": \"@\",\r\n            \"cod_indice\": \"@\",\r\n            \"vlr_aliq_ipi\": \"@\",\r\n            \"cod_trib_int\": \"@\",\r\n            \"vlr_aliq_pis_st\": \"@\",\r\n            \"vlr_aliq_cofins\": \"@\",\r\n            \"vlr_desc_condic\": \"@\",\r\n            \"vlr_ipi_ndestac\": \"@\",\r\n            \"vlr_pis_st\": \"@\",\r\n            \"dat_di\": \"@\",\r\n            \"vlr_cofins_st\": \"@\",\r\n            \"vlr_aliq_csll\": \"@\",\r\n            \"vlr_aliq_pis\": \"@\",\r\n            \"ind_docto_rec\": \"@\",\r\n            \"num_dec_imp_ref\": \"@\",\r\n            \"vlr_base_pis_st\": \"@\",\r\n            \"num_docfis_ref\": \"@\",\r\n            \"vlr_base_csll\": \"@\",\r\n            \"vlr_csll\": \"@\",\r\n            \"vlr_aliq_cide\": \"@\",\r\n            \"vlr_cide\": \"@\",\r\n            \"vlr_base_cide\": \"@\",\r\n            \"cod_oper_esp_st\": \"@\",\r\n            \"cod_nat_rec\": \"@\",\r\n            \"dsc_reservado1\": \"@\",\r\n            \"dsc_reservado7\": \"@\",\r\n            \"vlr_acrescimo\": \"@\",\r\n            \"dsc_reservado4\": \"@\",\r\n            \"dsc_reservado6\": \"@\",\r\n            \"dsc_reservado8\": \"@\",\r\n            \"vlr_fcp_uf_dest\": \"@\",\r\n            \"dsc_reservado2\": \"@\",\r\n            \"vlr_icms_uf_dest\": \"@\",\r\n            \"dsc_reservado5\": \"@\",\r\n            \"dsc_reservado3\": \"@\",\r\n            \"vlr_icms_uf_orig\": \"@\",\r\n            \"vlr_tot_adic\": \"@\",\r\n            \"vlr_serv_15\": \"@\",\r\n            \"vlr_aliq_inss\": \"@\",\r\n            \"vlr_serv_25\": \"@\",\r\n            \"vlr_ipi_dev\": \"@\",\r\n            \"vlr_ret_serv\": \"@\",\r\n            \"vlr_serv_20\": \"@\",\r\n            \"vlr_inss_retido\": \"@\",\r\n            \"vlr_desconto\": \"@\",\r\n            \"cod_fis_jur\": \"628004460002\",\r\n            \"cod_municipio\": \"@\",\r\n            \"insc_estadual\": \"@\",\r\n            \"cod_empresa\": \"076\",\r\n            \"cod_conta\": \"@\",\r\n            \"serie_docfis\": \"0\",\r\n            \"cod_estab\": \"0001\",\r\n            \"movto_e_s\": \"9\",\r\n            \"norm_dev\": \"1\",\r\n            \"num_docfis\": \"18313688\",\r\n            \"vlr_icms\": \"@\",\r\n            \"vlr_comissao\": \"@\",\r\n            \"vlr_pis\": \"@\",\r\n            \"vlr_ipi\": \"@\",\r\n            \"vlr_cofins\": \"@\",\r\n            \"num_pagina\": \"@\",\r\n            \"ind_fatura\": 3,\r\n            \"ind_tp_frete\": \"3\",\r\n            \"cod_quitacao\": \"@\",\r\n            \"cod_regiao\": \"@\",\r\n            \"nro_aidf_nf\": \"@\",\r\n            \"base_trib_ir\": \"@\",\r\n            \"base_isen_icms\": \"@\",\r\n            \"s_ser_docfis_ref\": \"@\",\r\n            \"contrib_final\": \"S\",\r\n            \"base_trib_iss\": \"@\",\r\n            \"base_trib_ipi\": \"@\",\r\n            \"dat_escr_extemp\": \"@\",\r\n            \"num_cupon_fisc\": \"@\",\r\n            \"base_outr_ipi\": \"@\",\r\n            \"ind_transf_cred\": \"0\",\r\n            \"ident_fis_jur\": \"1\",\r\n            \"num_maq_reg\": \"@\",\r\n            \"base_isen_ipi\": \"@\",\r\n            \"base_isen_ir\": \"@\",\r\n            \"base_trib_icms\": \"@\",\r\n            \"vlr_tot_nota\": 10778,\r\n            \"dat_autentic\": \"@\",\r\n            \"num_livro\": \"@\",\r\n            \"base_outr_icms\": \"@\",\r\n            \"vlr_nota_conv\": \"@\",\r\n            \"data_saida_rec\": 20220630,\r\n            \"base_isen_iss\": \"@\",\r\n            \"ind_nf_especial\": \"@\",\r\n            \"ind_munic_iss\": \"@\",\r\n            \"cod_cei\": \"@\",\r\n            \"uf_armaz_dest\": \"@\",\r\n            \"vlr_juros_inss\": \"@\",\r\n            \"cod_tp_disp_seg\": \"@\",\r\n            \"cod_fisjur_lsg\": \"@\",\r\n            \"uf_destino\": \"@\",\r\n            \"notifica_sefaz\": \"@\",\r\n            \"vlr_multa_inss\": \"@\",\r\n            \"cnpj_armaz_dest\": \"@\",\r\n            \"cod_amparo\": \"@\",\r\n            \"cod_antec_st\": \"@\",\r\n            \"ind_fisjur_lsg\": \"@\",\r\n            \"num_fim_docto\": \"@\",\r\n            \"ind_tp_ret\": \"@\",\r\n            \"dat_intern_am\": \"@\",\r\n            \"num_ctr_disp\": \"@\",\r\n            \"uf_armaz_orig\": \"@\",\r\n            \"cnpj_armaz_orig\": \"@\",\r\n            \"obs_inf_adic_nf\": \"@\",\r\n            \"serie_ctr_disp\": \"@\",\r\n            \"ind_tp_tomador\": \"@\",\r\n            \"vlr_base_inss_2\": \"@\",\r\n            \"uf_amparo_legal\": \"@\",\r\n            \"cod_motivo\": \"@\",\r\n            \"cod_pagto_inss\": \"@\",\r\n            \"vlr_aliq_inss_2\": \"@\",\r\n            \"uf_orig_dest\": \"@\",\r\n            \"comprov_exp\": \"@\",\r\n            \"cod_pagto_inss_2\": \"@\",\r\n            \"uf_consumo\": \"@\",\r\n            \"dsc_servico_nfe\": \"@\",\r\n            \"cod_tp_rps_nfe\": \"@\",\r\n            \"vlr_inss_rural\": \"@\",\r\n            \"modelo_nf_dms\": \"@\",\r\n            \"num_contrato\": \"@\",\r\n            \"ind_venda_canc\": \"@\",\r\n            \"num_rps_nfe\": \"@\",\r\n            \"cod_sit_docfis\": \"00\",\r\n            \"num_nfts\": \"@\",\r\n            \"ind_port_cat44\": \"@\",\r\n            \"identif_docfis\": \"@\",\r\n            \"dt_pagto_nf\": \"@\",\r\n            \"ato_normativo\": \"@\",\r\n            \"cod_fis_conces\": \"@\",\r\n            \"ind_prest_serv\": \"@\",\r\n            \"ind_tipo_proc\": \"@\",\r\n            \"num_proc_jur\": \"@\",\r\n            \"ind_dec_proc\": \"@\",\r\n            \"num_cont_reduc\": \"@\",\r\n            \"cod_autentic\": \"@\",\r\n            \"ind_nat_frete\": \"@\",\r\n            \"ind_fis_conces\": \"@\",\r\n            \"num_dv_nfe\": \"@\",\r\n            \"cod_verific_nfe\": \"@\",\r\n            \"serie_rps_nfe\": \"@\",\r\n            \"ind_tipo_aquis\": \"@\",\r\n            \"vlr_terceiros\": \"@\",\r\n            \"cod_tp_util\": \"@\",\r\n            \"grupo_tensao\": \"@\",\r\n            \"num_docfis_serv\": \"@\",\r\n            \"cpf_cnpj\": \"@\",\r\n            \"vlr_gilrat\": \"@\",\r\n            \"vlr_senat\": \"@\",\r\n            \"vlr_outras_ded\": \"@\",\r\n            \"vlr_desc_senar\": \"@\",\r\n            \"vlr_energia_inj\": \"@\",\r\n            \"vlr_desc_gilrat\": \"@\",\r\n            \"num_certif_qual\": \"@\",\r\n            \"vlr_sest\": \"@\",\r\n            \"obs_reinf\": \"@\",\r\n            \"num_alvara\": \"@\",\r\n            \"vlr_frete\": 0,\r\n            \"cod_municipio_orig\": \"@\",\r\n            \"ind_fisjur_cpdir\": \"@\",\r\n            \"ins_munic_armaz_dest\": \"@\",\r\n            \"cod_classe_consumo\": \"@\",\r\n            \"dat_valid_doc_aidf\": \"@\",\r\n            \"dat_cancelamento\": \"@\",\r\n            \"interna_suframa\": \"@\",\r\n            \"ins_est_armaz_orig\": \"@\",\r\n            \"cod_munic_armaz_orig\": \"@\",\r\n            \"cod_area_terminal\": \"@\",\r\n            \"ins_munic_armaz_orig\": \"@\",\r\n            \"data_consumo_ini\": \"@\",\r\n            \"vlr_icmss_substituido\": \"@\",\r\n            \"dat_fato_gerador\": \"@\",\r\n            \"cod_canal_distrib\": \"@\",\r\n            \"sub_serie_ctr_disp\": \"@\",\r\n            \"ind_classe_op_iss\": \"@\",\r\n            \"vlr_base_ise_icmss\": \"@\",\r\n            \"vlr_base_out_icmss\": \"@\",\r\n            \"cod_municipio_dest\": \"@\",\r\n            \"vlr_mat_aplic_iss\": \"@\",\r\n            \"ind_situacao_esp\": \"@\",\r\n            \"base_icmss_substituido\": \"@\",\r\n            \"ins_est_armaz_dest\": \"@\",\r\n            \"vlr_red_base_icmss\": \"@\",\r\n            \"cod_fisjur_cpdir\": \"@\",\r\n            \"cod_munic_armaz_dest\": \"@\",\r\n            \"data_consumo_fim\": \"@\",\r\n            \"num_final_crt_disp\": \"@\",\r\n            \"ind_nota_servico\": \"@\",\r\n            \"vlr_inss_retido_2\": \"@\",\r\n            \"num_controle_docto\": \"@\",\r\n            \"perc_red_base_icm\": \"@\",\r\n            \"num_selo_cont_icms\": \"@\",\r\n            \"ind_medidajudicial\": \"@\",\r\n            \"ind_compra_venda\": \"@\",\r\n            \"obs_compl_motivo\": \"@\",\r\n            \"vlr_ret_subempreitado\": \"@\",\r\n            \"vlr_contrib_prev\": \"@\",\r\n            \"vlr_contrib_senar\": \"@\",\r\n            \"ind_trib_produtor_cp\": \"@\",\r\n            \"cod_modelo_nfe_subst\": \"@\",\r\n            \"cod_autentic_nfe_subst\": \"@\",\r\n            \"qtd_consumo_total\": \"@\",\r\n            \"ind_nfe_deneg_inut\": \"@\",\r\n            \"qtd_contratada_fponta\": \"@\",\r\n            \"ano_ato_normativo\": \"@\",\r\n            \"capitulacao_norma\": \"@\",\r\n            \"num_ato_normativo\": \"@\",\r\n            \"vlr_base_inss_rural\": \"@\",\r\n            \"vlr_aliq_inss_rural\": \"@\",\r\n            \"cnpj_subempreiteiro\": \"@\",\r\n            \"ind_nf_venda_terceiros\": \"@\",\r\n            \"ind_tp_compl_icms\": \"@\",\r\n            \"vlr_antecip_trib\": \"@\",\r\n            \"vlr_outras_entid\": \"@\",\r\n            \"qtd_contratada_ponta\": \"@\",\r\n            \"cod_munic_consumo\": \"@\",\r\n            \"cod_classe_consumo_sef_pe\": \"@\",\r\n            \"ind_nf_contingencia\": \"@\",\r\n            \"num_autentic_nfe_subst\": \"@\",\r\n            \"ind_fin_emissao_nfe\": \"@\",\r\n            \"ind_vlr_icms_cob_ant_st\": \"@\",\r\n            \"dat_emissao_rps_nfe\": \"@\",\r\n            \"cnpj_cpf_proprietario_cno\": \"@\",\r\n            \"obs_dados_fatura\": \"@\",\r\n            \"data_consumo_leit\": \"@\",\r\n            \"ind_nf_reg_especial\": \"@\",\r\n            \"cod_modelo_cotepe\": \"55\",\r\n            \"cod_observacao\": \"@\",\r\n            \"cod_cfo\": \"@\",\r\n            \"num_lancamento\": \"@\",\r\n            \"vlr_base_pis\": \"@\",\r\n            \"vlr_base_cofins\": \"@\",\r\n            \"vlr_outras\": \"@\",\r\n            \"vlr_base_inss\": \"@\",\r\n            \"vlr_cofins_retido\": \"@\",\r\n            \"vlr_base_iss_retido\": \"@\",\r\n            \"cod_scp\": \"@\",\r\n            \"cod_sit_pis\": \"@\",\r\n            \"cod_sit_cofins\": \"@\",\r\n            \"vlr_iss_retido\": \"@\",\r\n            \"vlr_mat_terc\": \"@\",\r\n            \"vlr_aliq_iss\": \"@\",\r\n            \"cod_cfps\": \"@\",\r\n            \"vlr_mat_prop\": \"@\",\r\n            \"vlr_deducao_iss\": \"@\",\r\n            \"vlr_subempr_iss\": \"@\",\r\n            \"vlr_aliq_ir\": \"@\",\r\n            \"vlr_pis_retido\": \"@\",\r\n            \"num_autentic_nfe\": \"29220625769266001872550000027653391080854293\",\r\n            \"cod_class_doc_fis\": \"1\",\r\n            \"ind_modelo_cupom\": \"@\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{DataVisa}}/table/columnFields/Colaboradores/nome",
+					"raw": "{{safx-host}}/safx/carga/1",
 					"host": [
-						"{{DataVisa}}"
+						"{{safx-host}}"
 					],
 					"path": [
-						"table",
-						"columnFields",
-						"Colaboradores",
-						"nome"
+						"safx",
+						"carga",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "consulta carga",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "protocolo",
+						"value": "{{num_protocolo}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{safx-host}}/safx/carga/consulta",
+					"host": [
+						"{{safx-host}}"
+					],
+					"path": [
+						"safx",
+						"carga",
+						"consulta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta por lote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{safx-host}}/safx/carga/consultaLote",
+					"host": [
+						"{{safx-host}}"
+					],
+					"path": [
+						"safx",
+						"carga",
+						"consultaLote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consulta Importacao Automatica",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://qa.taxone.thomsonreuters.com/safx/carga/consultaLoteImportacaoIntegracao",
+					"protocol": "https",
+					"host": [
+						"qa",
+						"taxone",
+						"thomsonreuters",
+						"com"
+					],
+					"path": [
+						"safx",
+						"carga",
+						"consultaLoteImportacaoIntegracao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "importar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "numLote",
+						"value": "{{num_lote}}",
+						"type": "text"
+					},
+					{
+						"key": "firmid",
+						"value": "001",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://qa.taxone.thomsonreuters.com/safx/carga/importar",
+					"protocol": "https",
+					"host": [
+						"qa",
+						"taxone",
+						"thomsonreuters",
+						"com"
+					],
+					"path": [
+						"safx",
+						"carga",
+						"importar"
 					]
 				}
 			},

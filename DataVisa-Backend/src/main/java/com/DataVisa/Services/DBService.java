@@ -96,7 +96,7 @@ public class DBService{
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response,  response.getRight());
 	    }
-	    if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED)) {
+	    if (!(response = datavisaSession.checkDatavisaPermition(3)).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response, response.getRight());
 	    }
 
@@ -142,7 +142,7 @@ public class DBService{
 	    		return  Pair.of(datavisaDbResponse, HttpStatus.FORBIDDEN);
 			 }
 			 
-			 if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+			 if (!(response = datavisaSession.checkDatavisaPermition(3)).getRight().equals(HttpStatus.ACCEPTED)) {
 				 datavisaDbResponse = new DatavisaDbDTO(response.getLeft());
 		    		return  Pair.of(datavisaDbResponse, response.getRight());
 		    	}

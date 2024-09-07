@@ -3,8 +3,6 @@ package com.DataVisa.Services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.DatavisaDbDTO;
-import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
 
@@ -98,6 +95,21 @@ public class TableSawService {
 			}
 			response = Pair.of(tablesCollumns.toString(), HttpStatus.OK);
 			return response;
+			
+		} catch (Exception e) {
+			return Pair.of("Erro: " + e.getMessage() + "\n" + e.getClass().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	public Pair<String, HttpStatus> getDatavisaTableCollumnCount(String tabela){
+
+		String query = "SELECT * from " + tabela;
+		
+		try {
+			Table table = getDatavisaTable(query, tabela);
+			
+			//retorna o número de colunas existentes na tabbela
+			return Pair.of(String.valueOf(table.columnCount()), HttpStatus.OK);
 			
 		} catch (Exception e) {
 			return Pair.of("Erro: " + e.getMessage() + "\n" + e.getClass().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
