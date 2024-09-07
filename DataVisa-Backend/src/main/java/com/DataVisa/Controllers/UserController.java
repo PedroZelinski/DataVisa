@@ -82,6 +82,11 @@ public class UserController {
 		Pair<String, HttpStatus> result = userService.aprovePendingUser(user);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
+    @DeleteMapping("/dataVisa/user/refusePendingUser")
+    public ResponseEntity<String> refusePendingUser(@RequestBody DatavisaUserDTO user){
+		Pair<String, HttpStatus> result = userService.refusePendingUser(user);
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
+    }
 	
 	@RequestMapping(method = RequestMethod.OPTIONS, value = "/**")
 	public ResponseEntity<?> handleOptions() {         

@@ -13,7 +13,7 @@
 				"header": [
 					{
 						"key": "email",
-						"value": "administracao@pizzaria.com",
+						"value": "pedro@fatec.sp.gov.br",
 						"type": "text"
 					},
 					{
@@ -78,7 +78,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"luiz@pizzaria.com\",\r\n    \"senha\": \"1234\",\r\n    \"nome\": \"Luiz\",\r\n    \"empresaId\": 8\r\n}",
+					"raw": "{\r\n    \"email\": \"luiza@pizzaria.com\",\r\n    \"senha\": \"1234\",\r\n    \"nome\": \"Luiz\",\r\n    \"empresaId\": 8\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -214,7 +214,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"Luiz@pizzaria.com\",\r\n  \"nivelAcesso\": 3,\r\n  \"permissaoTabela\": 2\r\n}",
+					"raw": "{\r\n  \"email\": \"Luiza@pizzaria.com\",\r\n  \"nivelAcesso\": 3,\r\n  \"permissaoTabela\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -235,13 +235,13 @@
 			"response": []
 		},
 		{
-			"name": "Delete Pending User (To do)",
+			"name": "Delete Pending User",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"email\": \"administracao@pizzaria.com\",\r\n        \"nome\": \"Lorena\",\r\n        \"empresaId\": 2,\r\n        \"permissaoTabela\": 100,\r\n        \"editaModelo\": 0,\r\n        \"editaConexao\": 0,\r\n        \"nivelAcesso\": 2\r\n}",
+					"raw": "{\r\n  \"email\": \"luiza@pizzaria.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -249,13 +249,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/user/deletePendingUser",
+					"raw": "{{DataVisa}}/user/refusePendingUser",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
 						"user",
-						"deletePendingUser"
+						"refusePendingUser"
 					]
 				}
 			},
@@ -407,14 +407,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/database/connect/6",
+					"raw": "{{DataVisa}}/database/connect/1",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
 						"database",
 						"connect",
-						"6"
+						"1"
 					]
 				}
 			},
@@ -424,7 +424,17 @@
 			"name": "GetAll Connection Tables",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/tableSaw/getConnecionTables",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"tableSaw",
+						"getConnecionTables"
+					]
+				}
 			},
 			"response": []
 		},
@@ -510,14 +520,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/table/tabela/Colaboradores",
+					"raw": "{{DataVisa}}/tableSaw/getTable/clientes",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"table",
-						"tabela",
-						"Colaboradores"
+						"tableSaw",
+						"getTable",
+						"clientes"
 					]
 				}
 			},
@@ -586,14 +596,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/table/columns/Colaboradores",
+					"raw": "{{DataVisa}}/tableSaw/getTableColumns/financeiro",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"table",
-						"columns",
-						"Colaboradores"
+						"tableSaw",
+						"getTableColumns",
+						"financeiro"
 					]
 				}
 			},
@@ -605,15 +615,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DataVisa}}/table/columnFields/Colaboradores/nome",
+					"raw": "{{DataVisa}}/tableSaw/getColumnFields/financeiro/tipo_transacao",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"table",
-						"columnFields",
-						"Colaboradores",
-						"nome"
+						"tableSaw",
+						"getColumnFields",
+						"financeiro",
+						"tipo_transacao"
 					]
 				}
 			},

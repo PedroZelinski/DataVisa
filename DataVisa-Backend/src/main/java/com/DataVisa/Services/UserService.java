@@ -305,6 +305,43 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	    response =  Pair.of("Usuário  " + pendingUserDto.getEmail() + " aprovado com sucesso!", HttpStatus.OK);
 	    return response;
 	}
+	
+	public Pair<String, HttpStatus> refusePendingUser(DatavisaUserDTO pendingUserDto){
+		
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return response;
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(1)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return response;
+	    }
+	    
+	    try {
+	    	Optional<PendingUserModel> pendingUser = pendingUserRepository.findById(pendingUserDto.getEmail());
+	    	if(pendingUser.isEmpty()) {
+				throw new IllegalArgumentException("Usuário não consta na lista de pendentes.");
+			}
+	    	
+	    	pendingUserRepository.delete(pendingUser.get());
+	    	//Verifica se o registro foi excluido
+            if (pendingUserRepository.findById(pendingUserDto.getEmail()).isPresent()) {
+            	return Pair.of("Erro: Erro interno.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+	    	
+	    	UserModel user = userRepository.findById(pendingUserDto.getEmail()).get();
+	    	userRepository.delete(user);
+			
+			//Verifica se o registro foi excluido
+            if (userRepository.findById(user.getEmail()).isPresent()) {
+            	return Pair.of("Erro: Erro interno.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+	    	
+	    } catch (Exception e) {
+		    return Pair.of("Erro: " + e.getMessage(), HttpStatus.NOT_FOUND);
+	    }
+		response =  Pair.of("Usuário  " + pendingUserDto.getEmail() + " teve seu acesso recusado!", HttpStatus.OK);
+		return response;
+	}
 
 	public Optional<UserModel> findByAllFields (UserModel user){
 		return userRepository.findByAllFields(user.getEmail(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(), user.getNivelAcesso());
