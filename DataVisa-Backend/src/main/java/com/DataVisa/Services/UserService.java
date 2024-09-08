@@ -50,7 +50,15 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 		
 		try{
 			UserModel user= userRepository.findByEmailAndSenha(email, senha).get();
-			datavisaResponse = startSession(user);
+			
+			datavisaSession.startSession(user);
+			datavisaSession.setEmpresaNome(tableService.getNomeEmpresa(user.getEmpresaId()));
+			datavisaSession.setDepartamento(tableService.getDepartamento(user.getPermissaoTabela(), datavisaSession.getEmpresaNome()));
+			
+			datavisaResponse = new DatavisaSessionDTO(datavisaSession);
+			
+			datavisaResponse.setMensagemRetorno("Login efetuado com sucesso!"
+					+ "\nUsuário: " + datavisaSession.getNome());
 			
 			return Pair.of(datavisaResponse, HttpStatus.OK);
 			
@@ -178,7 +186,7 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	    	String nomeEmpresa = tableService.getNomeEmpresa(user.getEmpresaId());
 	    	userResponseDTO.setEmpresaNome(nomeEmpresa);
 	    	userResponseDTO.setDepartamentos(tableService.getDatavisaCollumnFields(nomeEmpresa + "_permissoes", "nome"));
-	    	userResponseDTO.setDepartamento(getDepartamento(user, nomeEmpresa));
+	    	userResponseDTO.setDepartamento(tableService.getDepartamento(user.getPermissaoTabela(), nomeEmpresa));
 
 	    	
 	    } catch (Exception e) {
@@ -209,7 +217,7 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	            try {
 	                String nomeEmpresa = tableService.getNomeEmpresa(userModel.getEmpresaId());
 	                dto.setEmpresaNome(nomeEmpresa);
-	                dto.setDepartamento(getDepartamento(userModel, nomeEmpresa));
+	                dto.setDepartamento(tableService.getDepartamento(userModel.getPermissaoTabela(), nomeEmpresa));
 	            } catch (Exception e) {
 	                // Tratar exceção de forma apropriada, como logar o erro e definir valores padrão
 	                dto.setEmpresaNome("Erro ao obter nome da empresa");
@@ -346,41 +354,6 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	public Optional<UserModel> findByAllFields (UserModel user){
 		return userRepository.findByAllFields(user.getEmail(), user.getNome(), user.getEmpresaId(), user.getPermissaoTabela(), user.getNivelAcesso());
 	}
-	
-	private DatavisaSessionDTO startSession (UserModel user) throws Exception {
-		datavisaSession.setStatus(true);
-		datavisaSession.setEmail(user.getEmail());
-		datavisaSession.setNome(user.getNome());
-		datavisaSession.setEmpresaId(user.getEmpresaId());
-		datavisaSession.setPermissaoTabela(user.getPermissaoTabela());
-		datavisaSession.setNivelAcesso(user.getNivelAcesso());
-		datavisaSession.setTemplates(user.getTemplates());
-		
-		if (datavisaSession.getPermissaoTabela() != 100) {
-				String nomeEmpresa =  tableService.getNomeEmpresa(user.getEmpresaId());
-				datavisaSession.setEmpresaNome(nomeEmpresa);
-				datavisaSession.setDepartamento(getDepartamento(user, nomeEmpresa));
-		} else {
-			datavisaSession.setEmpresaNome("Sem empresa");
-			datavisaSession.setDepartamento("Pendente");
-		}
-
-		DatavisaSessionDTO datavisaResponse = new DatavisaSessionDTO(datavisaSession);
-		
-		datavisaResponse.setMensagemRetorno("Login efetuado com sucesso!"
-				+ "\nUsuário: " + datavisaSession.getNome());
-		
-		return datavisaResponse;
-	}
-	
-	public String getDepartamento (UserModel user, String nomeEmpresa) throws Exception {
-		String query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(user.getPermissaoTabela());
-		String departamento = tableService.getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
-		departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
-		return departamento;
-		
-	}
-	
 	
 }
 

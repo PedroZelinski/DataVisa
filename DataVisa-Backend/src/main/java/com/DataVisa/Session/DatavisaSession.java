@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
+import com.DataVisa.Models.UserModel;
+
 import lombok.Data;
 import tech.tablesaw.api.Table;
 
@@ -59,6 +61,17 @@ public class DatavisaSession {
 			this.templates = "{}";
 		else
 			this.templates = templates;
+	}
+	
+	public void startSession (UserModel user) throws Exception {
+		setStatus(true);
+		setEmail(user.getEmail());
+		setNome(user.getNome());
+		setEmpresaId(user.getEmpresaId());
+		setPermissaoTabela(user.getPermissaoTabela());
+		setNivelAcesso(user.getNivelAcesso());
+		setTemplates(user.getTemplates());
+		
 	}
 	
 	public Pair<String, HttpStatus> checkStatus() {

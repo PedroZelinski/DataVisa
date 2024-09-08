@@ -18,6 +18,7 @@ public class DatavisaUserDTO {
         this.nome = userModel.getNome();
         this.senha = userModel.getSenha();
         this.empresaId = userModel.getEmpresaId();
+        this.matricula = userModel.getMatricula();
         this.permissaoTabela = userModel.getPermissaoTabela();
         this.nivelAcesso = userModel.getNivelAcesso();
         this.templates = userModel.getTemplates();
@@ -43,6 +44,8 @@ public class DatavisaUserDTO {
 	private Long empresaId;
 	
 	private String empresaNome;
+	
+	private String matricula;
 	
 	private int permissaoTabela;
 
