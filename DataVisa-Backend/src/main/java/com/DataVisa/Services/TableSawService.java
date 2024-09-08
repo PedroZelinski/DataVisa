@@ -224,5 +224,13 @@ public class TableSawService {
 		return nomeEmpresa;
 	}
 	
+	public String getDepartamento (int permissao, String nomeEmpresa) throws Exception {
+		String query = "select nome from " + nomeEmpresa + "_permissoes where permissao_tabela = " + String.valueOf(permissao);
+		String departamento = getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
+		departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
+		return departamento;
+		
+	}
+	
 }
 

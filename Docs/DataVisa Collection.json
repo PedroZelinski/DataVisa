@@ -307,6 +307,24 @@
 			"response": []
 		},
 		{
+			"name": "GetAll Active DB",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/database/getAll",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"database",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get DB",
 			"request": {
 				"method": "GET",

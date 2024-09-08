@@ -1,5 +1,7 @@
 package com.DataVisa.DTO;
 
+import org.hibernate.type.descriptor.jdbc.SmallIntJdbcType;
+
 import com.DataVisa.Models.DBModel;
 
 import jakarta.persistence.GeneratedValue;
@@ -65,6 +67,8 @@ public class DatavisaDbDTO {
 	private String empresaNome;
 	
 	private Long empresaId;
+	
+	private int isActive;
 	
 	private String mensagemRetorno;
 	

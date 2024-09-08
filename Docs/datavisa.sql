@@ -44,21 +44,22 @@ create table usuarios (
     senha varchar(60) not null,
     nome varchar(60) not null,
     empresaId bigint,
+    matricula varchar(60) not null,
     permissaoTabela int not null default 0,
     nivelAcesso int not null default 0,
     templates json default ('[]'),
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
 
-insert into usuarios(nome, email, senha, empresaId, permissaoTabela, nivelAcesso) values
-    ("Pedro", "pedro@fatec.sp.gov.br","1234", 1, 0, 0),
-    ("Rebeca", "rebeca@pizzaria.com", "1234", 8, 2, 3),
-    ("Luiz", "luiz@renner.com", "1234", 3, 3, 1),
-    ("Cido", "cido@visitante.com", "1234", 2, 0, 2),
-    ("Jorge", "analista@pizzaria.com", "1234", 8, 0, 2),
-    ("Lorena", "administracao@pizzaria.com","1234",8, 2, 1),
-    ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8, 1, 1),
-    ("Ana", "ana@fatec.sp.gov.br","1234", 6, 2, 2);
+insert into usuarios(nome, email, senha, empresaId, matricula, permissaoTabela, nivelAcesso) values
+    ("Pedro", "pedro@fatec.sp.gov.br","1234", 1,"123", 0, 0),
+    ("Rebeca", "rebeca@pizzaria.com", "1234", 8,"123", 2, 3),
+    ("Luiz", "luiz@renner.com", "1234", 3,"123", 3, 1),
+    ("Cido", "cido@visitante.com", "1234","123", 2, 0, 2),
+    ("Jorge", "analista@pizzaria.com", "1234","123", 8, 0, 2),
+    ("Lorena", "administracao@pizzaria.com","1234",8,"123", 2, 1),
+    ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8,"123", 1, 1),
+    ("Ana", "ana@fatec.sp.gov.br","1234", 6,"123", 2, 2);
     
 CREATE TABLE usuarios_pendentes (
     email VARCHAR(60) PRIMARY KEY,
@@ -68,9 +69,6 @@ CREATE TABLE usuarios_pendentes (
     FOREIGN KEY (email) REFERENCES usuarios(email),
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
-
-select * from usuarios_pendentes;
-select * from usuarios;
 
 create table conexoes(
 	id bigint primary key auto_increment,
@@ -87,9 +85,10 @@ create table conexoes(
     FOREIGN KEY (empresaId) REFERENCES empresas(id)
 );
 
-INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, hostName , portDb, caminhoDb, empresaId) VALUES
-('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db', 8),
-('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 'localhost', 3306, '/db_renner_1', 3);
+INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, hostName , portDb, caminhoDb, isActive, empresaId) VALUES
+('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db',1, 8),
+('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 'localhost', 3306, '/db_renner_1',1, 3),
+('Pizzaria_Conexao2', 'MySQL', 'Pizzaria_db2', 'root', '1234', 'localhost', 3306, '/pizzaria_db',0, 8);
 
 create table Renner_permissoes(
 	permissao_tabela int primary key,	
