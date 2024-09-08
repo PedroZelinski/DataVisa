@@ -13,11 +13,13 @@ const TopMenu = ({ alteraModo }) => {
     function navegar(e, panel, path){
         if(path != "perfil"){
             alteraModo(2)
+            navigate('/config/'+path)
         } else {
             alteraModo(1)
+            navigate('/menu/'+path)
         }
         panel.current.toggle(e)
-        navigate('/menu/'+path)
+        
     }
 
     async function deslogar() {
@@ -50,8 +52,8 @@ const TopMenu = ({ alteraModo }) => {
             
             <div className='col-3 col-offset-7 flex align-items-center justify-content-center mt-3'>
                 <button className="top-menu-btn" onClick={(e) => inspect.current.toggle(e)}>
-                    <i className='icon-white fi fi-rr-chart-histogram' /></button>
-
+                    <i className='icon-white fi fi-rr-chart-histogram' />
+                </button>
                     <OverlayPanel ref={inspect}>
                         <div className='justify-content-center text-center'>
                             <i className='icon-black fi fi-rr-chart-histogram' style={{fontSize: '20px'}} />
@@ -83,7 +85,8 @@ const TopMenu = ({ alteraModo }) => {
                     </OverlayPanel>
 
                 <button className="top-menu-btn" onClick={(e) => user.current.toggle(e)}>
-                    <i className='icon-white fi fi-rr-user' /></button>
+                    <i className='icon-white fi fi-rr-user' />
+                </button>
                     <OverlayPanel ref={user}>
                         <div className='justify-content-center text-center'>
                             <i className='icon-black fi fi-rr-user' style={{fontSize: '20px'}} />
@@ -91,7 +94,7 @@ const TopMenu = ({ alteraModo }) => {
                             <div style={{fontWeight:'bold', color:'black'}}>Usuário</div>
 
                             <button className='top-menu-btn-2'
-                                onClick={(e) => {navegar(e, user, "perfil")}}> Ver Perfil</button>
+                                onClick={(e) => {navegar(e, user, "perfil")}}>Ver Perfil</button>
                             <br />
                             <button className='top-menu-btn-2'
                                 onClick={() => deslogar()}>Sair</button>

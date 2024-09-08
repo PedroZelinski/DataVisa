@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
+import logo from '../../assets/logoOriginal.png'
 
 const LoginHome = ({ alteraModo }) => {
     const navigate = useNavigate();
@@ -36,11 +37,13 @@ const LoginHome = ({ alteraModo }) => {
     }
 
     return (
-        <div style={{ marginLeft: 20, marginTop: 10 }}>
-            <a style={{ fontWeight: 'bold', marginLeft: 20 }}>
-                Digite seu e-mail e senha, para acessar sua conta</a>
+        <div className='col-6'>
+            <img src={logo} alt="Logo" id="logo-login" /><br />
 
-            <form onSubmit={onFormSubmit} onChange={handleChange}>
+            <form onSubmit={onFormSubmit} onChange={handleChange} 
+            style={{marginLeft: '20px', marginTop: '10px'}}>
+                <div className='mt-1 font-bold' >
+                    Digite seu e-mail e senha, para acessar sua conta</div>
                 <div className='field-div'>
                     <label>Email
                         <input className="input-field" placeholder="email@email.com" 
@@ -48,20 +51,20 @@ const LoginHome = ({ alteraModo }) => {
                     </label>
                 </div>
 
-                <div className='field-div'>
+                <div className='mt-1'>
                     <label>Senha
                         <input className="input-field" placeholder="Senha"
                             type="password" id="senha" />
                     </label>
                 </div>
 
-                <div className='field-div'>
+                <div className='mt-1'>
                     <input className="input-button"
                         type="submit"
                         value="Acessar" />
                 </div>
 
-                <div className='field-div'>
+                <div className='mt-1'>
                     Esqueceu sua senha?
                     <a onClick={() => alteraModo(2)}
                         className="link"> Clique aqui</a>

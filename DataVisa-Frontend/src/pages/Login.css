@@ -1,27 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter');
-
-html, body {
-    font-family: 'Inter';
-    height: 100%;
-    margin: 0
-}
 label, input{
     display:flex;
     flex-direction:column;
 }
-
-.field-div{
-    margin-top: 10px;
-    margin-left: 20px;
-}
 .input-field{
-    width: 80%;
+    width: 90%;
     height: 30px;
     opacity: 0.60;
     background: #C1C7CB;
     border-radius: 5px;
     border: 1px #374957 solid;
-    display: inline-flex;
     font-size: 14px;
     font-weight: 400;
 }
@@ -31,8 +18,7 @@ label, input{
     cursor: pointer;
 }
 #logo-login{
-    margin-top: 20px;
-    margin-left: 20px;
+    margin-top: 15x;
     width: 20%;
 }
 #panel{
@@ -40,7 +26,7 @@ label, input{
     border-radius: 5px;
     width: 70%;
     height: 80%;
-    text-align: right;
+    font-size: 14px;
 }
 #waves{
     width: 100%;
@@ -49,9 +35,7 @@ label, input{
     border-bottom-right-radius: 5px
 }
 #background{
-    width: 100%;
-    height: 100%;
+    height: 100vh;
     margin: 0;
-    position: absolute; 
     background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
 }
