@@ -54,6 +54,12 @@ public class DBController {
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
     
+    @GetMapping("/dataVisa/database/getActives")
+    public ResponseEntity<?> getActive(){
+    	Pair<Object, HttpStatus> result = databaseService.findActives();
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
+	}
+    
     @GetMapping("/dataVisa/database/connect/{id}")
 	public ResponseEntity<DatavisaSessionDTO> Connect(@PathVariable Long id){
     	Pair<DatavisaSessionDTO, HttpStatus> result =  databaseService.setConnection(id);

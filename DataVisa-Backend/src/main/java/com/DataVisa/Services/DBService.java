@@ -96,7 +96,7 @@ public class DBService{
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response,  response.getRight());
 	    }
-	    if (!(response = datavisaSession.checkDatavisaPermition(3)).getRight().equals(HttpStatus.ACCEPTED)) {
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response, response.getRight());
 	    }
 
@@ -120,9 +120,42 @@ public class DBService{
 	    } catch (Exception e) {
 	        return Pair.of("Erro ao processar a lista de bancos de dados \n" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
-	    
-		
 	}
+	
+	
+	public Pair<Object, HttpStatus> findActives(){
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response,  response.getRight());
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(3)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response, response.getRight());
+	    }
+
+	    List<DBModel> dbList = datavisaSession.getEmpresaId().equals(1L) ?  
+	    		databaseRepository.findAll() : 
+    			databaseRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
+	    
+	    try {
+	        List<DatavisaDbDTO> dtoList = dbList.stream()
+	        		.filter(dbModel -> dbModel.getIsActive() != 0)
+	        		.map(dbModel -> {
+	            DatavisaDbDTO dbDTO = new DatavisaDbDTO(dbModel);
+	            try {
+	                String nomeEmpresa = tableSawService.getNomeEmpresa(dbModel.getEmpresaId());
+	                dbDTO.setEmpresaNome(nomeEmpresa);
+	            } catch (Exception e) {
+	            	throw new RuntimeException("Erro ao obter nome da empresa");
+	            }
+	            return dbDTO;
+	        }).collect(Collectors.toList());
+
+	        return Pair.of(dtoList, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return Pair.of("Erro ao processar a lista de bancos de dados \n" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
 
 	public  Pair<DatavisaDbDTO, HttpStatus> findById(Long id){
 		Pair<String, HttpStatus> response;

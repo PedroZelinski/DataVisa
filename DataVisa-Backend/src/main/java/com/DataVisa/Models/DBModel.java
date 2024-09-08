@@ -41,5 +41,7 @@ public class DBModel implements Serializable {
 	
 	private String caminhoDb;
 	
+	private int isActive;
+	
 	private Long empresaId;
 }
