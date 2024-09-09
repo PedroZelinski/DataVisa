@@ -1,11 +1,13 @@
 import React from 'react'
+import logo from '../../assets/logoOriginal.png'
 
 const LoginConfirmacao = ({alteraModo}) => {
 
     return (
-        <div style={{ marginLeft: 20, marginTop: 10 }}>
+        <div className='col-6 text-center'>
+            <img src={logo} alt="Logo" id="logo-login" /><br />
 
-            <a style={{ fontWeight: 'bold' }}>Cadastro Realizado com Sucesso</a>
+            <div className='font-bold mt-5'>Cadastro Realizado com Sucesso</div>
             <p>
                 Seu cadastro foi concluido com êxito! <br />
                 <br />

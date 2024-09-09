@@ -8,22 +8,24 @@ const Cadastro = () => {
     const navigate = useNavigate();
     const [value, setValue] = useState('');
     const [nivel, setNivel] = useState('');
-    const [edTemplate, setEdTemplate] = useState(false)
-    const [edConexao, setEdConexao] = useState(false)
-    const [edSenha, setEdSenha] = useState(false)
+    const [nvAdmin, setNvAdmin] = useState(false)
+    const [nvAnalist, setNvAnalist] = useState(false)
     const location = useLocation();
-    const niveis = ["0 - Administrador", "1 - Gerente", "2- Operador"]
+    const niveis = [
+        { id: 5, nome: "Vendedor", label: "5 - Vendedor" },
+        { id: 4, nome: "Gerente", label: "4 - Gerente" },
+        { id: 3, nome: "Financeiro", label: "3 - Financeiro" },
+        { id: 2, nome: "Contabil", label: "2 - Contabil" },
+        { id: 1, nome: "Administração", label: "1 - Adnistração" }
+    ]
     let user = location.state;
 
     useEffect(() => {
-        if (user.editaModelo == 1) {
-            setEdTemplate(true)
+        if (user.nivelAcesso == 1) {
+            setNvAdmin(true)
         }
-        if (user.editaConexao == 1) {
-            setEdConexao(true)
-        }
-        if (user.editaSenha == 1) {
-            setEdSenha(true)
+        if (user.nivelAcesso == 2) {
+            setNvAnalist(true)
         }
     }, [])
 
@@ -34,26 +36,21 @@ const Cadastro = () => {
         const dadosUsuario = {
             nome: document.getElementById('nome').value,
             email: document.getElementById('email').value,
-            senha: document.getElementById('senha').value,
-            empresaId: user.empresaId ? user.empresaId : 8,
-            //departamento: document.getElementById('departamento'),
-            editaModelo: edTemplate == true ? 1 : 0,
-            editaConexao: edConexao == true ? 1 : 0,
-            //editaSenha: edS = edSenha == true ? 1 : 0,
+            senha: user.senha,
+            empresaId: user.empresaId,
             permissaoTabela: user.permissaoTabela ? user.permissaoTabela : 0,
-            nivelAcesso: user.nivelAcesso ? user.nivelAcesso : 0,
+            nivelAcesso: nvAdmin == true ? 1 : nvAnalist == true ? 2 : 3,
+            pending: user.pending == 1 ? 1 : 0
         }
-        user.email == "" ? criarCadastro(dadosUsuario) : salvarCadastro(dadosUsuario);
+        user.pending == 1 ? aprovaUser(dadosUsuario) : salvarUser(dadosUsuario);
         event.preventDefault();
     }
-    async function criarCadastro(dadosUsuario) {
+    async function aprovaUser(dadosUsuario) {
         try {
-            await DBClient.post('/dataVisa/user/addUser',
-                dadosUsuario
-            ).then((res) => {
+            await DBClient.put("/dataVisa/user/aprovePendingUser", dadosUsuario).then((res) => {
                 console.log(res)
                 alert(res.data)
-                navigate("/menu/usuarios")
+                navigate("/config/usuarios")
             })
 
         } catch (error) {
@@ -61,15 +58,14 @@ const Cadastro = () => {
                 + error.response.data)
         }
     }
-    async function salvarCadastro(dadosUsuario) {
-        alert("to do")
+    async function salvarUser(dadosUsuario) {
         try {
-            await DBClient.put('/dataVisa/user/updateUser', 
+            await DBClient.put('/dataVisa/user/updateUser',
                 dadosUsuario
             ).then((res) => {
                 console.log(res)
                 alert(res.data)
-                navigate("/menu/usuarios")
+                navigate("/config/usuarios")
             })
         } catch (error) {
             alert("Ocorreu um erro: " + error.response.status + "\n"
@@ -78,44 +74,52 @@ const Cadastro = () => {
     }
 
     return (
-        <div>
-            <h1>{user.email == "" ? "Cadastro de usuário" : "Alterar dados do usuário"}</h1>
-            <form onSubmit={onFormSubmit}>
-                <div className='grid col-12' id='border'>
-                    <div className="grid col-5">
-                        <label>Nome Completo
-                            <input type="text" id="nome" placeholder="Nome" 
-                                defaultValue={user.nome} onChange={handleChange} required/>
-                        </label>
-                        <label>Matricula
-                            <input type="text" defaultValue={"Matricula"} />
-                        </label>
-                        <label>Telefone
-                            <input type="text" defaultValue={"11 99999-9999"} />
-                        </label>
-                        <label>E-mail
-                            <input type="email" id="email" placeholder="E-mail" 
-                                defaultValue={user.email} onChange={handleChange} required/>
-                        </label>
-
+        <div id='form'>
+            <div className='font-bold'>Cadastro do usuário</div>
+            <form onSubmit={onFormSubmit} onChange={handleChange}>
+                <div className='grid col-12'>
+                    <div className="col-5">
+                        <div className="mt-1">
+                            <label>Nome Completo
+                                <input type="text" id="nome" placeholder="Nome"
+                                    defaultValue={user.nome} required />
+                            </label>
+                        </div>
+                        <div className="mt-1">
+                            <label>Matricula
+                                <input type="text" defaultValue={"Matricula"} />
+                            </label>
+                        </div>
+                        <div className="mt-1">
+                            <label>Empresa
+                                <input type="text" id='empresa' disabled
+                                    defaultValue={user.empresaNome} />
+                            </label>
+                        </div>
                     </div>
-                    <div className="grid col-5">
 
-                        <label>Data de Nascimento
-                            <input type="text" defaultValue={"01/01/2024"} />
-                        </label>
-                        <label>Departamento
-                            <input type="text" id="departamento"
-                                placeholder="Departamento" defaultValue={"Departamento"} onChange={handleChange} />
-                        </label>
-                        <label>Localidade
-                            <input type="text" defaultValue={"Localidade"} />
-                        </label>
-                        <label>Senha
-                            <input type="password" id="senha" placeholder="Senha" 
-                                defaultValue={user.senha} onChange={handleChange} required/>
-                        </label>
+                    <div className="col-5">
+                        <div className="mt-1">
+                            <label>E-mail
+                                <input type="email" id="email" placeholder="E-mail"
+                                    defaultValue={user.email} required />
+                            </label>
+                        </div>
+                        <div className="mt-1">
+
+                            <label>Cargo da Empresa
+                                <input type="text" id='cargo' disabled
+                                    defaultValue={"Cargo"} />
+                            </label>
+                        </div>
+                        <div className="mt-1">
+                            <label>Nivel de Acesso
+                                <input type="text" id="nivel" disabled
+                                    defaultValue={user.nivelAcesso} />
+                            </label>
+                        </div>
                     </div>
+
                     <div className="col-2">
                         <input className="input-button"
                             type="submit"
@@ -123,27 +127,36 @@ const Cadastro = () => {
                     </div>
                 </div>
             </form>
-            <h1>Permissões do usuario</h1>
-            <form onSubmit={onFormSubmit}>
-                <div className='grid col-12' id='border'>
-                    <div className='col-6'>
-                        <label>Nivel de acesso
-                            <Dropdown value={nivel} options={niveis} onChange={(e) => setNivel(e.value)}/>
-                        </label>
-                    </div>
-                    <div className="col-6">
-                        <label>Edita Templates
-                            <InputSwitch checked={edTemplate} onChange={(e) => setEdTemplate(e.value)} />
-                        </label>
-                        <label>Edita Conexões
-                            <InputSwitch checked={edConexao} onChange={(e) => setEdConexao(e.value)} />
-                        </label>
-                        <label>Edita Senha
-                            <InputSwitch checked={edSenha} onChange={(e) => setEdSenha(e.value)} />
-                        </label>
-                    </div>
+
+            <div className='font-bold'>Permissões do usuario</div>
+            <div className='grid col-12'>
+                <div className='col-6'>
+                    <label className='font-bold'>Cargo da Empresa
+                        <Dropdown value={nivel} options={niveis}
+                            optionLabel="nome" optionValue="id"
+                            onChange={(e) => setNivel(e.value)} />
+                    </label>
                 </div>
-            </form>
+                <div className="col-6">
+                    <div className='font-bold'>Nivel de acesso</div>
+                    <label>Administrador
+                        <InputSwitch checked={nvAdmin} onChange={(e) => {
+                            setNvAdmin(e.value)
+                            if (e.value == true) {
+                                setNvAnalist(!e.value)
+                            }
+                        }} />
+                    </label>
+                    <label>Analista de Dados
+                        <InputSwitch checked={nvAnalist} onChange={(e) => {
+                            setNvAnalist(e.value)
+                            if (e.value == true) {
+                                setNvAdmin(!e.value)
+                            }
+                        }} />
+                    </label>
+                </div>
+            </div>
         </div>
     )
 }

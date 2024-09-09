@@ -1,21 +1,35 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useState } from 'react'
 import DBClient from '../../utils/DBClient.js'
-import { useNavigate, useOutletContext } from 'react-router-dom'
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
+import ListUser from '../../components/Config/ListUser.js'
+import ListPending from '../../components/Config/ListPending.js'
 
 const Usuarios = () => {
   const [users, setUsers] = useState([])
   const [controle, setControle] = useState(0);
   const [session, alteraModo] = useOutletContext();
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const load = async () => {
+    const loadUsers = async () => {
       await DBClient.get('/dataVisa/user/getAll').then((res) => {
         setUsers(res.data)
         console.log(res.data)
       })
     }
-    load()
+    const loadPending = async () => {
+      await DBClient.get('/dataVisa/user/getAllPending').then((res) => {
+        setUsers(res.data)
+        console.log(res.data)
+      })
+    }
+
+    if (location.pathname == "/config/usuarios") {
+      loadUsers()
+    } else {
+      loadPending()
+    }
   }, [controle])
 
   async function deletarUser(user) {
@@ -33,52 +47,58 @@ const Usuarios = () => {
     }
   }
 
-  return (
-    <div id='form' style={{backgroundColor: 'white'}}>
-      <div className='grid col-12 font-bold'>
+  async function aceitarUser(user) {
+    const pendingUser = {
+      nome: user.nome,
+      email: user.email,
+      nivelAcesso: 3,
+      permissaoTabela: null,
+      pending: 1
+    }
+    //alert("to do")
+    navigate('/config/cadastro', { state: pendingUser })
+  }
 
-        <div className='col-3'>Gerenciamento de usuarios
+  async function rejeitarUser(user) {
+    DBClient.delete("/dataVisa/user/refusePendingUser",
+      { data: { email: user.email } }).then((res) => {
+        setControle(prevControle => prevControle + 1);
+        alert(res.data)
+      })
+  }
+
+  return (
+    <div id='form' style={{ backgroundColor: 'white' }}>
+      <div className='grid'>
+
+        <div className='col-3 font-bold'>
+          {location.pathname == "/config/usuarios" ? 
+            "Gerenciamento de usuarios" : "Usuarios Pendentes"}
           <input type="text" />
         </div>
+
         <div className='col-1 col-offset-8'>
           <button onClick={() => {
             alteraModo(1)
             navigate('/menu')
+            console.log(location.pathname)
           }}>Menu</button>
         </div>
 
-        <div className='col-1 text-center'>N°</div>
-        <div className='col-2 text-center'>Nome</div>
-        <div className='col-3 text-center'>Email</div>
-        <div className='col-1 text-center'>Nivel</div>
-        <div className='col-1 text-center'>Status</div>
-        <div className='col-2 text-center'>Departamento</div>
-        <div className='col-1 text-center'>Data</div>
-        <div className='col-1 text-center'>Ações</div>
+        {location.pathname == "/config/usuarios" ?
+          <ListUser
+            list={users}
+            deletarUser={deletarUser}
+            navigate={navigate}
+            setControle={setControle} />
+          :
+          <ListPending
+            list={users}
+            aceitarUser={aceitarUser}
+            rejeitarUser={rejeitarUser}
+            setControle={setControle} />
+        }
       </div>
-      <hr/>
-
-      <div className="grid col-12 overflow-auto text-center" id='list'>
-        {users.map((user) => (
-          <Fragment key={user.email}>
-            <div className='col-1'>{users.indexOf(user) + 1}</div>
-            <div className='col-2'>{user.nome}</div>
-            <div className='col-3'>{user.email}</div>
-            <div className='col-1'>{user.nivelAcesso}</div>
-            <div className='col-1'>Status</div>
-            <div className='col-2'>Departamento</div>
-            <div className='col-1'>Data</div>
-            <div className='col-1 text-center'>
-              <button onClick={() => navigate('/menu/cadastro', {
-                state: user
-              }
-              )}>Editar</button>
-              <button onClick={() => deletarUser(user)}>Deletar</button>
-            </div>
-          </Fragment>
-        ))}
-      </div>
-
     </div>
   )
 }

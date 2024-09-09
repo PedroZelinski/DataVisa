@@ -10,19 +10,19 @@ const SideConfig = ({ alteraModo }) => {
         <div id='side-config' className='col-2 text-center'>
             {acesso <= 1 ? <div>
                 <div>
-                    <button onClick={() => navigate('/menu/usuarios')}
+                    <button onClick={() => navigate('/config/usuarios')}
                         className='side-config-btn'>
                         <i className='icon-black fi fi-rr-user' /> Usuarios</button>
                 </div>
                 <br />
                 <div>
-                    <button onClick={() => navigate('/menu/pendentes')}
+                    <button onClick={() => navigate('/config/pendentes')}
                         className='side-config-btn'>
                         <i className='icon-black fi fi-rr-shield-exclamation' /> Pendentes</button>
                 </div>
                 <br />
                 <div>
-                    <button onClick={() => navigate('/menu/audit')}
+                    <button onClick={() => navigate('/config/audit')}
                         className='side-config-btn'>
                         <i className='icon-black fi fi-rr-shield-check' /> Auditoria</button>
                 </div>
@@ -30,13 +30,13 @@ const SideConfig = ({ alteraModo }) => {
             </div> : <div />}
             {acesso <= 2 ? <div>
                 <div>
-                    <button onClick={() => navigate('/menu/conexoes')}
+                    <button onClick={() => navigate('/config/conexoes')}
                         className='side-config-btn'>
                         <i className='icon-black fi fi-rr-database' /> Conexões</button>
                 </div>
                 <br />
                 <div>
-                    <button onClick={() => navigate('/menu/templates')}
+                    <button onClick={() => navigate('/config/templates')}
                         className='side-config-btn'>
                         <i className='icon-black fi fi-rr-chart-histogram' /> Templates</button>
                 </div>
