@@ -52,14 +52,14 @@ create table usuarios (
 );
 
 insert into usuarios(nome, email, senha, empresaId, matricula, permissaoTabela, nivelAcesso) values
-    ("Pedro", "pedro@fatec.sp.gov.br","1234", 1,"123", 0, 0),
-    ("Rebeca", "rebeca@pizzaria.com", "1234", 8,"123", 2, 3),
-    ("Luiz", "luiz@renner.com", "1234", 3,"123", 3, 1),
-    ("Cido", "cido@visitante.com", "1234","123", 2, 0, 2),
-    ("Jorge", "analista@pizzaria.com", "1234","123", 8, 0, 2),
-    ("Lorena", "administracao@pizzaria.com","1234",8,"123", 2, 1),
-    ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8,"123", 1, 1),
-    ("Ana", "ana@fatec.sp.gov.br","1234", 6,"123", 2, 2);
+    ("Pedro", "pedro@fatec.sp.gov.br", "1234", 1, "123", 0, 0),
+    ("Rebeca", "rebeca@pizzaria.com", "1234", 8, "123", 2, 3),
+    ("Luiz", "luiz@renner.com", "1234", 3, "123", 3, 1),
+    ("Cido", "cido@visitante.com", "1234", 2, "123", 0, 2),
+    ("Jorge", "analista@pizzaria.com", "1234", 8, "123", 0, 2),
+    ("Lorena", "administracao@pizzaria.com", "1234", 8, "123", 2, 1),
+    ("William", "gestor@pizzaria.com", "1q2w3e4r5t", 8, "123", 1, 1),
+    ("Ana", "ana@fatec.sp.gov.br", "1234", 6, "123", 2, 2);
     
 CREATE TABLE usuarios_pendentes (
     email VARCHAR(60) PRIMARY KEY,
