@@ -14,6 +14,7 @@ public class DatavisaSessionDTO  {
 	        this.setStatus(session.isStatus());
 	        this.setEmail(session.getEmail());
 	        this.setNome(session.getNome());
+	        this.setNivelAcesso(session.getNivelAcesso());
 	        this.setEmpresa(session.getEmpresaNome());
 	        this.setConexaoAtiva(session.isConexaoAtiva());
 	        this.setDepartamento(session.getDepartamento());
@@ -42,5 +43,7 @@ public class DatavisaSessionDTO  {
 	
 	private String templates;
 	
+	private int nivelAcesso;
+
 	private String mensagemRetorno;
 }
