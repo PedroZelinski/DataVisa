@@ -174,20 +174,26 @@ public Pair<DatavisaSessionDTO, HttpStatus> login(String email, String senha){
 	    	UserModel user = userRepository.findById(email).get();
 	    	userResponseDTO = new DatavisaUserDTO(user);
 	    	
-	    	if (user.getPermissaoTabela() == 100) {
-	    		userResponseDTO.setDepartamentos("Pendente");
-	    		return Pair.of(userResponseDTO,HttpStatus.OK);
-	    	}
 	    	
 	    	if (!(response = datavisaSession.checkEmpresaPermition(user.getEmpresaId())).getRight().equals(HttpStatus.ACCEPTED)) {
 	    		userResponseDTO = new DatavisaUserDTO(response.getLeft());
 	    		return  Pair.of(userResponseDTO, response.getRight());
 	    	}
-	    	String nomeEmpresa = tableService.getNomeEmpresa(user.getEmpresaId());
+	    	
+	    	String nomeEmpresa;
+	    	//Permissao Tabela == 100 Usuario pendente
+	    	if (user.getPermissaoTabela() == 100) {
+	    		PendingUserModel pendingUser = pendingUserRepository.findById(email).get();
+	    		nomeEmpresa = tableService.getNomeEmpresa(pendingUser.getEmpresaId());
+	    		userResponseDTO.setEmpresaId(pendingUser.getEmpresaId());
+	    	} else {
+		    	nomeEmpresa = tableService.getNomeEmpresa(user.getEmpresaId());
+		    	userResponseDTO.setDepartamento(tableService.getDepartamento(user.getPermissaoTabela(), nomeEmpresa));
+	    	}
+	    	
 	    	userResponseDTO.setEmpresaNome(nomeEmpresa);
-	    	userResponseDTO.setDepartamentos(tableService.getDatavisaCollumnFields(nomeEmpresa + "_permissoes", "nome"));
-	    	userResponseDTO.setDepartamento(tableService.getDepartamento(user.getPermissaoTabela(), nomeEmpresa));
-
+    		userResponseDTO.setDepartamentos(tableService.getDatavisaCollumnFields(nomeEmpresa + "_permissoes", "nome"));
+	    	
 	    	
 	    } catch (Exception e) {
 	    	userResponseDTO = new DatavisaUserDTO("Usuário não encontrado");

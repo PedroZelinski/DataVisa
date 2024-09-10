@@ -92,7 +92,7 @@ public class DatavisaSession {
 	}
 	
 	public Pair<String, HttpStatus> checkEmpresaPermition(Long empresaid) {
-		if(empresaid != getEmpresaId() && !getEmpresaId().equals(1L))
+		if(empresaid != getEmpresaId() && !empresaid.equals(2L) && !getEmpresaId().equals(1L))
 			return  Pair.of("Erro: O usuário não possui permissão para realizar a esta ação.", HttpStatus.FORBIDDEN);
 	return Pair.of("", HttpStatus.ACCEPTED);
 	}

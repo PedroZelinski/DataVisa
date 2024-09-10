@@ -44,7 +44,7 @@ create table usuarios (
     senha varchar(60) not null,
     nome varchar(60) not null,
     empresaId bigint,
-    matricula varchar(60) not null,
+    matricula varchar(60),
     permissaoTabela int not null default 0,
     nivelAcesso int not null default 0,
     templates json default ('[]'),
