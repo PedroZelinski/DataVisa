@@ -23,12 +23,12 @@ export default class MenuInicial extends Component {
   render() {
     return (
       <div className='grid'>
-        <TopMenu alteraModo={this.alteraModo} />
+        <TopMenu alteraModo={this.alteraModo} nivel={this.state.session.nivelAcesso}/>
 
         {this.state.modo == 1 ?
-          <SideMenu alteraModo={this.alteraModo} />
+          <SideMenu alteraModo={this.alteraModo} nivel={this.state.session.nivelAcesso}/>
           :
-          <SideConfig alteraModo={this.alteraModo} />
+          <SideConfig alteraModo={this.alteraModo} nivel={this.state.session.nivelAcesso}/>
         }
 
         <div className='col-10 flex justify-content-center' id="outlet" style={

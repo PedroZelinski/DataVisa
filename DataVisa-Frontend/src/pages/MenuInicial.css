@@ -31,6 +31,7 @@
 }.side-config-btn:hover{
     border: solid 2px;
     border-radius: 10px;
+    color: white;
 }
 
 #logo-menu{

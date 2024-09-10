@@ -26,6 +26,7 @@ const LoginCadastro = ({ alteraModo }) => {
             const dadosUsuario = {
                 email: document.getElementById('email').value,
                 senha: senha,
+                matricula: "Novo",
                 nome: document.getElementById('nome').value,
                 empresaId: business,
             }

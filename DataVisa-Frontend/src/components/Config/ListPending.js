@@ -1,10 +1,22 @@
 import React, { Fragment, useEffect } from 'react'
+import DBClient from '../../utils/DBClient';
 
 const ListPending = ({ list, aceitarUser, rejeitarUser, setControle }) => {
 
   useEffect(() => {
     setControle(prevControle => prevControle + 1)
   }, []);
+
+  async function userCadastro(email) {
+    try {
+      await DBClient.get("/dataVisa/user/getUser/" + email).then(
+        (res) => {console.log(res.data) 
+          aceitarUser(res.data)})
+    } catch (error) {
+      alert("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
 
   return (
     <Fragment>

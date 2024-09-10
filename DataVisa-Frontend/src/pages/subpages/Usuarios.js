@@ -52,6 +52,9 @@ const Usuarios = () => {
       nome: user.nome,
       email: user.email,
       nivelAcesso: 3,
+      departamento: "Pendente",
+      departamentos: "Pendente",
+      empresaNome: user.empresaNome,
       permissaoTabela: null,
       pending: 1
     }
@@ -65,6 +68,11 @@ const Usuarios = () => {
         setControle(prevControle => prevControle + 1);
         alert(res.data)
       })
+  }
+
+  async function cadastroUser(user){
+    const cadastro = await DBClient.get("/dataVisa/user/getUser/"+user.email)
+    return cadastro
   }
 
   return (
@@ -90,7 +98,8 @@ const Usuarios = () => {
             list={users}
             deletarUser={deletarUser}
             navigate={navigate}
-            setControle={setControle} />
+            setControle={setControle}
+            cadastroUser={cadastroUser} />
           :
           <ListPending
             list={users}

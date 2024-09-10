@@ -1,11 +1,22 @@
 import React, { Fragment, useEffect } from 'react'
+import Cadastro from '../../pages/subpages/Cadastro';
+import DBClient from '../../utils/DBClient';
 
-const ListUser = ({ list, deletarUser, navigate, setControle }) => {
-    const users = list
+const ListUser = ({ list, deletarUser, navigate, setControle, cadastroUser }) => {
 
     useEffect(() => {
         setControle(prevControle => prevControle + 1)
     }, []);
+
+    async function userCadastro(email) {
+        try {
+            await DBClient.get("/dataVisa/user/getUser/"+email).then(
+                (res) => navigate("/config/cadastro", {state: res.data}))
+        } catch (error) {
+            alert("Ocorreu um erro: " + error.response.status + "\n" +
+                error.response.data)
+        }
+    }
 
     return (
         <Fragment>
@@ -27,10 +38,10 @@ const ListUser = ({ list, deletarUser, navigate, setControle }) => {
                         <div className='col-2'>{user.nome}</div>
                         <div className='col-3'>{user.email}</div>
                         <div className='col-1'>{user.nivelAcesso}</div>
-                        <div className='col-2'>Departamento</div>
+                        <div className='col-2'>{user.departamento}</div>
                         <div className='col-1'>Data</div>
                         <div className="col-2">
-                            <button onClick={() => navigate('/config/cadastro', { state: user })}>
+                            <button onClick={() => userCadastro(user.email)}>
                                 Editar</button>
                             <button onClick={() => deletarUser(user)}>Deletar</button>
                         </div>

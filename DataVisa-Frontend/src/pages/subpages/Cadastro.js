@@ -11,22 +11,24 @@ const Cadastro = () => {
     const [nvAdmin, setNvAdmin] = useState(false)
     const [nvAnalist, setNvAnalist] = useState(false)
     const location = useLocation();
-    const niveis = [
-        { id: 5, nome: "Vendedor", label: "5 - Vendedor" },
-        { id: 4, nome: "Gerente", label: "4 - Gerente" },
-        { id: 3, nome: "Financeiro", label: "3 - Financeiro" },
-        { id: 2, nome: "Contabil", label: "2 - Contabil" },
-        { id: 1, nome: "Administração", label: "1 - Adnistração" }
-    ]
     let user = location.state;
+    let niveis = user.departamentos.split(/\s*,\s*/)
+    // { id: 5, nome: "Vendedor", label: "5 - Vendedor" },
+    // { id: 4, nome: "Gerente", label: "4 - Gerente" },
+    // { id: 3, nome: "Financeiro", label: "3 - Financeiro" },
+    // { id: 2, nome: "Contabil", label: "2 - Contabil" },
+    // { id: 1, nome: "Administração", label: "1 - Adnistração" }
+
 
     useEffect(() => {
+        console.log(user)
         if (user.nivelAcesso == 1) {
             setNvAdmin(true)
         }
         if (user.nivelAcesso == 2) {
             setNvAnalist(true)
         }
+        setNivel(user.departamento)
     }, [])
 
     const handleChange = (event) => {
@@ -37,7 +39,9 @@ const Cadastro = () => {
             nome: document.getElementById('nome').value,
             email: document.getElementById('email').value,
             senha: user.senha,
+            matricula: document.getElementById('matricula').value,
             empresaId: user.empresaId,
+            departamento: nivel,
             permissaoTabela: user.permissaoTabela ? user.permissaoTabela : 0,
             nivelAcesso: nvAdmin == true ? 1 : nvAnalist == true ? 2 : 3,
             pending: user.pending == 1 ? 1 : 0
@@ -45,6 +49,7 @@ const Cadastro = () => {
         user.pending == 1 ? aprovaUser(dadosUsuario) : salvarUser(dadosUsuario);
         event.preventDefault();
     }
+
     async function aprovaUser(dadosUsuario) {
         try {
             await DBClient.put("/dataVisa/user/aprovePendingUser", dadosUsuario).then((res) => {
@@ -59,6 +64,7 @@ const Cadastro = () => {
         }
     }
     async function salvarUser(dadosUsuario) {
+        console.log(dadosUsuario)
         try {
             await DBClient.put('/dataVisa/user/updateUser',
                 dadosUsuario
@@ -87,13 +93,14 @@ const Cadastro = () => {
                         </div>
                         <div className="mt-1">
                             <label>Matricula
-                                <input type="text" defaultValue={"Matricula"} />
+                                <input type="text" id="matricula" placeholder='Matricula'
+                                    defaultValue={user.matricula} required />
                             </label>
                         </div>
                         <div className="mt-1">
                             <label>Empresa
-                                <input type="text" id='empresa' disabled
-                                    defaultValue={user.empresaNome} />
+                                <input type="text" id='empresa' placeholder='Pendente'
+                                    defaultValue={user.empresaNome} disabled/>
                             </label>
                         </div>
                     </div>
@@ -109,13 +116,16 @@ const Cadastro = () => {
 
                             <label>Cargo da Empresa
                                 <input type="text" id='cargo' disabled
-                                    defaultValue={"Cargo"} />
+                                    defaultValue={user.departamento} />
                             </label>
                         </div>
                         <div className="mt-1">
                             <label>Nivel de Acesso
                                 <input type="text" id="nivel" disabled
-                                    defaultValue={user.nivelAcesso} />
+                                    defaultValue={
+                                        user.nivelAcesso == 1 ?
+                                            "Administrador" : user.nivelAcesso == 2 ?
+                                                "Analista" : "Usuário"} />
                             </label>
                         </div>
                     </div>
@@ -133,8 +143,11 @@ const Cadastro = () => {
                 <div className='col-6'>
                     <label className='font-bold'>Cargo da Empresa
                         <Dropdown value={nivel} options={niveis}
-                            optionLabel="nome" optionValue="id"
-                            onChange={(e) => setNivel(e.value)} />
+
+                            onChange={(e) => {
+                                console.log(e.value)
+                                setNivel(e.value)
+                            }} />
                     </label>
                 </div>
                 <div className="col-6">
