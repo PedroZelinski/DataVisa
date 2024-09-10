@@ -26,7 +26,7 @@ const LoginHome = ({ alteraModo }) => {
                 if (res.status == 200) {
                     localStorage.setItem('session', JSON.stringify(res.data));
                     localStorage.setItem('modo', 1)
-                    navigate('/menu')
+                    navigate('/menu/recentes')
                 }
             });
         } catch (error) {

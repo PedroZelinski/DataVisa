@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom'
 import Login from './pages/Login';
 import MenuInicial from './pages/MenuInicial';
-import Modelos from './pages/subpages/Modelos';
 import Usuarios from './pages/subpages/Usuarios';
 import Cadastro from './pages/subpages/Cadastro';
 import Auditoria from './pages/subpages/Auditoria';
@@ -15,6 +14,8 @@ import Perfil from './pages/subpages/Perfil';
 import Templates from './pages/subpages/Templates';
 import Conexoes from './pages/subpages/Conexoes';
 import './index.css'
+import Recentes from './pages/subpages/Recentes';
+import Pesquisar from './pages/subpages/Pesquisar';
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,12 @@ const router = createBrowserRouter([
     element: <MenuInicial modo={1}/>,
     children: [
       {
-        path: "modelos",
-        element: <Modelos />,
+        path: "recentes",
+        element: <Recentes />
+      },
+      {
+        path: "pesquisar",
+        element: <Pesquisar />,
       },
       {
         path: "perfil",

@@ -12,7 +12,7 @@ const SideMenu = () => {
             </div>
             <br />
             <div>
-                <button className='side-menu-btn'>
+                <button className='side-menu-btn' onClick={() => navigate('/menu/recentes')}>
                 <i className='fi fi-rr-clock' /><br />Recentes</button>
             </div>
             <br />
@@ -22,7 +22,7 @@ const SideMenu = () => {
             </div>
             <br />
             <div>
-                <button className='side-menu-btn' onClick={() => navigate('/menu/modelos')}>
+                <button className='side-menu-btn' onClick={() => navigate('/menu/pesquisar')}>
                 <i className='fi fi-rr-search' /><br />Pesquisar</button>
             </div>
         </div>

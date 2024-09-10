@@ -1,8 +1,9 @@
-#side-menu{
+#side-menu {
     border-right: 2px solid #B1C7F3;
     min-height: calc(100vh - 100px);
 }
-.side-menu-btn{
+
+.side-menu-btn {
     background-color: transparent;
     color: #366FE1;
     font-size: 18px;
@@ -11,16 +12,19 @@
     border: none;
     margin-top: 10px;
     cursor: pointer;
-}.side-menu-btn:hover{
+}
+
+.side-menu-btn:hover {
     border: solid 2px;
 }
 
 
-#side-config{ 
+#side-config {
     background-color: #C1C7CB;
     min-height: calc(100vh - 100px);
 }
-.side-config-btn{
+
+.side-config-btn {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -28,27 +32,32 @@
     font-size: 20px;
     margin-top: 10px;
     padding: 8px
-}.side-config-btn:hover{
+}
+
+.side-config-btn:hover {
     border: solid 2px;
     border-radius: 10px;
     color: white;
 }
 
-#logo-menu{
+#logo-menu {
     width: 50%;
     cursor: pointer;
 }
-#top-menu{
+
+#top-menu {
     background-color: #5786E6;
 }
-.top-menu-btn{
+
+.top-menu-btn {
     margin-right: 15px;
     background-color: transparent;
     border: none;
     cursor: pointer;
     font-size: 20px;
 }
-.top-menu-btn-2{
+
+.top-menu-btn-2 {
     background-color: transparent;
     border: solid 1px #8CACEE;
     padding: 10px;
@@ -57,16 +66,35 @@
     cursor: pointer;
     width: 100%;
 }
-.icon-white{
+
+.icon-white {
     color: white;
 }
-.icon-black{
+
+.icon-black {
     color: black;
 }
-#outlet{
+
+#frame-perfil {
+    background:
+        linear-gradient(white 0 0) padding-box,
+        linear-gradient(44deg, #044BD9 0%, #00A6AB 100%) border-box;
+    color: #313149;
+    padding: 10px;
+    border: 5px solid transparent;
+    border-radius: 50%;
+    height: 160px;
+    width: 160px;
+    font-size: 50px;
+    color: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+}
+
+#outlet {
     max-height: calc(100vh - 100px);
 }
-#form{
+
+
+#form {
     background-color: white;
     border-radius: 5px;
     margin-top: 10px;
@@ -76,10 +104,12 @@
     padding: 5px;
     width: 100%;
 }
-#list{
+
+#list {
     height: calc(100vh - 275px);
     overflow: auto;
 }
+
 #list::-webkit-scrollbar {
     display: none;
-  }
+}

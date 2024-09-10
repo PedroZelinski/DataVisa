@@ -31,6 +31,15 @@ const Usuarios = () => {
       loadPending()
     }
   }, [controle])
+  async function userCadastro(email) {
+    try {
+      await DBClient.get("/dataVisa/user/getUser/" + email).then(
+        (res) => navigate('/config/cadastro', { state: res.data }))
+    } catch (error) {
+      alert("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
 
   async function deletarUser(user) {
     try {
@@ -47,21 +56,6 @@ const Usuarios = () => {
     }
   }
 
-  async function aceitarUser(user) {
-    const pendingUser = {
-      nome: user.nome,
-      email: user.email,
-      nivelAcesso: 3,
-      departamento: "Pendente",
-      departamentos: "Pendente",
-      empresaNome: user.empresaNome,
-      permissaoTabela: null,
-      pending: 1
-    }
-    //alert("to do")
-    navigate('/config/cadastro', { state: pendingUser })
-  }
-
   async function rejeitarUser(user) {
     DBClient.delete("/dataVisa/user/refusePendingUser",
       { data: { email: user.email } }).then((res) => {
@@ -70,17 +64,12 @@ const Usuarios = () => {
       })
   }
 
-  async function cadastroUser(user){
-    const cadastro = await DBClient.get("/dataVisa/user/getUser/"+user.email)
-    return cadastro
-  }
-
   return (
     <div id='form' style={{ backgroundColor: 'white' }}>
       <div className='grid'>
 
         <div className='col-3 font-bold'>
-          {location.pathname == "/config/usuarios" ? 
+          {location.pathname == "/config/usuarios" ?
             "Gerenciamento de usuarios" : "Usuarios Pendentes"}
           <input type="text" />
         </div>
@@ -96,15 +85,16 @@ const Usuarios = () => {
         {location.pathname == "/config/usuarios" ?
           <ListUser
             list={users}
+            userCadastro={userCadastro} 
             deletarUser={deletarUser}
             navigate={navigate}
-            setControle={setControle}
-            cadastroUser={cadastroUser} />
+            setControle={setControle} />
           :
           <ListPending
             list={users}
-            aceitarUser={aceitarUser}
+            userCadastro={userCadastro} 
             rejeitarUser={rejeitarUser}
+            navigate={navigate}
             setControle={setControle} />
         }
       </div>

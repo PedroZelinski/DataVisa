@@ -1,22 +1,11 @@
 import React, { Fragment, useEffect } from 'react'
 import DBClient from '../../utils/DBClient';
 
-const ListPending = ({ list, aceitarUser, rejeitarUser, setControle }) => {
+const ListPending = ({ list, userCadastro, rejeitarUser, navigate, setControle }) => {
 
   useEffect(() => {
     setControle(prevControle => prevControle + 1)
   }, []);
-
-  async function userCadastro(email) {
-    try {
-      await DBClient.get("/dataVisa/user/getUser/" + email).then(
-        (res) => {console.log(res.data) 
-          aceitarUser(res.data)})
-    } catch (error) {
-      alert("Ocorreu um erro: " + error.response.status + "\n" +
-        error.response.data)
-    }
-  }
 
   return (
     <Fragment>
@@ -37,7 +26,7 @@ const ListPending = ({ list, aceitarUser, rejeitarUser, setControle }) => {
             <div className='col-4'>{user.email}</div>
             <div className='col-2'>Data</div>
             <div className="col-2">
-              <button onClick={() => aceitarUser(user)}>Aceitar</button>
+              <button onClick={() => userCadastro(user.email)}>Aceitar</button>
               <button onClick={() => rejeitarUser(user)}>Rejeitar</button>
             </div>
           </Fragment>

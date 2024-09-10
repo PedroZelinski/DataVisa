@@ -7,18 +7,12 @@ import DBClient from '../../utils/DBClient'
 const Cadastro = () => {
     const navigate = useNavigate();
     const [value, setValue] = useState('');
-    const [nivel, setNivel] = useState('');
+    const [cargo, setCargo] = useState('');
     const [nvAdmin, setNvAdmin] = useState(false)
     const [nvAnalist, setNvAnalist] = useState(false)
     const location = useLocation();
     let user = location.state;
-    let niveis = user.departamentos.split(/\s*,\s*/)
-    // { id: 5, nome: "Vendedor", label: "5 - Vendedor" },
-    // { id: 4, nome: "Gerente", label: "4 - Gerente" },
-    // { id: 3, nome: "Financeiro", label: "3 - Financeiro" },
-    // { id: 2, nome: "Contabil", label: "2 - Contabil" },
-    // { id: 1, nome: "Administração", label: "1 - Adnistração" }
-
+    let cargos = user.departamentos.split(/\s*,\s*/)
 
     useEffect(() => {
         console.log(user)
@@ -28,7 +22,7 @@ const Cadastro = () => {
         if (user.nivelAcesso == 2) {
             setNvAnalist(true)
         }
-        setNivel(user.departamento)
+        setCargo(user.departamento)
     }, [])
 
     const handleChange = (event) => {
@@ -41,12 +35,10 @@ const Cadastro = () => {
             senha: user.senha,
             matricula: document.getElementById('matricula').value,
             empresaId: user.empresaId,
-            departamento: nivel,
-            permissaoTabela: user.permissaoTabela ? user.permissaoTabela : 0,
+            permissaoTabela: cargos.indexOf(cargo),
             nivelAcesso: nvAdmin == true ? 1 : nvAnalist == true ? 2 : 3,
-            pending: user.pending == 1 ? 1 : 0
         }
-        user.pending == 1 ? aprovaUser(dadosUsuario) : salvarUser(dadosUsuario);
+        user.permissaoTabela == 100 ? aprovaUser(dadosUsuario) : salvarUser(dadosUsuario);
         event.preventDefault();
     }
 
@@ -142,12 +134,8 @@ const Cadastro = () => {
             <div className='grid col-12'>
                 <div className='col-6'>
                     <label className='font-bold'>Cargo da Empresa
-                        <Dropdown value={nivel} options={niveis}
-
-                            onChange={(e) => {
-                                console.log(e.value)
-                                setNivel(e.value)
-                            }} />
+                        <Dropdown value={cargo} options={cargos}
+                            onChange={(e) => setCargo(e.value)} />
                     </label>
                 </div>
                 <div className="col-6">
