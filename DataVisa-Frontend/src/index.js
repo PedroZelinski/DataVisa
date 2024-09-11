@@ -7,15 +7,15 @@ import {
 } from 'react-router-dom'
 import Login from './pages/Login';
 import MenuInicial from './pages/MenuInicial';
-import Usuarios from './pages/subpages/Usuarios';
-import Cadastro from './pages/subpages/Cadastro';
-import Auditoria from './pages/subpages/Auditoria';
-import Perfil from './pages/subpages/Perfil';
-import Templates from './pages/subpages/Templates';
-import Conexoes from './pages/subpages/Conexoes';
+import Usuarios from './pages/subpage-config/Usuarios';
+import Cadastro from './pages/subpage-config/Cadastro';
+import Auditoria from './pages/subpage-config/Auditoria';
+import Perfil from './pages/subpage-menu/Perfil';
+import Templates from './pages/subpage-config/Templates';
+import Conexoes from './pages/subpage-config/Conexoes';
 import './index.css'
-import Recentes from './pages/subpages/Recentes';
-import Pesquisar from './pages/subpages/Pesquisar';
+import Recentes from './pages/subpage-menu/Recentes';
+import Pesquisar from './pages/subpage-menu/Pesquisar';
 
 const router = createBrowserRouter([
   {
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
         element: <Conexoes />
       },
       {
-        path: "cadastro",
+        path: "cadastro/:type",
         element: <Cadastro />
       },
     ]

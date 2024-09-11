@@ -4,7 +4,8 @@ import { Dropdown } from 'primereact/dropdown'
 import { InputSwitch } from 'primereact/inputswitch'
 import DBClient from '../../utils/DBClient'
 
-const Cadastro = () => {
+
+const CadastroUser = () => {
     const navigate = useNavigate();
     const [value, setValue] = useState('');
     const [cargo, setCargo] = useState('');
@@ -163,4 +164,4 @@ const Cadastro = () => {
     )
 }
 
-export default Cadastro
+export default CadastroUser

@@ -37,7 +37,7 @@ const Usuarios = () => {
   async function userCadastro(email) {
     try {
       await DBClient.get("/dataVisa/user/getUser/" + email).then(
-        (res) => navigate('/config/cadastro', { state: res.data }))
+        (res) => navigate('/config/cadastro/usuario', { state: res.data }))
     } catch (error) {
       alert("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
