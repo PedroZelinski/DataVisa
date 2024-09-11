@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
-import DBClient from '../../utils/DBClient';
 
-const ListPending = ({ list, userCadastro, rejeitarUser, navigate, setControle }) => {
+const ListPending = ({ list, userCadastro, confirmDelete, setControle }) => {
 
   useEffect(() => {
     setControle(prevControle => prevControle + 1)
@@ -27,7 +26,7 @@ const ListPending = ({ list, userCadastro, rejeitarUser, navigate, setControle }
             <div className='col-2'>Data</div>
             <div className="col-2">
               <button onClick={() => userCadastro(user.email)}>Aceitar</button>
-              <button onClick={() => rejeitarUser(user)}>Rejeitar</button>
+              <button onClick={() => confirmDelete(user)}>Rejeitar</button>
             </div>
           </Fragment>
         ))}

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import DBClient from '../../utils/DBClient.js'
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
+import DBClient from '../../utils/DBClient.js'
 import ListUser from '../../components/Config/ListUser.js'
 import ListPending from '../../components/Config/ListPending.js'
+
 
 const Usuarios = () => {
   const [users, setUsers] = useState([])
@@ -31,6 +33,7 @@ const Usuarios = () => {
       loadPending()
     }
   }, [controle])
+
   async function userCadastro(email) {
     try {
       await DBClient.get("/dataVisa/user/getUser/" + email).then(
@@ -39,6 +42,26 @@ const Usuarios = () => {
       alert("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
     }
+  }
+
+  const confirmDelete = (user) => {
+    const refuseMessage = 'Deseja mesmo recusar o cadastro de ' + user.nome + '?'
+    const deleteMessage = 'Deseja mesmo deletar o usuário ' + user.nome + '?'
+    confirmDialog({
+      message: user.nivelAcesso == 0 ? refuseMessage : deleteMessage,
+      header: 'Confirmar ação',
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      rejectLabel: "Não",
+      acceptLabel: "Sim",
+      accept() {
+        user.nivelAcesso == 0 ? rejeitarUser(user.email) : deletarUser(user)
+      },
+      reject() {
+        return
+      }
+    })
   }
 
   async function deletarUser(user) {
@@ -56,9 +79,9 @@ const Usuarios = () => {
     }
   }
 
-  async function rejeitarUser(user) {
+  async function rejeitarUser(userEmail) {
     DBClient.delete("/dataVisa/user/refusePendingUser",
-      { data: { email: user.email } }).then((res) => {
+      { data: { email: userEmail } }).then((res) => {
         setControle(prevControle => prevControle + 1);
         alert(res.data)
       })
@@ -66,6 +89,7 @@ const Usuarios = () => {
 
   return (
     <div id='form' style={{ backgroundColor: 'white' }}>
+      <ConfirmDialog />
       <div className='grid'>
 
         <div className='col-3 font-bold'>
@@ -78,23 +102,20 @@ const Usuarios = () => {
           <button onClick={() => {
             alteraModo(1)
             navigate('/menu')
-            console.log(location.pathname)
           }}>Menu</button>
         </div>
 
         {location.pathname == "/config/usuarios" ?
           <ListUser
             list={users}
-            userCadastro={userCadastro} 
-            deletarUser={deletarUser}
-            navigate={navigate}
+            userCadastro={userCadastro}
+            confirmDelete={confirmDelete}
             setControle={setControle} />
           :
           <ListPending
             list={users}
-            userCadastro={userCadastro} 
-            rejeitarUser={rejeitarUser}
-            navigate={navigate}
+            userCadastro={userCadastro}
+            confirmDelete={confirmDelete}
             setControle={setControle} />
         }
       </div>

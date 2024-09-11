@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
-import Cadastro from '../../pages/subpages/Cadastro';
-import DBClient from '../../utils/DBClient';
 
-const ListUser = ({ list, userCadastro, deletarUser, navigate, setControle }) => {
+const ListUser = ({ list, userCadastro, confirmDelete, setControle }) => {
 
     useEffect(() => {
         setControle(prevControle => prevControle + 1)
@@ -33,7 +31,7 @@ const ListUser = ({ list, userCadastro, deletarUser, navigate, setControle }) =>
                         <div className="col-2">
                             <button onClick={() => userCadastro(user.email)}>
                                 Editar</button>
-                            <button onClick={() => deletarUser(user)}>Deletar</button>
+                            <button onClick={() => confirmDelete(user)}>Deletar</button>
                         </div>
                     </Fragment>
                 ))}

@@ -107,7 +107,7 @@ const Cadastro = () => {
                         <div className="mt-1">
 
                             <label>Cargo da Empresa
-                                <input type="text" id='cargo' disabled
+                                <input type="text" id='cargo' placeholder='Pendente' disabled
                                     defaultValue={user.departamento} />
                             </label>
                         </div>
@@ -117,7 +117,8 @@ const Cadastro = () => {
                                     defaultValue={
                                         user.nivelAcesso == 1 ?
                                             "Administrador" : user.nivelAcesso == 2 ?
-                                                "Analista" : "Usuário"} />
+                                                "Analista" : "Usuário"} 
+                                    placeholder='Pendente'/>
                             </label>
                         </div>
                     </div>
