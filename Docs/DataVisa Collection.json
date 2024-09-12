@@ -262,6 +262,33 @@
 			"response": []
 		},
 		{
+			"name": "Test Connection",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tipoDb\": \"MySQL\",\r\n  \"nomeDb\": \"datavisa\",\r\n  \"usuarioDb\": \"root\",\r\n  \"senhaDb\": \"1234\",\r\n  \"hostName\": \"localhost\",\r\n  \"portDb\": 3306,\r\n  \"caminhoDb\": \"/pizzaria_db\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/database/testConnection",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"database",
+						"testConnection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add DB",
 			"request": {
 				"method": "POST",
@@ -312,13 +339,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DataVisa}}/database/getAll",
+					"raw": "{{DataVisa}}/database/getActives",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
 						"database",
-						"getAll"
+						"getActives"
 					]
 				}
 			},
