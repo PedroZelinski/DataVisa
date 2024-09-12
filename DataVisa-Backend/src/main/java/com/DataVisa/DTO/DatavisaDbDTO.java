@@ -1,7 +1,5 @@
 package com.DataVisa.DTO;
 
-import org.hibernate.type.descriptor.jdbc.SmallIntJdbcType;
-
 import com.DataVisa.Models.DBModel;
 
 import jakarta.persistence.GeneratedValue;

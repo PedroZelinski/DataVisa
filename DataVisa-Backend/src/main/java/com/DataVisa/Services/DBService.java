@@ -224,9 +224,25 @@ public class DBService{
 	}
 	
 	
-	public Pair<List<TableModel>, HttpStatus> testConnection(Long id) {
-	
-		return null;
+	public Pair<String, HttpStatus> testConnection(DBModel db) {
+		
+		Pair<String, HttpStatus> response;
+		
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return response;
+	    }
+		if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return response;
+	    }
+		
+		try (Connection connection = DriverManager.getConnection(createDbUrl(db), db.getUsuarioDb(), db.getSenhaDb())){
+			return Pair.of("Teste de conexão executado com sucesso!", HttpStatus.OK);
+			
+		} catch (NoSuchElementException e) {
+			return  Pair.of("Conexão não efetuada! \nErro: A conexão informada não existe!", HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return Pair.of("Conexão não efetuada! \nErro: " + e.getMessage() + " " + e.getClass().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	public Pair<List<TableModel>, HttpStatus> load(Long id) {
@@ -242,15 +258,17 @@ public class DBService{
 	}
 
 	public void setSessionConection(DBModel db) {
-		String port = String.valueOf(db.getPortDb());
-		String typeDB = db.getTipoDb().toLowerCase();
 		datavisaSession.setConexao(db.getId());				
-		datavisaSession.setDbUrl("jdbc:"+ typeDB + "://"+ db.getHostName() +":" + port + db.getCaminhoDb());
+		datavisaSession.setDbUrl(createDbUrl(db));
 		datavisaSession.setDbUser(db.getUsuarioDb());
 		datavisaSession.setDbName(db.getNomeDb());
 		datavisaSession.setDbPassword(db.getSenhaDb());
 		
 		datavisaSession.setConexaoAtiva(true);
+	}
+	
+	public String createDbUrl (DBModel db) {
+		return "jdbc:"+ db.getTipoDb().toLowerCase() + "://"+ db.getHostName() +":" + String.valueOf(db.getPortDb()) + db.getCaminhoDb();
 	}
 	
 }

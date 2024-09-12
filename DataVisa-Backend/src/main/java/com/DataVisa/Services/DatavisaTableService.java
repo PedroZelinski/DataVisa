@@ -1,8 +1,5 @@
 package com.DataVisa.Services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +9,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.DataVisa.DTO.DatavisaDbDTO;
 import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
-
-import tech.tablesaw.api.Table;
 
 @Service
 public class DatavisaTableService {
