@@ -24,7 +24,7 @@ const LoginHome = ({ alteraModo }) => {
                     senha: document.getElementById('senha').value,
                 }
             }).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     localStorage.setItem('session', JSON.stringify(res.data));
                     localStorage.setItem('modo', 1)
                     navigate('/menu/recentes')
@@ -54,7 +54,7 @@ const LoginHome = ({ alteraModo }) => {
                     <div style={{ width: 355, height: 35, padding: 12, opacity: 0.40, background: '#C1C7CB', borderRadius: 5, border: '1px #374957 solid', justifyContent: 'space-between', alignItems: 'center', display: 'inline-flex', marginBottom: '6px' }}>
                         <input 
                             className="input-field"
-                            placeholder="email@email.com"
+                            placeholder="Digite seu e-mail"
                             type="email"
                             id="email"
                             style={{ 
@@ -77,7 +77,7 @@ const LoginHome = ({ alteraModo }) => {
                     <div style={{width: 355, height: 35, padding: 12, opacity: 0.40, background: '#C1C7CB',borderRadius: 5, border: '1px #374957 solid', justifyContent: 'space-between',alignItems: 'center', display: 'inline-flex', marginBottom: '8px'}}>
                         <input
                             className="input-field"
-                            placeholder="Senha"
+                            placeholder="Digite sua senha"
                             type="password"
                             id="senha"
                             style={{
@@ -93,7 +93,7 @@ const LoginHome = ({ alteraModo }) => {
                     </div>
                 </div>
 
-                <div style={{ width: 62, height: 36, padding: 5, borderRadius: 5, border: '1px #171F25 solid', justifyContent: 'center', alignItems: 'center', gap: '10px', display: 'inline-flex', spacingStyle, marginBottom: '8px'}}>
+                <div style={{ width: 62, height: 36, padding: 10, borderRadius: 5, border: '1px #171F25 solid', justifyContent: 'center', alignItems: 'center', gap: '10px', display: 'inline-flex', spacingStyle, marginBottom: '8px'}}>
                     <input className="input-button"
                     type="submit"
                     value="Acessar"

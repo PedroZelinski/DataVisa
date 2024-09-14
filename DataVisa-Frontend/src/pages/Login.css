@@ -24,8 +24,8 @@ label, input{
 #panel{
     background: white;
     border-radius: 5px;
-    width: 70%;
-    height: 80%;
+    width: 75%;
+    height: 90%;
     font-size: 14px;
 }
 #waves{
@@ -37,5 +37,5 @@ label, input{
 #background{
     height: 100vh;
     margin: 0;
-    background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+    background: linear-gradient(44deg, #044BD9 0%, #00A6AB 87.25%);
 }
