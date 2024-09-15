@@ -17,17 +17,18 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className='grid justify-content-center' id='background'>
+      <div className='grid justify-content-center' id='background' style={{ height: '100vh', overflowY: 'scroll'}}>
 
-        <div className='grid mt-6' id="panel">
+        <div className='grid mt-6' id="panel" >
 
-          {this.state.modo == 1 ?
+        
+          {this.state.modo === 1 ?
             <LoginHome alteraModo={this.alteraModo} />
             :
-            this.state.modo == 2 ?
+            this.state.modo === 2 ?
               <LoginSenha alteraModo={this.alteraModo} />
               :
-              this.state.modo == 3 ?
+              this.state.modo === 3 ?
                 <LoginCadastro alteraModo={this.alteraModo} />
                 :
                 <LoginConfirmacao alteraModo={this.alteraModo} />

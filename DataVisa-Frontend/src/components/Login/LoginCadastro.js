@@ -7,7 +7,7 @@ const LoginCadastro = ({ alteraModo }) => {
     const [value, setValue] = useState('');
     const [businessList, setBusinessList] = useState([]);
     const [business, setBusiness] = useState('');
-    const spacingStyle = { marginBottom: '2px' };
+    const spacingStyle = { marginBottom: '16px' };
 
     useEffect(() => {
         DBClient.get("/dataVisa/business/getAll").then((res) => {
@@ -23,7 +23,7 @@ const LoginCadastro = ({ alteraModo }) => {
         const senha = document.getElementById('senha').value
         const confsenha = document.getElementById('confsenha').value
 
-        if (senha == confsenha) {
+        if (senha === confsenha) {
             const dadosUsuario = {
                 email: document.getElementById('email').value,
                 senha: senha,
@@ -43,7 +43,7 @@ const LoginCadastro = ({ alteraModo }) => {
             await DBClient.post('/dataVisa/user/addUser',
                 dadosUsuario
             ).then((res) => {
-                if (res.status == 200) {
+                if (res.status === 200) {
                     alteraModo(4)
                 }
             });
@@ -134,7 +134,7 @@ const LoginCadastro = ({ alteraModo }) => {
 
                 <div style={{width: '100%', height: '100%', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start',display: 'inline-flex'}}>
                     <div style={{ alignSelf: 'stretch', color: 'black',fontSize: '14px', fontFamily: 'Inter',fontWeight: '400', lineHeight: '21.84px',wordWrap: 'break-word', spacingStyle}}>
-                        Confirmar Senha
+                        Confirmar senha
                     </div>
                     <div style={{width: 381, height: 35, padding: 12, opacity: 0.40, background: '#C1C7CB',borderRadius: 5, border: '1px #374957 solid', justifyContent: 'space-between',alignItems: 'center', display: 'inline-flex', marginBottom: '8px'}}>
                         <input
@@ -155,7 +155,7 @@ const LoginCadastro = ({ alteraModo }) => {
                     </div>
                 </div>
 
-                <div style={{ width: 70, height: 36, padding: 10, borderRadius: 5, border: '1px #171F25 solid', justifyContent: 'center', alignItems: 'center', gap: 10, display: 'inline-flex', spacingStyle, marginBottom: '8px' }}>
+                <div style={{ width: 70, height: 36, padding: 10, borderRadius: 5, border: '1px #171F25 solid', justifyContent: 'center', alignItems: 'center', gap: 10, display: 'inline-flex', spacingStyle, marginBottom: '4px' }}>
                     <button type="submit"
                     style={{ color: '#171F25', fontSize: 14,fontFamily: 'Inter', fontWeight: '400',lineHeight: '37.44px', background: 'transparent', border: 'none', cursor: 'pointer', wordWrap: 'break-word'}}>
                         Cadastrar
