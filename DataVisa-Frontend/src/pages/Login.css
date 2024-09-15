@@ -2,16 +2,79 @@ label, input{
     display:flex;
     flex-direction:column;
 }
-.input-field{
-    width: 90%;
-    height: 30px;
-    opacity: 0.60;
-    background: #C1C7CB;
-    border-radius: 5px;
-    border: 1px #374957 solid;
+label{
+    align-self: stretch;
+    color: black;
     font-size: 14px;
     font-weight: 400;
+    line-height: 21.84px;
+    word-wrap: break-word;
 }
+
+.header-div{
+    color: black;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 25px;
+    word-wrap: break-word;
+    margin-left: 20px;
+}
+
+.input-div{
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex;
+}.input-field{
+    width: 90%;
+    border-radius: 5px;
+    border: 1px #374957 solid;
+    height: 35px;
+    opacity: 0.60;
+    background: #C1C7CB;
+    font-size: 14px;
+    font-weight: 400;
+    flex: 1 1 0;
+    outline: none;
+    line-height: 21.84px;
+    padding-left: 12px;
+}.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover, 
+.input-field:-webkit-autofill:focus, 
+.input-field:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #C1C7CB inset !important;
+}
+
+.submit-div{
+    height: 36px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px #171F25 solid;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+    margin-bottom: 4px;
+    word-spacing: 4px;
+}.submit-btn{
+    color: #171F25;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 37.44px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    word-wrap: break-word;
+}
+
+#cadastro-form{
+    margin-left: 13px;
+    height: calc(100vh - 270px);
+    overflow: auto;
+}#cadastro-form::-webkit-scrollbar {
+    display: none;
+}
+
 .link{
     text-decoration: none; 
     color: #044BD9;

@@ -18,7 +18,6 @@
     border: solid 2px;
 }
 
-
 #side-config {
     background-color: #C1C7CB;
     min-height: calc(100vh - 100px);
@@ -93,7 +92,6 @@
     max-height: calc(100vh - 100px);
 }
 
-
 #form {
     background-color: white;
     border-radius: 5px;
@@ -108,8 +106,6 @@
 #list {
     height: calc(100vh - 275px);
     overflow: auto;
-}
-
-#list::-webkit-scrollbar {
+}#list::-webkit-scrollbar {
     display: none;
 }

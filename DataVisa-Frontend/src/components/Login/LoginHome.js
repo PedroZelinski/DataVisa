@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 import logo from '../../assets/logoOriginal.png'
 
-const LoginHome = ({ alteraModo }) => {
+const LoginHome = ({ alteraModo, exibeMensagem }) => {
     const navigate = useNavigate();
     const [value, setValue] = React.useState('');
 
@@ -19,56 +19,63 @@ const LoginHome = ({ alteraModo }) => {
         try {
             await DBClient.get('/dataVisa/user/login', {
                 headers: {
-                    email:document.getElementById('email').value,
+                    email: document.getElementById('email').value,
                     senha: document.getElementById('senha').value,
                 }
             }).then((res) => {
                 if (res.status == 200) {
                     localStorage.setItem('session', JSON.stringify(res.data));
-                    localStorage.setItem('modo', 1)
                     navigate('/menu/recentes')
                 }
             });
         } catch (error) {
-            alert("Ocorreu um erro: "+error.response.status+"\n"+
-                error.response.data.mensagemRetorno)
+            exibeMensagem("Ocorreu um erro: " 
+                + error.response.status + " - " 
+                + error.response.data.mensagemRetorno)
             console.log(error)
         }
     }
 
     return (
         <div className='col-6'>
-            <img src={logo} alt="Logo" id="logo-login" /><br />
+            <img src={logo} alt="Logo" id="logo-login" />
+            <div className='header-div mt-2' >
+                Digite seu e-mail e senha, para acessar sua conta.
+            </div>
 
-            <form onSubmit={onFormSubmit} onChange={handleChange} 
-            style={{marginLeft: '20px', marginTop: '10px'}}>
-                <div className='mt-1 font-bold' >
-                    Digite seu e-mail e senha, para acessar sua conta</div>
-                <div className='field-div'>
-                    <label>Email
-                        <input className="input-field" placeholder="email@email.com" 
-                            type="email" id="email" />
+            <form onSubmit={onFormSubmit} onChange={handleChange}
+                style={{ marginLeft: '20px', marginTop: '10px' }}>
+
+                <div className='mt-1'>
+                    <label>E-mail
+                        <div className="input-div">
+                            <input className='input-field' placeholder="Digite seu e-mail"
+                                type="email" id="email" />
+                        </div>
                     </label>
                 </div>
 
-                <div className='mt-1'>
+                <div className='mt-2'>
                     <label>Senha
-                        <input className="input-field" placeholder="Senha"
-                            type="password" id="senha" />
+                        <div className="input-div">
+                            <input className="input-field" placeholder="Digite sua senha"
+                                type="password" id="senha" />
+                        </div>
                     </label>
                 </div>
 
-                <div className='mt-1'>
-                    <input className="input-button"
+                <div className='submit-div mt-2'>
+                    <input className="submit-btn"
                         type="submit"
                         value="Acessar" />
                 </div>
 
-                <div className='mt-1'>
+                <div className='mt-2'>
                     Esqueceu sua senha?
                     <a onClick={() => alteraModo(2)}
                         className="link"> Clique aqui</a>
-                    <br />
+                </div>
+                <div className="mt-2">
                     Ainda não possui conta?
                     <a onClick={() => alteraModo(3)}
                         className="link"> Cadastre-se</a>
