@@ -121,7 +121,7 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
                 </div>
 
             </form>
-            <div className='mt-3' style={{ marginLeft: '20px' }}>
+            <div className='mt-2' style={{ marginLeft: '20px' }}>
                 Já possui conta?
                 <a onClick={() => alteraModo(1)}
                     className="link"> Clique aqui</a>

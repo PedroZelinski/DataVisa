@@ -72,6 +72,7 @@
     color: white;
     font-weight: 700;
     padding: 10px;
+    cursor: pointer;
 }
 .cadastro-btn-green {
     border: none;
@@ -80,6 +81,7 @@
     color: white;
     font-weight: 700;
     padding: 10px;
+    cursor: pointer;
 
 } 
 .cadastro-btn-red {
@@ -89,6 +91,7 @@
     color: white;
     font-weight: 700;
     padding: 10px;
+    cursor: pointer;
 }
 .cadastro-btn-color{
     border: none;
@@ -97,6 +100,7 @@
     color: white;
     font-weight: 700;
     padding: 10px;
+    cursor: pointer;
 }
 
 .icon-white {
@@ -135,6 +139,15 @@
     padding: 5px;
     width: 100%;
 }
+.scroll{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    padding: 10px;
+}.scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* SUBSTITUIR A CLASSE ABAIXO PELA DE CIMA */
 
 #list {
     height: calc(100vh - 275px);

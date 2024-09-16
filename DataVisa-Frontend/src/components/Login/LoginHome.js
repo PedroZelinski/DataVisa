@@ -50,7 +50,7 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
                     <label>E-mail
                         <div className="input-div">
                             <input className='input-field' placeholder="Digite seu e-mail"
-                                type="email" id="email" />
+                                type="email" id="email" required/>
                         </div>
                     </label>
                 </div>
@@ -59,7 +59,7 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
                     <label>Senha
                         <div className="input-div">
                             <input className="input-field" placeholder="Digite sua senha"
-                                type="password" id="senha" />
+                                type="password" id="senha" required/>
                         </div>
                     </label>
                 </div>

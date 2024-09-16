@@ -145,7 +145,9 @@ const CadastroUser = ({ exibeMensagem }) => {
                         <Dropdown value={cargo} options={cargos}
                             onChange={(e) => setCargo(e.value)} 
                             style={{ width: "90%", background: '#EBEDEE', 
-                            border: '1px #374957 solid', opacity: '0.60'}}/>
+                            border: '1px #374957 solid', opacity: '0.60'}}
+                            scrollHeight='125px'
+                            virtualScrollerOptions={{itemSize: 40}}/>
                     </label>
                 </div>
 

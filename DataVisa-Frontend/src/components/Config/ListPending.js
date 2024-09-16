@@ -11,8 +11,8 @@ const ListPending = ({ list, userCadastro, confirmDelete, setControle }) => {
       <div className='grid col-12 font-bold'>
         <div className='col-1 text-center'>N°</div>
         <div className='col-3 text-center'>Nome</div>
-        <div className='col-4 text-center'>Email</div>
-        <div className='col-2 text-center'>Data de Solicitação</div>
+        <div className='col-3 text-center'>Email</div>
+        <div className='col-3 text-center'>Data de Solicitação</div>
         <div className='col-2 text-center'>Ações</div>
       </div>
       <div className='col-12'><hr /></div>
@@ -22,8 +22,8 @@ const ListPending = ({ list, userCadastro, confirmDelete, setControle }) => {
           <Fragment key={user.email}>
             <div className='col-1 mt-2'>{list.indexOf(user) + 1}</div>
             <div className='col-3 mt-2'>{user.nome}</div>
-            <div className='col-4 mt-2'>{user.email}</div>
-            <div className='col-2 mt-2'>Data</div>
+            <div className='col-3 mt-2'>{user.email}</div>
+            <div className='col-3 mt-2'>Data</div>
             <div className='col-2'>
               <button onClick={() => userCadastro(user.email)}
                 className='cadastro-btn-green ml-2'>
