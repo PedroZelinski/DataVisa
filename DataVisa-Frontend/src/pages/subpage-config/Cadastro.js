@@ -1,37 +1,23 @@
-import React, { useState, useEffect, Fragment } from 'react'
-import { useLocation } from 'react-router-dom'
+import React from 'react'
+import { useLocation, useOutletContext } from 'react-router-dom'
 import CadastroUser from '../../components/Config/CadastroUser'
 import CadastroDb from '../../components/Config/CadastroDb';
 
 const Cadastro = () => {
+    const [session, alteraModo, exibeMensagem] = useOutletContext();
     const location = useLocation();
 
     switch (location.pathname) {
         case "/config/cadastro/usuario":
-            return <CadastroUser />
+            return <CadastroUser exibeMensagem={exibeMensagem}/>
             break;
         case "/config/cadastro/conexao":
-            return <CadastroDb />
+            return <CadastroDb exibeMensagem={exibeMensagem}/>
             break;
-
         default:
             return alert("Pagina não encontrada")
             break;
     }
-    // return (
-    //     <Fragment>
-    //         {switch (location.pathname) {
-    //             case "/config/cadastro/usuario":
-    //                 return <CadastroUser />
-    //                 break;
-            
-    //             default:
-    //                 break;
-    //         }}
-    //         <CadastroUser />
-
-    //     </Fragment>
-    // )
 }
 
 export default Cadastro

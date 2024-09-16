@@ -4,7 +4,7 @@ import DBClient from '../../utils/DBClient';
 
 const Conexoes = () => {
   const [dbs, setDbs] = useState([])
-  const [session, alteraModo] = useOutletContext();
+  const [session, alteraModo, exibeMensagem] = useOutletContext();
   const [controle, setControle] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();

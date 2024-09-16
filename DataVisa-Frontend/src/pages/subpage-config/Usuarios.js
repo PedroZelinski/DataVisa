@@ -9,7 +9,7 @@ import ListPending from '../../components/Config/ListPending.js'
 const Usuarios = () => {
   const [users, setUsers] = useState([])
   const [controle, setControle] = useState(0);
-  const [session, alteraModo] = useOutletContext();
+  const [session, alteraModo, exibeMensagem] = useOutletContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const Usuarios = () => {
       await DBClient.get("/dataVisa/user/getUser/" + email).then(
         (res) => navigate('/config/cadastro/usuario', { state: res.data }))
     } catch (error) {
-      alert("Ocorreu um erro: " + error.response.status + "\n" +
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
     }
   }
@@ -59,7 +59,7 @@ const Usuarios = () => {
         user.nivelAcesso == 0 ? rejeitarUser(user.email) : deletarUser(user)
       },
       reject() {
-        return
+        return 
       }
     })
   }
@@ -71,25 +71,24 @@ const Usuarios = () => {
       ).then((res) => {
         console.log(res)
         setControle(prevControle => prevControle + 1);
-        alert(res.data)
+        exibeMensagem(res.data)
       });
     } catch (error) {
-      alert("Ocorreu um erro: " + error.response.status + "\n"
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
         + error.response.data)
     }
   }
 
   async function rejeitarUser(userEmail) {
-    DBClient.delete("/dataVisa/user/refusePendingUser",
+    await DBClient.delete("/dataVisa/user/refusePendingUser",
       { data: { email: userEmail } }).then((res) => {
         setControle(prevControle => prevControle + 1);
-        alert(res.data)
+        exibeMensagem(res.data)
       })
   }
 
   return (
     <div id='form' style={{ backgroundColor: 'white' }}>
-      <ConfirmDialog />
       <div className='grid'>
 
         <div className='col-3 font-bold'>
@@ -99,7 +98,7 @@ const Usuarios = () => {
         </div>
 
         <div className='col-1 col-offset-8'>
-          <button onClick={() => {
+          <button className='cadastro-btn-blue' onClick={() => {
             alteraModo(1)
             navigate('/menu')
           }}>Menu</button>

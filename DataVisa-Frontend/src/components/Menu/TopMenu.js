@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { OverlayPanel } from 'primereact/overlaypanel'
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
 import logo from '../../assets/logoBranco.png'
 
-const TopMenu = ({ alteraModo, nivel }) => {
+const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
     const navigate = useNavigate();
     const user = useRef(null);
     const config = useRef(null);
@@ -19,23 +20,38 @@ const TopMenu = ({ alteraModo, nivel }) => {
             navigate('/menu/' + path)
         }
         panel.current.toggle(e)
-
     }
-
+    const confirmLogout = () => {
+        confirmDialog({
+            message: "Deseja mesmo deslogar?",
+            header: 'Confirmar ação',
+            icon: 'pi pi-info-circle',
+            defaultFocus: 'reject',
+            acceptClassName: 'p-button-danger',
+            rejectLabel: "Não",
+            acceptLabel: "Sim",
+            accept() {
+                deslogar()
+            },
+            reject() {
+                return
+            }
+        })
+    }
     async function deslogar() {
         try {
             await DBClient.get('/dataVisa/user/logout').then(
                 (res) => {
                     console.log(res)
                     if (res.status == 200) {
+                        exibeMensagem(res.data)
                         localStorage.clear()
-                        alert(res.data)
                         navigate("/")
                     }
                 }
             )
         } catch (error) {
-            alert("Ocorreu um erro: " + error.response.status + "\n" +
+            exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
                 error.response.data)
             console.log(error)
         }
@@ -43,6 +59,7 @@ const TopMenu = ({ alteraModo, nivel }) => {
 
     return (
         <div id='top-menu' className='grid col-12'>
+            <ConfirmDialog />
             <div className='col-2 flex align-items-center justify-content-center mt-3'>
                 <img src={logo} alt="Logo" id="logo-menu" onClick={() => {
                     alteraModo(1)
@@ -103,7 +120,7 @@ const TopMenu = ({ alteraModo, nivel }) => {
                             onClick={(e) => { navegar(e, user, "perfil") }}>Ver Perfil</button>
                         <br />
                         <button className='top-menu-btn-2'
-                            onClick={() => deslogar()}>Sair</button>
+                            onClick={() => confirmLogout(exibeMensagem)}>Sair</button>
                     </div>
                 </OverlayPanel>
             </div>

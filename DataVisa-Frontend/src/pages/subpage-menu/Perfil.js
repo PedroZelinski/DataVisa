@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router-dom'
 import user from '../../assets/user.png'
 
 const Perfil = () => {
-  const [session, alteraModo] = useOutletContext();
+  const [session, alteraModo, exibeMensagem] = useOutletContext();
 
   return (
     <div className='col-12'>

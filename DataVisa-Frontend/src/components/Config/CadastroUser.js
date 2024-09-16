@@ -5,7 +5,7 @@ import { InputSwitch } from 'primereact/inputswitch'
 import DBClient from '../../utils/DBClient'
 
 
-const CadastroUser = () => {
+const CadastroUser = ({ exibeMensagem }) => {
     const navigate = useNavigate();
     const [value, setValue] = useState('');
     const [cargo, setCargo] = useState('');
@@ -47,12 +47,12 @@ const CadastroUser = () => {
         try {
             await DBClient.put("/dataVisa/user/aprovePendingUser", dadosUsuario).then((res) => {
                 console.log(res)
-                alert(res.data)
+                exibeMensagem(res.data)
                 navigate("/config/usuarios")
             })
 
         } catch (error) {
-            alert("Ocorreu um erro: " + error.response.status + "\n"
+            exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
                 + error.response.data)
         }
     }
@@ -63,7 +63,7 @@ const CadastroUser = () => {
                 dadosUsuario
             ).then((res) => {
                 console.log(res)
-                alert(res.data)
+                exibeMensagem(res.data)
                 navigate("/config/usuarios")
             })
         } catch (error) {
@@ -77,87 +77,99 @@ const CadastroUser = () => {
             <div className='font-bold'>Cadastro do usuário</div>
             <form onSubmit={onFormSubmit} onChange={handleChange}>
                 <div className='grid col-12'>
+
                     <div className="col-5">
-                        <div className="mt-1">
-                            <label>Nome Completo
-                                <input type="text" id="nome" placeholder="Nome"
+                        <label>Nome Completo
+                            <div className="input-div">
+                                <input className="input-field" style={{background: '#EBEDEE'}}
+                                    type="text" id="nome" placeholder="Nome"
                                     defaultValue={user.nome} required />
-                            </label>
-                        </div>
-                        <div className="mt-1">
-                            <label>Matricula
-                                <input type="text" id="matricula" placeholder='Matricula'
+                            </div>
+                        </label>
+                        <label>Matricula
+                            <div className="input-div" >
+                                <input className='input-field' style={{background: '#EBEDEE'}}
+                                    type="text" id="matricula" placeholder='Matricula'
                                     defaultValue={user.matricula} required />
-                            </label>
-                        </div>
-                        <div className="mt-1">
-                            <label>Empresa
-                                <input type="text" id='empresa' placeholder='Pendente'
-                                    defaultValue={user.empresaNome} disabled/>
-                            </label>
-                        </div>
+                            </div>
+                        </label>
+                        <label>Empresa
+                            <div className="input-div">
+                                <input className='input-field' style={{background: '#BAC3CC'}}
+                                    type="text" id='empresa' placeholder='Pendente'
+                                    defaultValue={user.empresaNome} disabled />
+                            </div>
+                        </label>
                     </div>
 
                     <div className="col-5">
-                        <div className="mt-1">
-                            <label>E-mail
-                                <input type="email" id="email" placeholder="E-mail"
+                        <label>E-mail
+                            <div className="input-div">
+                                <input className='input-field' style={{background: '#EBEDEE'}}
+                                    type="email" id="email" placeholder="E-mail"
                                     defaultValue={user.email} required />
-                            </label>
-                        </div>
-                        <div className="mt-1">
-
-                            <label>Cargo da Empresa
-                                <input type="text" id='cargo' placeholder='Pendente' disabled
+                            </div>
+                        </label>
+                        <label>Cargo da Empresa
+                            <div className="input-div">
+                                <input className='input-field' style={{background: '#BAC3CC'}}
+                                    type="text" id='cargo' placeholder='Pendente' disabled
                                     defaultValue={user.departamento} />
-                            </label>
-                        </div>
-                        <div className="mt-1">
-                            <label>Nivel de Acesso
-                                <input type="text" id="nivel" disabled
+                            </div>
+                        </label>
+                        <label>Nivel de Acesso
+                            <div className="input-div">
+                                <input className='input-field' style={{background: '#BAC3CC'}}
+                                    type="text" id="nivel" disabled
                                     defaultValue={
                                         user.nivelAcesso == 1 ?
                                             "Administrador" : user.nivelAcesso == 2 ?
-                                                "Analista" : "Usuário"} 
-                                    placeholder='Pendente'/>
-                            </label>
-                        </div>
+                                                "Analista" : "Usuário"}
+                                    placeholder='Pendente' />
+                            </div>
+                        </label>
                     </div>
-
                     <div className="col-2">
-                        <input className="input-button"
+                        <input className="cadastro-btn-color"
                             type="submit"
                             value="Salvar"></input>
                     </div>
+
                 </div>
             </form>
 
             <div className='font-bold'>Permissões do usuario</div>
-            <div className='grid col-12'>
-                <div className='col-6'>
+            <div className='grid nested-grid col-12'>
+                <div className='col-5'>
                     <label className='font-bold'>Cargo da Empresa
                         <Dropdown value={cargo} options={cargos}
-                            onChange={(e) => setCargo(e.value)} />
+                            onChange={(e) => setCargo(e.value)} 
+                            style={{ width: "90%", background: '#EBEDEE', 
+                            border: '1px #374957 solid', opacity: '0.60'}}/>
                     </label>
                 </div>
-                <div className="col-6">
-                    <div className='font-bold'>Nivel de acesso</div>
-                    <label>Administrador
+
+                <div className="grid col-6">
+                    <div className='font-bold col-12'>Nivel de acesso</div>
+                    <div className="col-4">Administrador</div>
+                    <div className="col-8">
                         <InputSwitch checked={nvAdmin} onChange={(e) => {
                             setNvAdmin(e.value)
                             if (e.value == true) {
                                 setNvAnalist(!e.value)
                             }
                         }} />
-                    </label>
-                    <label>Analista de Dados
+                    </div>
+
+                    <div className="col-4">Analista de Dados</div>
+                    <div className="col-8">
                         <InputSwitch checked={nvAnalist} onChange={(e) => {
                             setNvAnalist(e.value)
                             if (e.value == true) {
                                 setNvAdmin(!e.value)
                             }
                         }} />
-                    </label>
+                    </div>
                 </div>
             </div>
         </div>

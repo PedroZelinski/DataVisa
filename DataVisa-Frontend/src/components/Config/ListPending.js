@@ -20,13 +20,17 @@ const ListPending = ({ list, userCadastro, confirmDelete, setControle }) => {
       <div className="grid col-12 overflow-auto text-center justify-content-center" id='list'>
         {list.map((user) => (
           <Fragment key={user.email}>
-            <div className='col-1'>{list.indexOf(user) + 1}</div>
-            <div className='col-3'>{user.nome}</div>
-            <div className='col-4'>{user.email}</div>
-            <div className='col-2'>Data</div>
-            <div className="col-2">
-              <button onClick={() => userCadastro(user.email)}>Aceitar</button>
-              <button onClick={() => confirmDelete(user)}>Rejeitar</button>
+            <div className='col-1 mt-2'>{list.indexOf(user) + 1}</div>
+            <div className='col-3 mt-2'>{user.nome}</div>
+            <div className='col-4 mt-2'>{user.email}</div>
+            <div className='col-2 mt-2'>Data</div>
+            <div className='col-2'>
+              <button onClick={() => userCadastro(user.email)}
+                className='cadastro-btn-green ml-2'>
+                Aceitar</button>
+              <button onClick={() => confirmDelete(user)}
+                className='cadastro-btn-red ml-2'>
+                Rejeitar</button>
             </div>
           </Fragment>
         ))}
