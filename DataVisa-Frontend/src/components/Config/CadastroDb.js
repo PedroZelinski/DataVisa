@@ -12,9 +12,10 @@ const CadastroDb = () => {
     setValue(event.target.value);
   }
   const onFormSubmit = (event) => {
-    alert("teste")
+    alert("to do")
     event.preventDefault();
   }
+
   return (
     <div className='col-12'>
 
@@ -35,14 +36,13 @@ const CadastroDb = () => {
 
       <div className="scroll">
 
-        <form id='cadastro' onChange={{ handleChange }} onSubmit={{ onFormSubmit }}>
-          <div className='grid col-12'
-            style={{ background: 'white', borderRadius: '5px' }}>
+        <form id='cadastro' onChange={handleChange} onSubmit={onFormSubmit}>
+          <div className='cadastro-area grid col-12'>
 
             <div className="col-5">
               <label>Nome da Conexao
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="nome" placeholder="Nome para a conexao"
                     defaultValue={"Conexao"} required />
                 </div>
@@ -51,22 +51,22 @@ const CadastroDb = () => {
                 <Dropdown value={tipo} options={tipos}
                   onChange={(e) => setTipo(e.value)}
                   style={{
-                    width: "90%", background: '#EBEDEE', height: '35px',
-                    border: '1px #374957 solid', opacity: '0.60'
+                    width: "90%", background: '#EBEDEE',
+                    border: '1px #374957 solid', opacity: '0.60',
                   }}
                   scrollHeight='125px'
                   virtualScrollerOptions={{ itemSize: 35 }} />
               </label>
               <label>Nome do banco de dados
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="nomedb" placeholder="Nome da instância do banco"
                     defaultValue={"Nome BD"} required />
                 </div>
               </label>
               <label>Usuario do banco de dados
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="userdb" placeholder="Nome do usuário do banco"
                     defaultValue={"root"} required />
                 </div>
@@ -76,63 +76,58 @@ const CadastroDb = () => {
             <div className="col-5">
               <label>Porta
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="portdb" placeholder="Porta do banco de dados"
                     defaultValue={"8080"} required />
                 </div>
               </label>
               <label>Dominio
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="hostdb" placeholder="Dominio do banco de dados"
                     defaultValue={"localhost"} required />
                 </div>
               </label>
               <label>Caminho
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="caminhodb" placeholder="Caminho do banco de dados"
                     defaultValue={"/db"} required />
                 </div>
               </label>
               <label>Senha
                 <div className="input-div">
-                  <input className="input-field" style={{ background: '#EBEDEE' }}
+                  <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="password" id="senhadb" placeholder="Senha do usuario do banco"
                     required />
                 </div>
               </label>
+            </div>
+            <div className="relative col-1 col-offset-1 h-auto">
+              <button className="cadastro-btn-blue absolute bottom-0 mb-1">Testar</button>
             </div>
           </div>
         </form>
 
         <div className="grid nested-grid col-6 mt-3">
           Permissões de tabela
-          <div className='col-12'>
-            <input type="text" />
-          </div>
-          <div className="grid col-12 mt-2" style={{ background: 'white', borderRadius: '5px' }}>
-            <div className="col-8" >
-              Nome da tabela
-            </div>
-            <div className="col-4">
-              Nivel de Acesso
-            </div>
-            <div className="col-8" >
-              Nome da tabela
-            </div>
-            <div className="col-4">
-              Nivel de Acesso
-            </div>
-            <div className="col-8" >
-              Nome da tabela
-            </div>
-            <div className="col-4">
-              Nivel de Acesso
-            </div>
-          </div>
-        </div>
 
+          <div className='cadastro-area grid col-12 mt-2'>
+            <i className='fi fi-rr-search mr-2' />
+            <input type="text" placeholder="Pesquisar por tabela"
+              style={{ border: 'none', height: '100%' }} />
+          </div>
+
+          <div className="cadastro-area grid col-12 mt-2">
+            <div className="col-8" >
+              Nome da tabela
+            </div>
+            <div className="col-4">
+              Nivel de Acesso
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   )
