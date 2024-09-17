@@ -86,7 +86,7 @@ create table conexoes(
 );
 
 INSERT INTO conexoes (nomeConexao, tipoDb, nomeDb, usuarioDb, senhaDb, hostName , portDb, caminhoDb, isActive, empresaId) VALUES
-('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db',1, 8),
+/*('Pizzaria_Conexao1', 'MySQL', 'Pizzaria_db', 'root', '1234', 'localhost', 3306, '/pizzaria_db',1, 8),*/
 ('Renner_Conexao1', 'MySQL', 'db_renner_1', 'root', '1234', 'localhost', 3306, '/db_renner_1',1, 3),
 ('Pizzaria_Conexao2', 'MySQL', 'Pizzaria_db2', 'root', '1234', 'localhost', 3306, '/pizzaria_db',0, 8);
 
@@ -129,6 +129,7 @@ INSERT INTO Pizzaria_permissoes (permissao_tabela, nome, empresaId) VALUES
 (1, 'Gerente', 8),
 (2, 'Atendente', 8);
 
+/*
 CREATE TABLE tabelas_Pizzaria_db (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(60),
@@ -145,6 +146,7 @@ INSERT INTO tabelas_Pizzaria_db (nome, conexaoId, permissaoAcesso) VALUES
 ('NotasFiscais', 1, 1),
 ('Vendas', 1, 2),
 ('Financeiro', 1, 0);
+*/
 
 CREATE TABLE templates (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
