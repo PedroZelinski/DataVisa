@@ -50,11 +50,15 @@ public class DBService{
 				throw new IllegalArgumentException("Banco já cadastrado.");
 			}
 			
-			databaseRepository.save(database);
+			database = databaseRepository.save(database);
+			setConnection(database.getId());
+			tableSawService.addPermitionsTable(database);
 			
-			Pair.of("Banco cadastrado com sucesso!",HttpStatus.OK);
+			 response = Pair.of("Banco cadastrado com sucesso!",HttpStatus.OK);
 			
 		} catch (Exception ex){
+			database = databaseRepository.findByNomeDb(database.getNomeDb());
+			databaseRepository.delete(database);
 			response = Pair.of("Ocorreu um erro, Banco não cadastrado! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			return response; 
 		}
@@ -77,6 +81,7 @@ public class DBService{
                 throw new RuntimeException("Usuário não encontrado.");
             }
 			
+			tableSawService.deletePermitionsTable(database);
 			databaseRepository.delete(database);
 			
 			//Verifica se o banco foi excluido

@@ -3,6 +3,7 @@ package com.DataVisa.Services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.DatavisaDbDTO;
+import com.DataVisa.Models.DBModel;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
 
@@ -122,7 +124,7 @@ public class TableSawService {
 		if (!response.getRight().equals(HttpStatus.ACCEPTED))
 			return response;
 		
-		String query = "select * from " + tabela;
+		String query = "select " + campo + " from " + tabela;
 		
 		try {
 			//retorna os dados de uma coluna específica da tabela
@@ -157,32 +159,36 @@ public class TableSawService {
 			return "Erro: " + e.getMessage();
 		}
 	}
+		
+	public void addPermitionsTable(DBModel db) throws Exception {
+		String query;
+		try {
+			query = "CREATE TABLE tabelas_" + db.getNomeDb() +" ("
+					+ " id BIGINT PRIMARY KEY AUTO_INCREMENT, "
+					+ " nome VARCHAR(60), "
+					+ " conexaoId BIGINT, "
+					+ " permissaoAcesso INT, "
+					+ " FOREIGN KEY (conexaoId) REFERENCES conexoes(id) "
+					+ " ); ";
+			String[] tabelas = getConnecionTables().getLeft().split("\n");
+			executeQueryDatavisa(query); 
+			for (String tabela : tabelas) {
+				query  = "INSERT INTO tabelas_" + db.getNomeDb() 
+				+ " (nome, conexaoId, permissaoAcesso) VALUES ('" + tabela + "', " + db.getId() + ", " + getPermitionCount(getNomeEmpresa(db.getEmpresaId())) +");";
+				executeQueryDatavisa(query);
+			}
+		} catch (Exception e) {
+			query = "DROP TABLE tabelas_" + db.getNomeDb();
+			executeQueryDatavisa(query);
+			throw new Exception(e);
+		}
+	}
 	
-	
-//	public Optional<String> addBusinessTables(TableModel database) {
-//
-//			String status = checkPermitions(tabela);
-//			if (!status.isEmpty())
-//				return status;
-//			
-//			String query = "select * from " + tabela;
-//			StringBuilder retorno = new StringBuilder();
-//			
-//			try {
-//				Table table = getClientTable(query, tabela);
-//				
-//				for (int i = 0; i < table.columnCount(); i++) {
-//				//retorna os nomes das colunas existentes na tabbela
-//				retorno.append("Nome da coluna: " + table.columnNames().get(i) );
-//				//retorna os tipos das colunas existentes na tabela
-//				retorno.append(" | Tipo: " + table.typeArray()[i] + "\n");
-//				}
-//				return retorno.toString();
-//				
-//			} catch (Exception e) {
-//				return "Erro: " + e.getMessage();
-//			}
-//		}
+	public void deletePermitionsTable(DBModel db) throws Exception {
+		String query;
+			query = "DROP TABLE tabelas_" + db.getNomeDb();
+			executeQueryDatavisa(query); 
+	}
 	
 	public Table getDatavisaTable(String query, String tableName) throws Exception {
 		Connection datavisaConnection = dBService.DatavisaConnection();
@@ -191,6 +197,13 @@ public class TableSawService {
 		Table table = Table.read().db(rs, tableName);
 		datavisaConnection.close();
 		return table;
+	}
+	
+	public void executeQueryDatavisa(String query) throws Exception {
+		Connection datavisaConnection = dBService.DatavisaConnection();
+		Statement stmt = datavisaConnection.createStatement();
+		stmt.executeUpdate(query);
+		datavisaConnection.close();
 	}
 	
 	private Pair<String, HttpStatus> checkTablePermitions(String tabela) {	
@@ -229,6 +242,13 @@ public class TableSawService {
 		String departamento = getDatavisaTable(query , nomeEmpresa +"_permissoes").stringColumn("nome").print();
 		departamento = departamento.substring(departamento.indexOf('\n') + 1).trim();
 		return departamento;
+		
+	}
+	
+	public String getPermitionCount (String nomeEmpresa) throws Exception {
+		String query = "select permissao_tabela from " + nomeEmpresa + "_permissoes ";
+		int permissoes = getDatavisaTable(query , nomeEmpresa +"_permissoes").rowCount();
+		return String.valueOf(permissoes);
 		
 	}
 	

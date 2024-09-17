@@ -10,6 +10,9 @@ import com.DataVisa.Models.DBModel;
 @Repository
 public interface DBRepository extends JpaRepository<DBModel, Long>{
 
-	
 	List<DBModel> findAllByEmpresaId(Long empresaId);
+	
+	DBModel findByNomeDb(String nomeDb);
+	
+	DBModel findByNomeConexao(String nomeConexao);
 }
