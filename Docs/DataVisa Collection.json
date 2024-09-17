@@ -466,6 +466,32 @@
 			"response": []
 		},
 		{
+			"name": "addBusinessTables",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll Tables Permitions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/tableSaw/getConnecionTables",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"tableSaw",
+						"getConnecionTables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GetAll Connection Tables",
 			"request": {
 				"method": "GET",
