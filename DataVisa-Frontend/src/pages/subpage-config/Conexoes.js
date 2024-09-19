@@ -19,6 +19,18 @@ const Conexoes = () => {
     load();
   },[controle])
 
+  async function conexaoCadastro(id) {
+    try {
+      await DBClient.get("/dataVisa/database/getDB/" + id).then(
+        (res) => {
+          console.log(res.data)
+        navigate("/config/cadastro/conexao", { state: res.data })})
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
+
   return (
     <div id='form' style={{ backgroundColor: 'white' }}>
       <div className='grid'>
@@ -55,7 +67,7 @@ const Conexoes = () => {
                   <div className='col-2'>Data de Conexão</div>
                   <div className='col-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
                   <div className='col-2'>
-                    <button onClick={() => navigate("/config/cadastro/conexao")}>Editar</button>
+                    <button onClick={() => conexaoCadastro(db.id)}>Editar</button>
                     <button>Deletar</button>
                   </div>
                 </Fragment>
