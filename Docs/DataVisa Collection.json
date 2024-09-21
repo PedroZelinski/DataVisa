@@ -479,14 +479,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{DataVisa}}/database/connect/1",
+					"raw": "{{DataVisa}}/database/connect/Pizzaria_Conexao1",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
 						"database",
 						"connect",
-						"1"
+						"Pizzaria_Conexao1"
 					]
 				}
 			},
