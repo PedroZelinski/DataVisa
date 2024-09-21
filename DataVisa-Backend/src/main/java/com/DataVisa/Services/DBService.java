@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.DatavisaDbDTO;
 import com.DataVisa.DTO.DatavisaSessionDTO;
+import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.Models.DBModel;
 import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Session.DatavisaSession;
+import com.google.common.base.Optional;
 
 @Service
 public class DBService{
@@ -34,7 +36,7 @@ public class DBService{
 	@Autowired
 	TableSawService tableSawService;
 	
-	public Pair<String, HttpStatus> save(DBModel database) {
+	public Pair<String, HttpStatus> saveDb(DBModel database) {
 		
 		Pair<String, HttpStatus> response;;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
@@ -45,20 +47,53 @@ public class DBService{
 	    }
 		
 		try {
+			
 			//Verifica se o banco já existe
 			if (database.getId() != null && databaseRepository.findById(database.getId()).isPresent()) {
 				throw new IllegalArgumentException("Banco já cadastrado.");
 			}
 			
 			database = databaseRepository.save(database);
-			setConnection(database.getId());
 			tableSawService.addPermitionsTable(database);
 			
 			 response = Pair.of("Banco cadastrado com sucesso!",HttpStatus.OK);
 			
 		} catch (Exception ex){
-			database = databaseRepository.findByNomeDb(database.getNomeDb());
-			databaseRepository.delete(database);
+			Optional<DBModel> db = databaseRepository.findByNomeDb(database.getNomeDb());
+			if (db.isPresent()) {
+				databaseRepository.delete(database);
+			}
+			response = Pair.of("Ocorreu um erro, Banco não cadastrado! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return response; 
+		}
+		return response;
+	}
+	
+	public Pair<String, HttpStatus> updateDb(DbDTO dto) {
+		
+		Pair<String, HttpStatus> response;;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }
+		
+		try {
+			Optional<DBModel> db = databaseRepository.findByNomeConexao(dto.getDatabase().getNomeConexao());
+			//Verifica se o banco já existe
+			if (!db.isPresent()) {
+				throw new IllegalArgumentException("Banco não cadastrado.");
+			}
+			
+			dto.getDatabase().setId(db.get().getId());
+			dto.setDatabase(databaseRepository.save(dto.getDatabase()));
+			
+			tableSawService.updatePermitionsTable(dto.getDatabase().getNomeDb(), dto);
+			
+			 response = Pair.of("Banco atualizado com sucesso!", HttpStatus.OK);
+			
+		} catch (Exception ex){
 			response = Pair.of("Ocorreu um erro, Banco não cadastrado! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			return response; 
 		}
@@ -266,6 +301,7 @@ public class DBService{
 		datavisaSession.setConexao(db.getId());				
 		datavisaSession.setDbUrl(createDbUrl(db));
 		datavisaSession.setDbUser(db.getUsuarioDb());
+		datavisaSession.setNomeConexao(db.getNomeConexao());
 		datavisaSession.setDbName(db.getNomeDb());
 		datavisaSession.setDbPassword(db.getSenhaDb());
 		

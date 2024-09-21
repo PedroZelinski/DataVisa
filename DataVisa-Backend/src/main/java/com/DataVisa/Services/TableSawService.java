@@ -12,10 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.DatavisaDbDTO;
+import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.Models.DBModel;
+import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
 
+import jakarta.transaction.Transactional;
 import tech.tablesaw.api.Table;
 
 @Service
@@ -165,7 +168,7 @@ public class TableSawService {
 		try {
 			query = "CREATE TABLE tabelas_" + db.getNomeDb() +" ("
 					+ " id BIGINT PRIMARY KEY AUTO_INCREMENT, "
-					+ " nome VARCHAR(60), "
+					+ " nome VARCHAR(60) unique, "
 					+ " conexaoId BIGINT, "
 					+ " permissaoAcesso INT, "
 					+ " FOREIGN KEY (conexaoId) REFERENCES conexoes(id) "
@@ -173,13 +176,28 @@ public class TableSawService {
 			String[] tabelas = getConnecionTables().getLeft().split("\n");
 			executeQueryDatavisa(query); 
 			for (String tabela : tabelas) {
-				query  = "INSERT INTO tabelas_" + db.getNomeDb() 
-				+ " (nome, conexaoId, permissaoAcesso) VALUES ('" + tabela + "', " + db.getId() + ", " + getPermitionCount(getNomeEmpresa(db.getEmpresaId())) +");";
+				query  = "INSERT INTO tabelas_" + db.getNomeDb().trim() 
+				+ " (nome, conexaoId, permissaoAcesso) VALUES ('" + tabela.trim()  + "', " + db.getId() + ", " + getPermitionCount(getNomeEmpresa(db.getEmpresaId())).trim()  +");";
 				executeQueryDatavisa(query);
 			}
 		} catch (Exception e) {
 			query = "DROP TABLE tabelas_" + db.getNomeDb();
 			executeQueryDatavisa(query);
+			throw new Exception(e);
+		}
+	}
+	
+	@Transactional
+	public void updatePermitionsTable(String dbName, DbDTO tablesPermitions) throws Exception {
+		String query;
+		try {
+			for (TableModel model : tablesPermitions.getTablesPermitions()) {
+	            // Monta a query SQL para atualizar a tabela tabelas_permissoes
+	            query = "UPDATE tabelas_" + dbName + " SET permissaoAcesso = " + model.getPermissaoAcesso()
+	                                + " WHERE nome = '" + model.getNome() + "'";
+	            executeQueryDatavisa(query);
+	        }
+		} catch (Exception e) {
 			throw new Exception(e);
 		}
 	}

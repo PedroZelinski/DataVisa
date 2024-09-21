@@ -295,7 +295,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"nomeConexao\": \"Pizzaria_Conexao2\",\r\n  \"tipoDb\": \"MySQL\",\r\n  \"nomeDb\": \"datavisa\",\r\n  \"usuarioDb\": \"root\",\r\n  \"senhaDb\": \"1234\",\r\n  \"hostName\": \"localhost\",\r\n  \"portDb\": 3306,\r\n  \"caminhoDb\": \"/pizzaria_db2\",\r\n  \"empresaId\": 8\r\n}",
+					"raw": "{\r\n  \"nomeConexao\": \"Pizzaria_Conexao1\",\r\n  \"tipoDb\": \"MySQL\",\r\n  \"nomeDb\": \"Pizzaria_db\",\r\n  \"usuarioDb\": \"root\",\r\n  \"senhaDb\": \"1234\",\r\n  \"hostName\": \"localhost\",\r\n  \"portDb\": 3306,\r\n  \"caminhoDb\": \"/pizzaria_db\",\r\n  \"empresaId\": 8\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -346,6 +346,33 @@
 					"path": [
 						"database",
 						"getActives"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update DB and Tables Permitions",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"database\": {\r\n        \"id\": 56,\r\n        \"nomeConexao\": \"Pizzaria_Conexao1\",\r\n        \"tipoDb\": \"MySQL\",\r\n        \"nomeDb\": \"Pizzaria_db\",\r\n        \"usuarioDb\": \"root\",\r\n        \"senhaDb\": \"1234\",\r\n        \"hostName\": \"localhost\",\r\n        \"portDb\": 3306,\r\n        \"caminhoDb\": \"/pizzaria_db\",\r\n        \"empresaNome\": \"Pizzaria\",\r\n        \"empresaId\": 8,\r\n        \"isActive\": 0,\r\n        \"mensagemRetorno\": null\r\n    },\"tablesPermitions\": [\r\n        {\r\n            \"id\": 1,\r\n            \"nome\": \"clientes\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"nome\": \"colaboradores\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"nome\": \"financeiro\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"nome\": \"fornecedores\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 5,\r\n            \"nome\": \"notasfiscais\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 2\r\n        },\r\n        {\r\n            \"id\": 6,\r\n            \"nome\": \"produtos\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 7,\r\n            \"nome\": \"vendas\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/database/updateDB",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"database",
+						"updateDB"
 					]
 				}
 			},
@@ -466,26 +493,36 @@
 			"response": []
 		},
 		{
-			"name": "addBusinessTables",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
 			"name": "GetAll Tables Permitions",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{DataVisa}}/tableSaw/getConnecionTables",
+					"raw": "{{DataVisa}}/table/getTablesPermitions",
 					"host": [
 						"{{DataVisa}}"
 					],
 					"path": [
-						"tableSaw",
-						"getConnecionTables"
+						"table",
+						"getTablesPermitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addBusinessTables",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/table/addBusinessTables",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"table",
+						"addBusinessTables"
 					]
 				}
 			},

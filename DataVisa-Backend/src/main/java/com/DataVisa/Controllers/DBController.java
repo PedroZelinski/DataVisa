@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.DataVisa.DTO.DatavisaDbDTO;
 import com.DataVisa.DTO.DatavisaSessionDTO;
+import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.Models.DBModel;
 import com.DataVisa.Services.DBService;
 
@@ -31,14 +32,14 @@ public class DBController {
 	}
 	
 	@PostMapping("/dataVisa/database/addDB")
-    public ResponseEntity<String> addDB(@RequestBody DBModel database){
-		Pair<String, HttpStatus> result = databaseService.save(database);
+    public ResponseEntity<String> saveDb(@RequestBody DBModel dto){
+		Pair<String, HttpStatus> result = databaseService.saveDb(dto);
         return new ResponseEntity<String>(result.getLeft(), result.getRight());
     }
 	
 	@PutMapping("/dataVisa/database/updateDB")
-    public ResponseEntity<String> updateDB(@RequestBody DBModel database){
-		Pair<String, HttpStatus> result = databaseService.save(database);
+    public ResponseEntity<String> updateDB(@RequestBody DbDTO dto){
+		Pair<String, HttpStatus> result = databaseService.updateDb(dto);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());        
     }
 	
