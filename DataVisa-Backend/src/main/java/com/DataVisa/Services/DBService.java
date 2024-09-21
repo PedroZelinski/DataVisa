@@ -229,7 +229,7 @@ public class DBService{
 		    return Pair.of(datavisaDbResponse,HttpStatus.OK);
 	}
 
-	public Pair<DatavisaSessionDTO, HttpStatus> setConnection(Long id) {
+	public Pair<DatavisaSessionDTO, HttpStatus> setConnection(String nome) {
 		
 		Pair<String, HttpStatus> response;
 		DatavisaSessionDTO datavisaConnectionResponse;
@@ -243,7 +243,7 @@ public class DBService{
 		datavisaConnectionResponse = new DatavisaSessionDTO(datavisaSession);
 		
 		try {
-			DBModel db = databaseRepository.findById(id).get();
+			DBModel db = databaseRepository.findByNomeConexao(nome).get();
 			if(db.getEmpresaId().equals(datavisaSession.getEmpresaId()) || datavisaSession.getEmpresaId().equals(1L)) {
 				setSessionConection(db);
 				datavisaConnectionResponse.setConexaoAtiva(true);

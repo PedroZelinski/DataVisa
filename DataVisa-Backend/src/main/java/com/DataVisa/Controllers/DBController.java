@@ -67,9 +67,9 @@ public class DBController {
 		return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
     
-    @GetMapping("/dataVisa/database/connect/{id}")
-	public ResponseEntity<DatavisaSessionDTO> Connect(@PathVariable Long id){
-    	Pair<DatavisaSessionDTO, HttpStatus> result =  databaseService.setConnection(id);
+    @GetMapping("/dataVisa/database/connect/{nome}")
+	public ResponseEntity<DatavisaSessionDTO> Connect(@PathVariable String nome){
+    	Pair<DatavisaSessionDTO, HttpStatus> result =  databaseService.setConnection(nome);
 		return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
     
