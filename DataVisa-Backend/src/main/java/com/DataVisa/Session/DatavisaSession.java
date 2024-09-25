@@ -40,6 +40,8 @@ public class DatavisaSession {
 	
 	private Long conexao;
 	
+	private String nomeConexao;
+	
 	private String dbUrl;
 	
 	private String dbUser;
@@ -51,6 +53,8 @@ public class DatavisaSession {
 	private int permissaoTabela;
 	
 	private String departamento;
+	
+	private String cargosEmpresa;
 
 	private int nivelAcesso;
 

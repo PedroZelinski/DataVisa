@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.DataVisa.Models.TableModel;
 
@@ -18,7 +19,7 @@ public class TableRepository {
 
 	public List<TableModel> findAll(String tableName) {
         List<TableModel> results = new ArrayList<>();
-        String query = "SELECT id, nome, conexaoId, permissaoAcesso FROM " + tableName;
+        String query = "SELECT id, nome, conexaoId, permissaoAcesso FROM tabelas_" + tableName;
         List<?> rows = entityManager.createNativeQuery(query).getResultList();
         for (Object row : rows) {
             Object[] rowArray = (Object[]) row;
@@ -46,4 +47,15 @@ public class TableRepository {
         }
     }
 	
+	@Transactional
+    public void delete(String tableName) {
+        // Valida o nome da tabela para evitar possíveis erros ou injeções de SQL
+        if (tableName == null || tableName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome da tabela não pode ser nulo ou vazio.");
+        }
+
+        String sql = "DROP TABLE IF EXISTS " + tableName;
+
+        entityManager.createNativeQuery(sql).executeUpdate();
+    }
 }

@@ -1,12 +1,11 @@
 package com.DataVisa.Services;
 
-import java.util.List;
-
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.DataVisa.DTO.TablePermitionsDTO;
-import com.DataVisa.Models.TableModel;
+import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
 
@@ -17,17 +16,31 @@ public class DatavisaTableService {
 	TableRepository tableRepository;
 
 	@Autowired
+	TableSawService tableService;
+	
+	@Autowired
 	DatavisaSession datavisaSession;	
 
-	public TablePermitionsDTO findTablesPermitions(){
-		TablePermitionsDTO tablesPermitionsDTO = new TablePermitionsDTO();
-		tablesPermitionsDTO.setTablesPermitions(tableRepository.findAll("tabelas_" + datavisaSession.getDbName()));
-		return tablesPermitionsDTO;
-	}
-	
-	public String updateTablesPermitions(List<TableModel> tables){
-		tableRepository.updateAll(tables, "tabelas_" + datavisaSession.getDbName());
-		return "Atualizado com sucesso";
+	public Pair<DbDTO, HttpStatus> findTablesPermitions() {
+		DbDTO dto = new DbDTO();
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+			dto.setMensagemRetorno(response.getLeft());
+	        return Pair.of(dto,  response.getRight());
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+			dto.setMensagemRetorno(response.getLeft());
+	        return Pair.of(dto,  response.getRight());
+	    }
+		
+		if (!datavisaSession.isConexaoAtiva()) {
+			dto.setMensagemRetorno("Erro: Nenhuma conexão ativa");
+	        return Pair.of(dto,  HttpStatus.FORBIDDEN);
+		}
+		dto.setTablesPermitions(tableRepository.findAll(datavisaSession.getDbName()));
+		dto.getDatabase().setNomeDb(datavisaSession.getDbName());
+		dto.setCargos(tableService.getDatavisaCollumnFields(datavisaSession.getEmpresaNome() + "_permissoes", "nome"));
+		return  Pair.of(dto, HttpStatus.OK);
 	}
 	
 }
