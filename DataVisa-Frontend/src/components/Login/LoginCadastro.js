@@ -5,6 +5,7 @@ import logo from '../../assets/logoOriginal.png'
 
 const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
     const [value, setValue] = useState('');
+    const [view, setView] = useState(false)
     const [businessList, setBusinessList] = useState([]);
     const [business, setBusiness] = useState('');
 
@@ -47,7 +48,7 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
                 }
             });
         } catch (error) {
-            exibeMensagem("Ocorreu um erro: " 
+            exibeMensagem("Ocorreu um erro: "
                 + error.response.status + " - "
                 + error.response.data)
         }
@@ -71,8 +72,10 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
                             optionLabel="nome" optionValue="id"
                             onChange={(e) => setBusiness(e.value)}
                             filter required placeholder="Informe sua empresa"
-                            style={{ width: "90%", background: '#C1C7CB', 
-                            border: '1px #374957 solid', opacity: '0.60'}} />
+                            style={{
+                                width: "90%", background: '#C1C7CB',
+                                border: '1px #374957 solid', opacity: '0.60'
+                            }} />
                     </label>
                 </div>
 
@@ -95,22 +98,28 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
                 </div>
 
                 <div className="grid col-12">
-                    <div className='col-6'>
+                    <div className='col-5'>
                         <label>Senha
                             <div className="input-div">
                                 <input className="input-field" placeholder="Digite sua senha"
-                                    type="password" id="senha" required />
+                                    type={view == true ? "text" : "password"} id="senha" 
+                                    minLength={8} required />
                             </div>
                         </label>
                     </div>
 
-                    <div className='col-6'>
+                    <div className='col-5'>
                         <label>Confirmar senha
                             <div className="input-div">
-                                <input className="input-field" placeholder="Confirme sua senha"
-                                    type="password" id="confsenha" required />
+                                <input className="input-field" placeholder="Confirme a senha"
+                                    type={view == true ? "text" : "password"} id="confsenha" 
+                                    minLength={8} required />
                             </div>
                         </label>
+                    </div>
+                    <div className="col-2 align-content-center pt-5">
+                        <i className={view == true ? 'fi fi-rr-eye-crossed' : 'fi fi-rr-eye'}
+                            id='eye' onClick={() => setView(!view)} />
                     </div>
                 </div>
 

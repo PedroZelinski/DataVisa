@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 import logo from '../../assets/logoOriginal.png'
 
 const LoginHome = ({ alteraModo, exibeMensagem }) => {
     const navigate = useNavigate();
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
+    const [view, setView] = useState(false)
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -13,6 +14,10 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
     const onFormSubmit = (event) => {
         fazerLogin();
         event.preventDefault();
+    }
+
+    const viewSenha = () => {
+
     }
 
     async function fazerLogin() {
@@ -29,8 +34,8 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
                 }
             });
         } catch (error) {
-            exibeMensagem("Ocorreu um erro: " 
-                + error.response.status + " - " 
+            exibeMensagem("Ocorreu um erro: "
+                + error.response.status + " - "
                 + error.response.data.mensagemRetorno)
             console.log(error)
         }
@@ -50,16 +55,18 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
                     <label>E-mail
                         <div className="input-div">
                             <input className='input-field' placeholder="Digite seu e-mail"
-                                type="email" id="email" required/>
+                                type="email" id="email" required />
                         </div>
                     </label>
                 </div>
 
                 <div className='mt-2'>
                     <label>Senha
-                        <div className="input-div">
+                        <div className="input-div" style={{ width: "96.7%" }}>
                             <input className="input-field" placeholder="Digite sua senha"
-                                type="password" id="senha" required/>
+                                type={view == true ? "text" : "password"} id="senha" required />
+                            <i className={view == true ? 'fi fi-rr-eye-crossed' : 'fi fi-rr-eye'}
+                                id='eye' onClick={() => setView(!view)} />
                         </div>
                     </label>
                 </div>

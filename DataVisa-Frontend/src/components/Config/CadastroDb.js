@@ -7,16 +7,14 @@ import DBClient from '../../utils/DBClient';
 const CadastroDb = ({ exibeMensagem }) => {
   const [value, setValue] = useState('');
   const [tipo, setTipo] = useState('')
+  const [contador, setContador] = useState(1)
   const [ativo, setAtivo] = useState(true)
   const [testado, setTestado] = useState(false)
   const [tables, setTables] = useState([])
-  const [cargo, setCargo] = useState('')
   const location = useLocation();
-
   let db = location.state;
   let tipos = ["MySQL", "MongoDB", "SQL Server"]
-  const cargos = ["Administrador","Gerente", "Atendente"]
-
+  const cargos = ["Administrador","Gerente","Atendente"]
 
   useEffect(() => {
     setTipo(db.tipoDb)
@@ -40,11 +38,18 @@ const CadastroDb = ({ exibeMensagem }) => {
     testeConexao(dadosConexao)
     event.preventDefault();
   }
+  const handleDropdownChange = (e, id) => {
+    const index = tables.findIndex(obj => obj.id == id)
+    const cargo = cargos.indexOf(e)
+    
+    tables[index].permissaoAcesso = cargo
+    setContador(contador + 1)
+  }
   async function testeConexao(dadosConexao) {
     try {
       await DBClient.post("/dataVisa/database/testConnection", dadosConexao).then(
         (res) => {
-          console.log(res.data)
+          exibeMensagem(res.data)
           setTestado(true)
         }
       )
@@ -54,9 +59,9 @@ const CadastroDb = ({ exibeMensagem }) => {
     }
     setTestado(true)
   }
-  async function conectar(idDb) {
+  async function conectar(nomeDb) {
     try {
-      await DBClient.get("/dataVisa/database/connect/" + idDb).then(
+      await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
         (res) => buscarTabelas()
       )
     } catch (error) {
@@ -81,7 +86,6 @@ const CadastroDb = ({ exibeMensagem }) => {
   async function salvarConexao() {
     testado == true ? alert("salvo") : alert("não foi testado")
   }
-  
 
   return (
     <div className='col-12'>
@@ -113,7 +117,7 @@ const CadastroDb = ({ exibeMensagem }) => {
                     defaultValue={db.nomeConexao} required />
                 </div>
               </label>
-              <label>Tipo
+              <label className='mt-2'>Tipo
                 <Dropdown value={tipo} options={tipos}
                   onChange={(e) => setTipo(e.value)}
                   style={{
@@ -123,14 +127,14 @@ const CadastroDb = ({ exibeMensagem }) => {
                   scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}
                   defaultValue={db.tipoDb} />
               </label>
-              <label>Nome do banco de dados
+              <label className='mt-2'>Nome do banco de dados
                 <div className="input-div">
                   <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="nomedb" placeholder="Nome da instância do banco"
                     defaultValue={db.nomeDb} required />
                 </div>
               </label>
-              <label>Usuario do banco de dados
+              <label className='mt-2'>Usuario do banco de dados
                 <div className="input-div">
                   <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="userdb" placeholder="Nome do usuário do banco"
@@ -147,21 +151,21 @@ const CadastroDb = ({ exibeMensagem }) => {
                     defaultValue={db.portDb} required />
                 </div>
               </label>
-              <label>Dominio
+              <label className='mt-2'>Dominio
                 <div className="input-div">
                   <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="hostdb" placeholder="Dominio do banco de dados"
                     defaultValue={db.hostName} required />
                 </div>
               </label>
-              <label>Caminho
+              <label className='mt-2'>Caminho
                 <div className="input-div">
                   <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="text" id="caminhodb" placeholder="Caminho do banco de dados"
                     defaultValue={db.caminhoDb} required />
                 </div>
               </label>
-              <label>Senha
+              <label className='mt-2'>Senha
                 <div className="input-div">
                   <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                     type="password" id="senhadb" placeholder="Senha do usuario do banco"
@@ -180,30 +184,36 @@ const CadastroDb = ({ exibeMensagem }) => {
           <div className='font-bold'>Permissões de tabela</div>
 
           <div className='cadastro-area grid col-9 mt-2'>
-            <i className='fi fi-rr-search mr-2' />
+            <i className='fi fi-rr-search mr-2 pt-1' />
             <input type="text" placeholder="Pesquisar por tabela"
               style={{ border: 'none', height: '100%' }} />
           </div>
           <div className='col-2 col-offset-1'>
-            <button className='cadastro-btn-blue' onClick={() => conectar(db.id)}>
+            <button className='cadastro-btn-blue' onClick={() => conectar(db.nomeConexao)}>
               Buscar
             </button>
           </div>
 
           <div className="cadastro-area grid col-12 mt-2">
-            <div className="col-8 font-bold" >
+            <div className="col-7 font-bold" >
               Nome da tabela
             </div>
-            <div className="col-4 font-bold">
+            <div className="col-5 font-bold">
               Nivel de Acesso
             </div>
             {tables.map((table) => (
-              <Fragment key={table.nome}>
-                <div className="col-8" >
+              <Fragment key={table.id}>
+                <div className="col-7 pt-3" >
                   {table.nome}
                 </div>
-                <div className="col-4">
-                  {cargos[table.permissaoAcesso]}
+                <div className="col-5">
+                  {/* {cargos[table.permissaoAcesso]} */}
+                  <Dropdown value={cargos[table.permissaoAcesso]} options={cargos}
+                  onChange={(e) => {
+                    handleDropdownChange(e.value, table.id)
+                  }}
+                  style={{ width: "100%"}}
+                  scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}/>
                 </div>
               </Fragment>
             ))}
