@@ -30,6 +30,9 @@ const Conexoes = () => {
         error.response.data)
     }
   }
+  async function deletarConexao(db) {
+    exibeMensagem("to do")
+  }
 
   return (
     <div id='form' style={{ backgroundColor: 'white' }}>
@@ -43,8 +46,11 @@ const Conexoes = () => {
         <div className='col-1 col-offset-8'>
           <button onClick={() => {
             alteraModo(1)
-            navigate('/menu')
-          }}>Menu</button>
+            navigate('/menu')}}>Menu</button>
+          <button onClick={() => 
+            navigate("/config/cadastro/conexao", { state: {
+              nomeConexao: null,
+            }})}>Adicionar</button>
         </div>
 
         <Fragment>
@@ -68,7 +74,7 @@ const Conexoes = () => {
                   <div className='col-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
                   <div className='col-2'>
                     <button onClick={() => conexaoCadastro(db.id)}>Editar</button>
-                    <button>Deletar</button>
+                    <button onClick={() => deletarConexao()}>Deletar</button>
                   </div>
                 </Fragment>
               ))}

@@ -12,7 +12,9 @@ const Cadastro = () => {
             return <CadastroUser exibeMensagem={exibeMensagem}/>
             break;
         case "/config/cadastro/conexao":
-            return <CadastroDb exibeMensagem={exibeMensagem}/>
+            return <CadastroDb 
+                exibeMensagem={exibeMensagem}
+                session={session}/>
             break;
         default:
             return alert("Pagina não encontrada")

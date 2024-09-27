@@ -4,20 +4,23 @@ import { InputSwitch } from 'primereact/inputswitch'
 import { useLocation } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 
-const CadastroDb = ({ exibeMensagem }) => {
+const CadastroDb = ({ exibeMensagem, session }) => {
   const [value, setValue] = useState('');
   const [tipo, setTipo] = useState('')
-  const [contador, setContador] = useState(1)
+  const [contador, setContador] = useState(0)
   const [ativo, setAtivo] = useState(true)
-  const [testado, setTestado] = useState(false)
   const [tables, setTables] = useState([])
+  const [db, setDb] = useState({})
   const location = useLocation();
-  let db = location.state;
   let tipos = ["MySQL", "MongoDB", "SQL Server"]
-  const cargos = ["Administrador","Gerente","Atendente"]
+  const cargos = ["Administrador", "Gerente", "Atendente"]
 
   useEffect(() => {
-    setTipo(db.tipoDb)
+    setDb(location.state)
+    setTipo(location.state.tipoDb)
+    if (location.state.nomeConexao != null) {
+      conectar(location.state.nomeConexao)
+    }
   }, [])
 
   const handleChange = (event) => {
@@ -41,7 +44,7 @@ const CadastroDb = ({ exibeMensagem }) => {
   const handleDropdownChange = (e, id) => {
     const index = tables.findIndex(obj => obj.id == id)
     const cargo = cargos.indexOf(e)
-    
+
     tables[index].permissaoAcesso = cargo
     setContador(contador + 1)
   }
@@ -50,14 +53,12 @@ const CadastroDb = ({ exibeMensagem }) => {
       await DBClient.post("/dataVisa/database/testConnection", dadosConexao).then(
         (res) => {
           exibeMensagem(res.data)
-          setTestado(true)
         }
       )
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
         + error.response.data)
     }
-    setTestado(true)
   }
   async function conectar(nomeDb) {
     try {
@@ -83,8 +84,44 @@ const CadastroDb = ({ exibeMensagem }) => {
         + error.response.data)
     }
   }
+  async function cadastrarConexao() {
+    const dadosDb = {
+      nomeConexao: document.getElementById("nome").value,
+      tipoDb: tipo,
+      nomeDb: document.getElementById("nomedb").value,
+      usuarioDb: document.getElementById("userdb").value,
+      senhaDb: document.getElementById("senhadb").value,
+      hostName: document.getElementById("hostdb").value,
+      portDb: document.getElementById("portdb").value,
+      caminhoDb: document.getElementById("caminhodb").value,
+      empresaId: 8
+    }
+    await DBClient.post("/dataVisa/database/addDB", dadosDb).then(
+      (res) => {
+        exibeMensagem(res.data)
+        setDb(dadosDb)
+        setContador(contador + 1)
+      }
+    )
+  }
   async function salvarConexao() {
-    testado == true ? alert("salvo") : alert("não foi testado")
+    const dadosDb = {
+      database: {
+        nomeConexao: document.getElementById("nome").value,
+        tipoDb: tipo,
+        nomeDb: document.getElementById("nomedb").value,
+        usuarioDb: document.getElementById("userdb").value,
+        senhaDb: document.getElementById("senhadb").value,
+        hostName: document.getElementById("hostdb").value,
+        portDb: document.getElementById("portdb").value,
+        caminhoDb: document.getElementById("caminhodb").value,
+        empresaId: 8
+      },
+      tablesPermitions: tables
+    }
+    await DBClient.put("/dataVisa/database/updateDB", dadosDb).then(
+      (res) => exibeMensagem(res.data)
+    )
   }
 
   return (
@@ -99,8 +136,12 @@ const CadastroDb = ({ exibeMensagem }) => {
           }} />
         </div>
         <div className="col-1 mb-3">
-          <button className="cadastro-btn-color"
-            type="submit" onClick={() => salvarConexao()}>Salvar</button>
+          <button className="cadastro-btn-color" type="submit"
+            onClick={() => {
+              db.nomeConexao == null ?
+                cadastrarConexao() : salvarConexao()
+            }}>
+            {db.nomeConexao == null ? "Cadastrar" : "Salvar"}</button>
         </div>
       </div>
 
@@ -189,7 +230,8 @@ const CadastroDb = ({ exibeMensagem }) => {
               style={{ border: 'none', height: '100%' }} />
           </div>
           <div className='col-2 col-offset-1'>
-            <button className='cadastro-btn-blue' onClick={() => conectar(db.nomeConexao)}>
+            <button className='cadastro-btn-blue'
+              onClick={() => conectar(document.getElementById("nome").value)}>
               Buscar
             </button>
           </div>
@@ -207,13 +249,13 @@ const CadastroDb = ({ exibeMensagem }) => {
                   {table.nome}
                 </div>
                 <div className="col-5">
-                  {/* {cargos[table.permissaoAcesso]} */}
                   <Dropdown value={cargos[table.permissaoAcesso]} options={cargos}
-                  onChange={(e) => {
-                    handleDropdownChange(e.value, table.id)
-                  }}
-                  style={{ width: "100%"}}
-                  scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}/>
+                    onChange={(e) => {
+                      handleDropdownChange(e.value, table.id)
+                    }}
+                    style={{ width: "100%" }}
+                    scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}
+                    required />
                 </div>
               </Fragment>
             ))}
