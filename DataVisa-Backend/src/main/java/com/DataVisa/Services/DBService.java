@@ -100,7 +100,7 @@ public class DBService{
 		return response;
 	}
 
-	public Pair<String, HttpStatus> delete(DBModel database){
+	public Pair<String, HttpStatus> delete(String nomeConexao){
 		Pair<String, HttpStatus> response;;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response);
@@ -111,11 +111,13 @@ public class DBService{
 		
 		try {
 			
+			Optional<DBModel> dbModel = databaseRepository.findByNomeConexao(nomeConexao);
 			//Verifica se o banco existe
-			if (databaseRepository.findById(database.getId()).isEmpty()) {
-                throw new RuntimeException("Usuário não encontrado.");
+			if (!dbModel.isPresent()) {
+                throw new RuntimeException("Banco não encontrado.");
             }
 			
+			DBModel database = dbModel.get();
 			tableSawService.deletePermitionsTable(database);
 			databaseRepository.delete(database);
 			

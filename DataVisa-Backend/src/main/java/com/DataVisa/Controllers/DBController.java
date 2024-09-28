@@ -44,7 +44,7 @@ public class DBController {
     }
 	
     @DeleteMapping("/dataVisa/database/deleteDB")
-    public  ResponseEntity<String> deleteDB(@RequestBody DBModel database){
+    public  ResponseEntity<String> deleteDB(@RequestBody String database){
     	Pair<String, HttpStatus> result = databaseService.delete(database);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
