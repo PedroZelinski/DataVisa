@@ -43,9 +43,9 @@ public class DBController {
     	return new ResponseEntity<>(result.getLeft(), result.getRight());        
     }
 	
-    @DeleteMapping("/dataVisa/database/deleteDB")
-    public  ResponseEntity<String> deleteDB(@RequestBody String database){
-    	Pair<String, HttpStatus> result = databaseService.delete(database);
+    @DeleteMapping("/dataVisa/database/deleteDB/{dbName}")
+    public  ResponseEntity<String> deleteDB(@PathVariable String dbName){
+    	Pair<String, HttpStatus> result = databaseService.delete(dbName);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
     
