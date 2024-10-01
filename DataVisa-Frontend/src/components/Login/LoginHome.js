@@ -16,10 +16,6 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
         event.preventDefault();
     }
 
-    const viewSenha = () => {
-
-    }
-
     async function fazerLogin() {
         try {
             await DBClient.get('/dataVisa/user/login', {

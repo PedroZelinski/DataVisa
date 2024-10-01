@@ -94,7 +94,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
       hostName: document.getElementById("hostdb").value,
       portDb: document.getElementById("portdb").value,
       caminhoDb: document.getElementById("caminhodb").value,
-      empresaId: 8
+      empresaId: session.empresaId
     }
     await DBClient.post("/dataVisa/database/addDB", dadosDb).then(
       (res) => {
