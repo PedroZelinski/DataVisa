@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,11 @@ import com.google.common.base.Optional;
 
 @Service
 public class DBService{
+	public DBService(@Value("${local.database.url}") String url,@Value("${local.database.username}") String username, @Value("${local.database.password}") String password) {
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
 	
 	@Autowired
 	DBRepository databaseRepository;
@@ -35,6 +41,12 @@ public class DBService{
 
 	@Autowired
 	TableSawService tableSawService;
+	
+	private final String url;
+	
+	private final String username;
+	
+	private final String password;
 	
 	public Pair<String, HttpStatus> saveDb(DBModel database) {
 		
@@ -293,10 +305,8 @@ public class DBService{
 	}
 
 	public Connection DatavisaConnection() throws SQLException{
-		String url = "jdbc:mysql://localhost:3306/datavisa";
-		String user = "root";
-		String password = "1234";
-		return DriverManager.getConnection(url, user, password);
+		
+		return DriverManager.getConnection(url, username, password);
 	}
 
 	public void setSessionConection(DBModel db) {

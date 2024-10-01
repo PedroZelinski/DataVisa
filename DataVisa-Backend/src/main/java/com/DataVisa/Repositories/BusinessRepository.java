@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.DataVisa.Models.BusinessModel;
 
 @Repository
-public interface BusinessRepository extends JpaRepository<BusinessModel, String>{
+public interface BusinessRepository extends JpaRepository<BusinessModel, Long>{
 	
 }
