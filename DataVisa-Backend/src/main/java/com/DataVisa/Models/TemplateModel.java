@@ -19,7 +19,6 @@ public class TemplateModel extends ArtifactModel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	
 	
 }  

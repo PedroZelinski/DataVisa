@@ -16,6 +16,7 @@ public class DatavisaSessionDTO  {
 	        this.setNome(session.getNome());
 	        this.setNivelAcesso(session.getNivelAcesso());
 	        this.setEmpresa(session.getEmpresaNome());
+	        this.setEmpresaId(session.getEmpresaId());
 	        this.setConexaoAtiva(session.isConexaoAtiva());
 	        this.setDepartamento(session.getDepartamento());
 	        this.setTemplates(session.getTemplates());
@@ -32,6 +33,8 @@ public class DatavisaSessionDTO  {
 	private String nome;
 	
 	private String empresa;
+
+	private Long empresaId;
 
 	private boolean conexaoAtiva;
 	
