@@ -24,7 +24,9 @@ import com.google.common.base.Optional;
 
 @Service
 public class DBService{
-	public DBService(@Value("${local.database.url}") String url,@Value("${local.database.username}") String username, @Value("${local.database.password}") String password) {
+	public DBService(@Value("${spring.datasource.url}") String url, 
+			@Value("${spring.datasource.username}") String username, 
+			@Value("${spring.datasource.password}") String password) {
         this.url = url;
         this.username = username;
         this.password = password;
