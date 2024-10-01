@@ -17,21 +17,32 @@ const Conexoes = () => {
       })
     }
     load();
-  },[controle])
+  }, [controle])
 
   async function conexaoCadastro(id) {
     try {
       await DBClient.get("/dataVisa/database/getDB/" + id).then(
         (res) => {
           console.log(res.data)
-        navigate("/config/cadastro/conexao", { state: res.data })})
+          navigate("/config/cadastro/conexao", { state: res.data })
+        })
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
     }
   }
   async function deletarConexao(db) {
-    exibeMensagem("to do")
+    try {
+      await DBClient.delete("/dataVisa/database/deleteDB/" + db).then(
+        (res) => {
+          exibeMensagem(res.data)
+          setControle(controle + 1)
+        }
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
   }
 
   return (
@@ -46,39 +57,42 @@ const Conexoes = () => {
         <div className='col-1 col-offset-8'>
           <button onClick={() => {
             alteraModo(1)
-            navigate('/menu')}}>Menu</button>
-          <button onClick={() => 
-            navigate("/config/cadastro/conexao", { state: {
-              nomeConexao: null,
-            }})}>Adicionar</button>
+            navigate('/menu')
+          }}>Menu</button>
+          <button onClick={() =>
+            navigate("/config/cadastro/conexao", {
+              state: {
+                nomeConexao: null,
+              }
+            })}>Adicionar</button>
         </div>
 
         <Fragment>
-        <div className='grid col-12 font-bold'>
-                <div className='col-1 text-center'>ID</div>
-                <div className='col-3 text-center'>Nome</div>
-                <div className='col-2 text-center'>Tipo</div>
-                <div className='col-2 text-center'>Data de Conexão</div>
-                <div className='col-2 text-center'>Status</div>
-                <div className='col-2 text-center'>Ações</div>
-            </div>
-            <div className='col 12'><hr /></div>
-            
-            <div className="grid col-12 overflow-auto text-center justify-content-center" id='list'>
-              {dbs.map((db) => (
-                <Fragment key={db.id}>
-                  <div className='col-1'>{db.id}</div>
-                  <div className='col-3'>{db.nomeConexao}</div>
-                  <div className='col-2'>{db.tipoDb}</div>
-                  <div className='col-2'>Data de Conexão</div>
-                  <div className='col-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
-                  <div className='col-2'>
-                    <button onClick={() => conexaoCadastro(db.id)}>Editar</button>
-                    <button onClick={() => deletarConexao()}>Deletar</button>
-                  </div>
-                </Fragment>
-              ))}
-            </div>
+          <div className='grid col-12 font-bold'>
+            <div className='col-1 text-center'>ID</div>
+            <div className='col-3 text-center'>Nome</div>
+            <div className='col-2 text-center'>Tipo</div>
+            <div className='col-2 text-center'>Data de Conexão</div>
+            <div className='col-2 text-center'>Status</div>
+            <div className='col-2 text-center'>Ações</div>
+          </div>
+          <div className='col 12'><hr /></div>
+
+          <div className="grid col-12 overflow-auto text-center justify-content-center" id='list'>
+            {dbs.map((db) => (
+              <Fragment key={db.id}>
+                <div className='col-1'>{db.id}</div>
+                <div className='col-3'>{db.nomeConexao}</div>
+                <div className='col-2'>{db.tipoDb}</div>
+                <div className='col-2'>Data de Conexão</div>
+                <div className='col-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
+                <div className='col-2'>
+                  <button onClick={() => conexaoCadastro(db.id)}>Editar</button>
+                  <button onClick={() => deletarConexao(db.nomeConexao)}>Deletar</button>
+                </div>
+              </Fragment>
+            ))}
+          </div>
         </Fragment>
 
       </div>
