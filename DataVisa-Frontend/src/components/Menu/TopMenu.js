@@ -102,6 +102,9 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                                     onClick={(e) => { navegar(e, config, "usuarios") }}>Usuarios</button>
                                 <br />
                                 <button className='top-menu-btn-2'
+                                    onClick={(e) => { navegar(e, config, "pendentes") }}>Pendentes</button>
+                                <br />
+                                <button className='top-menu-btn-2'
                                     onClick={(e) => { navegar(e, config, "audit") }}>Auditoria</button>
                             </div>
                         </OverlayPanel>

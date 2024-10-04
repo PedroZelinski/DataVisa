@@ -46,20 +46,27 @@ const Conexoes = () => {
   }
 
   return (
-    <div id='form' style={{ backgroundColor: 'white' }}>
-      <div className='grid'>
+    <div className='col-12'>
 
-        <div className='col-3 font-bold'>
-          Gerenciamento de Banco de Dados
-          <input type="text" />
+      <div className="grid nested-grid">
+
+        <div className="grid col-10">
+          <div className='col-12 font-bold'>
+            Gerenciamento de Conexões
+          </div>
+          <div className='cadastro-area grid col-5 m-2'>
+            <i className='fi fi-rr-search mr-2 pt-2' />
+            <input type="text" placeholder="Pesquisar pelo nome"
+              style={{ border: 'none', width: '92%' }} />
+          </div>
         </div>
 
-        <div className='col-1 col-offset-8'>
-          <button onClick={() => {
+        <div className='col-2 pr-5 pl-5'>
+          <button className='cadastro-btn-blue m-1 w-full' onClick={() => {
             alteraModo(1)
             navigate('/menu')
           }}>Menu</button>
-          <button onClick={() =>
+          <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
             navigate("/config/cadastro/conexao", {
               state: {
                 nomeConexao: null,
@@ -67,18 +74,23 @@ const Conexoes = () => {
             })}>Adicionar</button>
         </div>
 
-        <Fragment>
-          <div className='grid col-12 font-bold'>
-            <div className='col-1 text-center'>ID</div>
-            <div className='col-3 text-center'>Nome</div>
-            <div className='col-2 text-center'>Tipo</div>
-            <div className='col-2 text-center'>Data de Conexão</div>
-            <div className='col-2 text-center'>Status</div>
-            <div className='col-2 text-center'>Ações</div>
-          </div>
-          <div className='col 12'><hr /></div>
 
-          <div className="grid col-12 overflow-auto text-center justify-content-center" id='list'>
+        <div className="cadastro-area grid m-2 mr-3 w-full"
+          style={{ height: 'calc(100vh - 250px)' }}>
+
+          <div className='grid col-12 ml-1 font-bold text-center mt-2' 
+            style={{ height: '50px', width: '99%' }}>
+            <div className='col-1'>ID</div>
+            <div className='col-3'>Nome</div>
+            <div className='col-2'>Tipo</div>
+            <div className='col-2'>Data de Conexão</div>
+            <div className='col-2'>Status</div>
+            <div className='col-2'>Ações</div>
+            <div className="col-12"><hr /></div>
+          </div>
+
+          <div className="scroll-white grid col-12 text-center ml-1 mt-2"
+            style={{height: 'calc(100vh - 320px)', width: '99%'}}>
             {dbs.map((db) => (
               <Fragment key={db.id}>
                 <div className='col-1'>{db.id}</div>
@@ -87,13 +99,17 @@ const Conexoes = () => {
                 <div className='col-2'>Data de Conexão</div>
                 <div className='col-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
                 <div className='col-2'>
-                  <button onClick={() => conexaoCadastro(db.id)}>Editar</button>
-                  <button onClick={() => deletarConexao(db.nomeConexao)}>Deletar</button>
+                  <button className='cadastro-btn-blue mr-2'
+                    onClick={() => conexaoCadastro(db.id)}>Editar</button>
+                  <button className='cadastro-btn-red'
+                    onClick={() => deletarConexao(db.nomeConexao)}>Deletar</button>
                 </div>
               </Fragment>
             ))}
           </div>
-        </Fragment>
+
+        </div>
+
 
       </div>
     </div>

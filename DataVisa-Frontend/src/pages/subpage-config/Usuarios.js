@@ -59,7 +59,7 @@ const Usuarios = () => {
         user.nivelAcesso == 0 ? rejeitarUser(user.email) : deletarUser(user)
       },
       reject() {
-        return 
+        return
       }
     })
   }
@@ -88,21 +88,27 @@ const Usuarios = () => {
   }
 
   return (
-    <div id='form' style={{ backgroundColor: 'white' }}>
-      <div className='grid'>
+    <div className='col-12'>
+      <div className='grid nested-grid'>
 
-        <div className='col-3 font-bold'>
-          {location.pathname == "/config/usuarios" ?
-            "Gerenciamento de usuarios" : "Usuarios Pendentes"}
-          <input type="text" />
+        <div className='grid col-10'>
+          <div className="col-12 font-bold">
+            {location.pathname == "/config/usuarios" ?
+              "Gerenciamento de usuários" : "Usuários Pendentes"}
+          </div>
+          <div className='cadastro-area grid col-5 m-2'>
+            <i className='fi fi-rr-search mr-2 pt-2' />
+            <input type="text" placeholder="Pesquisar pelo nome"
+              style={{ border: 'none', width: '92%' }} />
+          </div>
         </div>
-
-        <div className='col-1 col-offset-8'>
-          <button className='cadastro-btn-blue' onClick={() => {
+        <div className='col-2 pr-5 pl-5'>
+          <button className='cadastro-btn-blue m-1 w-full' onClick={() => {
             alteraModo(1)
             navigate('/menu')
           }}>Menu</button>
         </div>
+
 
         {location.pathname == "/config/usuarios" ?
           <ListUser

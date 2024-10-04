@@ -9,13 +9,11 @@
     font-size: 18px;
     padding: 15px;
     border-radius: 10px;
-    border: none;
-    margin-top: 10px;
+    border: solid 2px white;
+    margin-top: 6px;
     cursor: pointer;
-}
-
-.side-menu-btn:hover {
-    border: solid 2px;
+}.side-menu-btn:hover {
+    border-color: #366FE1;
 }
 
 #side-config {
@@ -25,15 +23,15 @@
 
 .side-config-btn {
     background-color: transparent;
-    border: none;
+    border: solid 2px #C1C7CB;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
     font-size: 20px;
-    margin-top: 10px;
+    margin-top: 6px;
     padding: 8px
 }.side-config-btn:hover {
-    border: solid 2px;
-    border-radius: 10px;
+    border-color: white;
     color: white;
 }
 
@@ -175,6 +173,34 @@
 }.scroll::-webkit-scrollbar {
     display: none;
 }
+.scroll-white{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    padding: 15px;
+    background:
+        /* Shadow Cover TOP */
+        linear-gradient(white 30%,
+            rgba(255, 255, 255, 0)) center top,
+
+        /* Shadow Cover BOTTOM */
+        linear-gradient(rgba(255, 255, 255, 0),
+        white 70%) center bottom,
+
+        /* Shadow TOP */
+        radial-gradient(farthest-side at 50% 0,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0)) center top,
+
+        /* Shadow BOTTOM */
+        radial-gradient(farthest-side at 50% 100%,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0)) center bottom;
+    background-repeat: no-repeat;
+    background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+    background-attachment: local, local, scroll, scroll;
+}.scroll-white::-webkit-scrollbar {
+    display: none;
+}
 
 /* SUBSTITUIR A CLASSE ABAIXO PELA DE CIMA (SCROLL) */
 
@@ -182,7 +208,10 @@
     height: calc(100vh - 275px);
     overflow: auto;
 }
-
 #list::-webkit-scrollbar {
     display: none;
+}
+
+input:focus{
+    outline: none;
 }

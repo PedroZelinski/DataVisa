@@ -227,7 +227,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
           <div className='cadastro-area grid col-9 mt-2'>
             <i className='fi fi-rr-search mr-2 pt-1' />
             <input type="text" placeholder="Pesquisar por tabela"
-              style={{ border: 'none', height: '100%' }} />
+              style={{ border: 'none' }} />
           </div>
           <div className='col-2 col-offset-1'>
             <button className='cadastro-btn-blue'

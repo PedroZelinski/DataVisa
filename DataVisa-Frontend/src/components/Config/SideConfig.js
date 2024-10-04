@@ -5,6 +5,15 @@ const SideConfig = ({ alteraModo, nivel }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const retornar = (path) => {
+        if(path.split('/').slice(-2)[0] == "cadastro"){
+            navigate(-1)
+        } else {
+            alteraModo(1)
+            navigate("/menu")
+        }
+    }
+
     function selected(path) {
         if (path == location.pathname) {
             return {color: 'white', border: 'solid 2px', borderRadius: '10px'}
@@ -17,7 +26,7 @@ const SideConfig = ({ alteraModo, nivel }) => {
                 <div>
                     <button onClick={() => navigate('/config/usuarios')}
                         className='side-config-btn' style={selected("/config/usuarios")}>
-                        <i className='fi fi-rr-user' /> Usuarios</button>
+                        <i className='fi fi-rr-user' /> Usuários</button>
                 </div>
                 <br />
                 <div>
@@ -49,9 +58,8 @@ const SideConfig = ({ alteraModo, nivel }) => {
             </div> : <div />}
             <div>
                 <button onClick={() => {
-                    alteraModo(1)
-                    navigate('/menu')
-                }} className='side-config-btn'>
+                    console.log(location.pathname.split('/').slice(-2)[0])
+                    retornar(location.pathname)}} className='side-config-btn'>
                     <i className='fi fi-rr-undo-alt' /> Retornar</button>
             </div>
         </div>
