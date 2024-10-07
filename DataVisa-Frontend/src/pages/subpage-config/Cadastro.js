@@ -2,6 +2,7 @@ import React from 'react'
 import { useLocation, useOutletContext } from 'react-router-dom'
 import CadastroUser from '../../components/Config/CadastroUser'
 import CadastroDb from '../../components/Config/CadastroDb';
+import CadastroTemplate from '../../components/Config/CadastroTemplate';
 
 const Cadastro = () => {
     const [session, alteraModo, exibeMensagem] = useOutletContext();
@@ -10,15 +11,17 @@ const Cadastro = () => {
     switch (location.pathname) {
         case "/config/cadastro/usuario":
             return <CadastroUser exibeMensagem={exibeMensagem}/>
-            break;
+
         case "/config/cadastro/conexao":
             return <CadastroDb 
                 exibeMensagem={exibeMensagem}
                 session={session}/>
-            break;
+        case "/config/cadastro/template":
+            return <CadastroTemplate 
+                exibeMensagem={exibeMensagem}
+                session={session}/>
         default:
             return alert("Pagina não encontrada")
-            break;
     }
 }
 

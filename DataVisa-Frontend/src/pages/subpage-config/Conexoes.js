@@ -1,12 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 
 const Conexoes = () => {
   const [dbs, setDbs] = useState([])
   const [session, alteraModo, exibeMensagem] = useOutletContext();
   const [controle, setControle] = useState(0);
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
