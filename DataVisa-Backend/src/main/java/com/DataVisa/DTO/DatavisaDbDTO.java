@@ -23,6 +23,7 @@ public class DatavisaDbDTO {
         this.hostName = dbModel.getHostName();
         this.portDb = dbModel.getPortDb();
         this.caminhoDb = dbModel.getCaminhoDb();
+		this.isActive = dbModel.getIsActive();
         this.empresaId = dbModel.getEmpresaId();
     }
 	

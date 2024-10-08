@@ -8,7 +8,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
   const [value, setValue] = useState('');
   const [tipo, setTipo] = useState('')
   const [contador, setContador] = useState(0)
-  const [ativo, setAtivo] = useState(true)
+  const [ativo, setAtivo] = useState(false)
   const [tables, setTables] = useState([])
   const [db, setDb] = useState({})
   const location = useLocation();
@@ -18,6 +18,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
   useEffect(() => {
     setDb(location.state)
     setTipo(location.state.tipoDb)
+    setAtivo(location.state.isActive == 1 ? true : false)
     if (location.state.nomeConexao != null) {
       conectar(location.state.nomeConexao)
     }
@@ -94,6 +95,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
       hostName: document.getElementById("hostdb").value,
       portDb: document.getElementById("portdb").value,
       caminhoDb: document.getElementById("caminhodb").value,
+      isActive: ativo == true ? 1 : 0,
       empresaId: session.empresaId
     }
     await DBClient.post("/dataVisa/database/addDB", dadosDb).then(
@@ -115,7 +117,8 @@ const CadastroDb = ({ exibeMensagem, session }) => {
         hostName: document.getElementById("hostdb").value,
         portDb: document.getElementById("portdb").value,
         caminhoDb: document.getElementById("caminhodb").value,
-        empresaId: 8
+        isActive: ativo == true ? 1 : 0,
+        empresaId: session.empresaId
       },
       tablesPermitions: tables
     }
@@ -134,9 +137,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
           style={{ width: '140px', boxShadow: 'none', height: '60px' }}>
           <div className="col-6">Ativo</div>
           <div className="col-6">
-            <InputSwitch checked={ativo} onChange={(e) => {
-              setAtivo(e.value)
-            }} />
+            <InputSwitch checked={ativo} onChange={(e) => setAtivo(!ativo)} />
           </div>
         </div>
         <div className="col-1 ml-5 mt-2">
