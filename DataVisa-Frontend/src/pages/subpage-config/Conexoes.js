@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
 
 const Conexoes = () => {
@@ -29,6 +30,23 @@ const Conexoes = () => {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
     }
+  }
+  const confirmDelete = (nomeConexao) => {
+    confirmDialog({
+      message: 'Deseja mesmo excluir a conexão ' + nomeConexao + '?',
+      header: 'Confirmar ação',
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      rejectLabel: "Não",
+      acceptLabel: "Sim",
+      accept() {
+        deletarConexao(nomeConexao)
+      },
+      reject() {
+        return
+      }
+    })
   }
   async function deletarConexao(db) {
     try {
@@ -69,6 +87,7 @@ const Conexoes = () => {
             navigate("/config/cadastro/conexao", {
               state: {
                 nomeConexao: null,
+                isActive: 0
               }
             })}>Adicionar</button>
         </div>
@@ -101,7 +120,7 @@ const Conexoes = () => {
                   <button className='cadastro-btn-blue mr-2'
                     onClick={() => conexaoCadastro(db.id)}>Editar</button>
                   <button className='cadastro-btn-red'
-                    onClick={() => deletarConexao(db.nomeConexao)}>Deletar</button>
+                    onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
                 </div>
               </Fragment>
             ))}

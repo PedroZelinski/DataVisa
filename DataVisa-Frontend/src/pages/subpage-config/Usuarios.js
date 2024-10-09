@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog'
+import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient.js'
 import ListUser from '../../components/Config/ListUser.js'
 import ListPending from '../../components/Config/ListPending.js'

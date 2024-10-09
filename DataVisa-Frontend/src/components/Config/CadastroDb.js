@@ -64,8 +64,9 @@ const CadastroDb = ({ exibeMensagem, session }) => {
   async function conectar(nomeDb) {
     try {
       await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
-        (res) => buscarTabelas()
+        () => buscarTabelas()
       )
+
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
         + error.response.data)
@@ -75,11 +76,9 @@ const CadastroDb = ({ exibeMensagem, session }) => {
     try {
       await DBClient.get("/dataVisa/table/getTablesPermitions").then(
         (res) => {
-          console.log(res.data)
           setTables(res.data.tablesPermitions)
         }
       )
-
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
         + error.response.data)
@@ -98,13 +97,20 @@ const CadastroDb = ({ exibeMensagem, session }) => {
       isActive: ativo == true ? 1 : 0,
       empresaId: session.empresaId
     }
-    await DBClient.post("/dataVisa/database/addDB", dadosDb).then(
-      (res) => {
-        exibeMensagem(res.data)
-        setDb(dadosDb)
-        setContador(contador + 1)
-      }
-    )
+
+    try {
+      await DBClient.post("/dataVisa/database/addDB", dadosDb).then(
+        (res) => {
+          exibeMensagem(res.data)
+          setDb(dadosDb)
+          setContador(contador + 1)
+          document.getElementById("tabelas").scrollIntoView()
+        }
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error)
+      console.log(error)
+    }
   }
   async function salvarConexao() {
     const dadosDb = {
@@ -122,9 +128,17 @@ const CadastroDb = ({ exibeMensagem, session }) => {
       },
       tablesPermitions: tables
     }
-    await DBClient.put("/dataVisa/database/updateDB", dadosDb).then(
-      (res) => exibeMensagem(res.data)
-    )
+
+    try {
+      await DBClient.put("/dataVisa/database/updateDB", dadosDb).then(
+        (res) => {
+          exibeMensagem(res.data)
+        }
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
   }
 
   return (
@@ -140,7 +154,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
             <InputSwitch checked={ativo} onChange={(e) => setAtivo(!ativo)} />
           </div>
         </div>
-        <div className="col-1 ml-5 mt-2">
+        <div className="col-1 ml-2 mt-2 text-right">
           <button className="cadastro-btn-color" type="submit"
             onClick={() => {
               db.nomeConexao == null ?
@@ -149,20 +163,20 @@ const CadastroDb = ({ exibeMensagem, session }) => {
             {db.nomeConexao == null ? "Cadastrar" : "Salvar"}</button>
         </div>
 
-        <div className="scroll mt-1">
+        <div className="scroll col-12 mt-1 ml-1">
 
           <form id='cadastro' onChange={handleChange} onSubmit={onFormSubmit}>
             <div className='cadastro-area grid col-12'>
 
               <div className="col-5">
-                <label>Nome da Conexao
+                <label className='font-bold'>Nome da Conexao
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="nome" placeholder="Nome para a conexao"
                       defaultValue={db.nomeConexao} required />
                   </div>
                 </label>
-                <label className='mt-2'>Tipo
+                <label className='font-bold mt-2'>Tipo
                   <Dropdown value={tipo} options={tipos}
                     onChange={(e) => setTipo(e.value)}
                     style={{
@@ -172,14 +186,14 @@ const CadastroDb = ({ exibeMensagem, session }) => {
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}
                     defaultValue={db.tipoDb} />
                 </label>
-                <label className='mt-2'>Nome do banco de dados
+                <label className='font-bold mt-2'>Nome do banco de dados
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="nomedb" placeholder="Nome da instância do banco"
                       defaultValue={db.nomeDb} required />
                   </div>
                 </label>
-                <label className='mt-2'>Usuario do banco de dados
+                <label className='font-bold mt-2'>Usuario do banco de dados
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="userdb" placeholder="Nome do usuário do banco"
@@ -189,28 +203,28 @@ const CadastroDb = ({ exibeMensagem, session }) => {
 
               </div>
               <div className="col-5">
-                <label>Porta
+                <label className='font-bold'>Porta
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="portdb" placeholder="Porta do banco de dados"
                       defaultValue={db.portDb} required />
                   </div>
                 </label>
-                <label className='mt-2'>Dominio
+                <label className='font-bold mt-2'>Dominio
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="hostdb" placeholder="Dominio do banco de dados"
                       defaultValue={db.hostName} required />
                   </div>
                 </label>
-                <label className='mt-2'>Caminho
+                <label className='font-bold mt-2'>Caminho
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="caminhodb" placeholder="Caminho do banco de dados"
                       defaultValue={db.caminhoDb} required />
                   </div>
                 </label>
-                <label className='mt-2'>Senha
+                <label className='font-bold mt-2'>Senha
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="password" id="senhadb" placeholder="Senha do usuario do banco"
@@ -226,7 +240,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
           </form>
 
           <div className="grid nested-grid col-6 mt-3">
-            <div className='font-bold'>Permissões de tabela</div>
+            <div className='font-bold col-12' id='tabelas'>Permissões de tabela</div>
 
             <div className='cadastro-area grid col-9 mt-2'>
               <i className='fi fi-rr-search mr-2 pt-1' />
