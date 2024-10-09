@@ -1,7 +1,7 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
 
-const Barras = ({valores, nome}) => {
+const Barras = ({nome, valores}) => {
     return (
         <Plot
             data={
