@@ -37,8 +37,8 @@ public class DatavisaTableService {
 			dto.setMensagemRetorno("Erro: Nenhuma conexão ativa");
 	        return Pair.of(dto,  HttpStatus.FORBIDDEN);
 		}
-		dto.setTablesPermitions(tableRepository.findAll(datavisaSession.getDbName()));
-		dto.getDatabase().setNomeDb(datavisaSession.getDbName());
+		dto.setTablesPermitions(tableRepository.findAll(datavisaSession.getNomeConexao()));
+		dto.getDatabase().setNomeDb(datavisaSession.getNomeConexao());
 		dto.setCargos(tableService.getDatavisaCollumnFields(datavisaSession.getEmpresaNome() + "_permissoes", "nome"));
 		return  Pair.of(dto, HttpStatus.OK);
 	}

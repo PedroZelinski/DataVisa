@@ -58,8 +58,8 @@ public class TableSawService {
 	
 	public Pair<String, HttpStatus> getConnecionTables(){
 		Pair<String, HttpStatus> response ;
-		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED) || 
-				!(response = datavisaSession.checkConnection()).getRight().equals(HttpStatus.ACCEPTED)) {
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED) ||
+			!(response = datavisaSession.checkConnection()).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response);
 	    }		
 		String tableNameColuumn = "table_name";
@@ -166,7 +166,7 @@ public class TableSawService {
 	public void addPermitionsTable(DBModel db) throws Exception {
 		String query;
 		try {
-			query = "CREATE TABLE tabelas_" + db.getNomeDb() +" ("
+			query = "CREATE TABLE tabelas_" + db.getNomeConexao() +" ("
 					+ " id BIGINT PRIMARY KEY AUTO_INCREMENT, "
 					+ " nome VARCHAR(60) unique, "
 					+ " conexaoId BIGINT, "
@@ -176,12 +176,12 @@ public class TableSawService {
 			String[] tabelas = getConnecionTables().getLeft().split("\n");
 			executeQueryDatavisa(query); 
 			for (String tabela : tabelas) {
-				query  = "INSERT INTO tabelas_" + db.getNomeDb().trim() 
+				query  = "INSERT INTO tabelas_" + db.getNomeConexao().trim() 
 				+ " (nome, conexaoId, permissaoAcesso) VALUES ('" + tabela.trim()  + "', " + db.getId() + ", " + getPermitionCount(getNomeEmpresa(db.getEmpresaId())).trim()  +");";
 				executeQueryDatavisa(query);
 			}
 		} catch (Exception e) {
-			query = "DROP TABLE tabelas_" + db.getNomeDb();
+			query = "DROP TABLE tabelas_" + db.getNomeConexao();
 			executeQueryDatavisa(query);
 			throw new Exception(e);
 		}

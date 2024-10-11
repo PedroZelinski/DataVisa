@@ -1,7 +1,6 @@
 package com.DataVisa.Models;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 
 import com.DataVisa.Models.Inferfaces.ArtifactModel;
 
@@ -15,7 +14,7 @@ import lombok.Data;
 @Entity
 @Table(name = "templates")
 @Data
-public class TemplateModel extends ArtifactModel implements Serializable {
+public class ArtefactModel extends ArtifactModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -25,13 +24,7 @@ public class TemplateModel extends ArtifactModel implements Serializable {
 	
 	private String nome;
 	
-	private String NomeTabela;
-
-	private String AliasTabela;
-	
-	private String camposTabela;
-	
-	private String query;
+	private String tipo;
 	
 	private String payload;
 	
