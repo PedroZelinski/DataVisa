@@ -1,7 +1,8 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
 
-const Barras = ({nome, valores}) => {
+const Barras = ({ nome, valores }) => {
+
     return (
         <Plot
             data={
@@ -9,12 +10,21 @@ const Barras = ({nome, valores}) => {
                     {
                         x: ["Janeiro", "Fevereiro", "Março"],
                         y: valores,
+                        z: ["1", "2", "3"],
                         name: 'vendas', // legenda
                         type: 'bar',
                     }
                 ]
             }
-            layout={{ width: 600, height: 350, title: nome }}
+            layout={
+                {
+                    width: 500,
+                    height: 300,
+                    title: nome,
+                    margin: {
+                        r: 30, l: 60, t: 40, b: 20
+                    }
+                }}
         />
     )
 }
