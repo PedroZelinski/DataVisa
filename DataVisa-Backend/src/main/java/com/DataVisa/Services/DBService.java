@@ -104,7 +104,7 @@ public class DBService{
 			dto.getDatabase().setId(db.get().getId());
 			dto.setDatabase(databaseRepository.save(dto.getDatabase()));
 			
-			tableSawService.updatePermitionsTable(dto.getDatabase().getNomeDb(), dto);
+			tableSawService.updatePermitionsTable(dto.getDatabase().getNomeConexao(), dto);
 			
 			 response = Pair.of("Banco atualizado com sucesso!", HttpStatus.OK);
 			

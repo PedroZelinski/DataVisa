@@ -188,12 +188,12 @@ public class TableSawService {
 	}
 	
 	@Transactional
-	public void updatePermitionsTable(String dbName, DbDTO tablesPermitions) throws Exception {
+	public void updatePermitionsTable(String connectionName, DbDTO tablesPermitions) throws Exception {
 		String query;
 		try {
 			for (TableModel model : tablesPermitions.getTablesPermitions()) {
 	            // Monta a query SQL para atualizar a tabela tabelas_permissoes
-	            query = "UPDATE tabelas_" + dbName + " SET permissaoAcesso = " + model.getPermissaoAcesso()
+	            query = "UPDATE tabelas_" + connectionName + " SET permissaoAcesso = " + model.getPermissaoAcesso()
 	                                + " WHERE nome = '" + model.getNome() + "'";
 	            executeQueryDatavisa(query);
 	        }
@@ -204,7 +204,7 @@ public class TableSawService {
 	
 	public void deletePermitionsTable(DBModel db) throws Exception {
 		String query;
-			query = "DROP TABLE tabelas_" + db.getNomeDb();
+			query = "DROP TABLE tabelas_" + db.getNomeConexao();
 			executeQueryDatavisa(query); 
 	}
 	
