@@ -233,10 +233,10 @@ public class TableSawService {
 		
 		DatavisaDbDTO db = dBService.findById(datavisaSession.getConexao()).getLeft();
 		
-		String query = "select permissaoAcesso from  tabelas_" + db.getNomeDb() + " where nome = '" + tabela + "'";
+		String query = "select permissaoAcesso from  tabelas_" + db.getNomeConexao() + " where nome = '" + tabela + "'";
 		
 		try {
-			int permissaoAcesso = getDatavisaTable(query, "tabelas_" + db.getNomeDb()).intColumn("permissaoAcesso").getInt(0);
+			int permissaoAcesso = getDatavisaTable(query, "tabelas_" + db.getNomeConexao()).intColumn("permissaoAcesso").getInt(0);
 			response =  permissaoAcesso >= datavisaSession.getPermissaoTabela() ?
 					Pair.of("", HttpStatus.ACCEPTED):
 						Pair.of( "Erro: Usuário não possui permissão de acesso suficiente.", HttpStatus.FORBIDDEN);
