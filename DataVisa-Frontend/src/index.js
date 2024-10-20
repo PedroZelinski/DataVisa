@@ -16,6 +16,8 @@ import Conexoes from './pages/subpage-config/Conexoes';
 import './index.css'
 import Recentes from './pages/subpage-menu/Recentes';
 import Pesquisar from './pages/subpage-menu/Pesquisar';
+import Gerar from './pages/subpage-menu/Gerar';
+import Criar from './pages/subpage-menu/Criar';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: "perfil",
         element: <Perfil />
+      },
+      {
+        path: "criar",
+        element: <Criar />
+      },
+      {
+        path: "gerar",
+        element: <Gerar />
       },
     ]
   },

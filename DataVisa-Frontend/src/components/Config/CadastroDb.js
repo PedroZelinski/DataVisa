@@ -104,6 +104,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
           exibeMensagem(res.data)
           setDb(dadosDb)
           setContador(contador + 1)
+          conectar(dadosDb.nomeConexao)
           document.getElementById("tabelas").scrollIntoView()
         }
       )
@@ -273,7 +274,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
                       }}
                       style={{ width: "100%" }}
                       scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}
-                      required />
+                      required placeholder='Defina um nivel'/>
                   </div>
                 </Fragment>
               ))}

@@ -40,6 +40,24 @@
     cursor: pointer;
 }
 
+#create-btn {
+    height: 220px;
+    background:
+        linear-gradient(white 0 0) padding-box,
+        linear-gradient(44deg, #044BD9 0%, #00A6AB 100%) border-box;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    color: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+    cursor: pointer;
+}
+#card{
+    height: 220px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    color: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+    cursor: pointer;
+}
+
 #top-menu {
     background-color: #5786E6;
 }
@@ -115,7 +133,6 @@
     background:
         linear-gradient(white 0 0) padding-box,
         linear-gradient(44deg, #044BD9 0%, #00A6AB 100%) border-box;
-    color: #313149;
     padding: 10px;
     border: 5px solid transparent;
     border-radius: 50%;
@@ -144,6 +161,13 @@
     background: white;
     border-radius: 5px;
     box-shadow: 5px 5px 5px lightblue;
+}
+
+#text-color{
+    background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .scroll {
