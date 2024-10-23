@@ -15,7 +15,7 @@ public class ArtifactModel {
 	
 	private String nome;
 	
-	private String corpo;
+	private String query;
 	
 	private Long empresaId;
 	
