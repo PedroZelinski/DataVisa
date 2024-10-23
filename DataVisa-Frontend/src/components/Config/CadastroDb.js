@@ -8,7 +8,8 @@ const CadastroDb = ({ exibeMensagem, session }) => {
   const [value, setValue] = useState('');
   const [tipo, setTipo] = useState('')
   const [contador, setContador] = useState(0)
-  const [ativo, setAtivo] = useState(false)
+  const [ativo, setAtivo] = useState(true)
+  const [testado, setTestado] = useState(true)
   const [tables, setTables] = useState([])
   const [db, setDb] = useState({})
   const location = useLocation();
@@ -21,6 +22,8 @@ const CadastroDb = ({ exibeMensagem, session }) => {
     setAtivo(location.state.isActive == 1 ? true : false)
     if (location.state.nomeConexao != null) {
       conectar(location.state.nomeConexao)
+    } else {
+      setTestado(false)
     }
   }, [])
 
@@ -62,14 +65,20 @@ const CadastroDb = ({ exibeMensagem, session }) => {
     }
   }
   async function conectar(nomeDb) {
-    try {
-      await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
-        () => buscarTabelas()
-      )
+    if (
+      testado == true
+    ) {
+      try {
+        await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
+          () => buscarTabelas()
+        )
 
-    } catch (error) {
-      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
-        + error.response.data)
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+          + error.response.data)
+      }
+    } else {
+      exibeMensagem("Faça um teste conexão com sucesso para buscar as tabelas!")
     }
   }
   async function buscarTabelas() {
@@ -274,7 +283,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
                       }}
                       style={{ width: "100%" }}
                       scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }}
-                      required placeholder='Defina um nivel'/>
+                      required placeholder='Defina um nivel' />
                   </div>
                 </Fragment>
               ))}
