@@ -164,7 +164,7 @@ public class TableSawService {
 		}
 	}
 	
-	public String extractCustomizesdCollumnFields(String query, String tabela, String campo, int index){
+	public String extractCustomizesdCollumnFields(String query, String tabela, int index){
 		StringBuilder column = new StringBuilder();
 		try {
 			

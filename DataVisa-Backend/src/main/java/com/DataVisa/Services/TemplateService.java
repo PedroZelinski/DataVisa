@@ -94,7 +94,7 @@ public class TemplateService{
 		List<String> items = DatavisaUtils.tableFieldsMapper(query);
 		dto.setItens(items);
 		List<String> valores = IntStream.range(0, items.size())
-		        .mapToObj(index -> tableSawService.extractCustomizesdCollumnFields(query, table, items.get(index), index))
+		        .mapToObj(index -> tableSawService.extractCustomizesdCollumnFields(query, table, index))
 		        .collect(Collectors.toList());
 	    dto.setValores(valores);
 		return Pair.of(dto, HttpStatus.OK);
