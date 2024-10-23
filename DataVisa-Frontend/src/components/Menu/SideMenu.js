@@ -16,11 +16,11 @@ const SideMenu = () => {
                 <i className='fi fi-rr-clock' /><br />Recentes</button>
             </div>
             <br />
-            <div>
+            {/* <div>
                 <button className='side-menu-btn'>
                 <i className='fi fi-rr-share' /><br />Compartilhados</button>
             </div>
-            <br />
+            <br /> */}
             <div>
                 <button className='side-menu-btn' onClick={() => navigate('/menu/pesquisar')}>
                 <i className='fi fi-rr-search' /><br />Pesquisar</button>

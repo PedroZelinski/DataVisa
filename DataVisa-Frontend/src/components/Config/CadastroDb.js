@@ -56,6 +56,7 @@ const CadastroDb = ({ exibeMensagem, session }) => {
     try {
       await DBClient.post("/dataVisa/database/testConnection", dadosConexao).then(
         (res) => {
+          setTestado(true)
           exibeMensagem(res.data)
         }
       )
