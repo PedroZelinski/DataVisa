@@ -17,6 +17,7 @@ import com.DataVisa.Models.DBModel;
 import com.DataVisa.Models.TableModel;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
+import com.DataVisa.Utils.DatavisaUtils;
 
 import jakarta.transaction.Transactional;
 import tech.tablesaw.api.Table;
@@ -160,6 +161,22 @@ public class TableSawService {
 			
 		} catch (Exception e) {
 			return "Erro: " + e.getMessage();
+		}
+	}
+	
+	public String extractCustomizesdCollumnFields(String query, String tabela, int index){
+		StringBuilder column = new StringBuilder();
+		try {
+			
+			Table table = datavisaSession.getCustomerConnection(query, tabela);
+			String columnType = table.typeArray()[index].toString();
+			String columnName = table.columnNames().get(index);
+			column.append(columnName + ":");
+			column.append(DatavisaUtils.columnExtractorByType(table, columnType, columnName).replace(",",";"));
+			return column.toString();
+			
+		} catch (Exception e) {
+			return "Erro: " + e.getMessage() + "\n" + e.getClass().toString();
 		}
 	}
 		

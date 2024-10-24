@@ -1,20 +1,15 @@
-package com.DataVisa.Models;
+package com.DataVisa.DTO;
 
 import java.io.Serializable;
+import java.util.List;
 
-import com.DataVisa.Models.Inferfaces.ArtifactModel;
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Data;
 
-@Entity
-@Table(name = "templates")
 @Data
-public class TemplateModel extends ArtifactModel implements Serializable {
+public class TemplateDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -26,10 +21,16 @@ public class TemplateModel extends ArtifactModel implements Serializable {
 	
 	private String query;
 	
-	private String [] itens;
+	private String table;
+	
+	private List<String> itens;
+
+	private List<String> valores;
 	
 	private Long empresaId;
 	
 	private Long conexaoId;
+	
+	private String mensagemRetorno;
 	
 }  
