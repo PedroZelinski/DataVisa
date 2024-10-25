@@ -1,7 +1,6 @@
 package com.DataVisa.Controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.DTO.TemplateDTO;
 import com.DataVisa.Models.TemplateModel;
 import com.DataVisa.Services.TemplateService;

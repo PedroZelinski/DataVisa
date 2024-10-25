@@ -19,6 +19,8 @@ VALUES
 ('João Oliveira', 'joao.oliveira@example.com', 'senha_criptografada4', 4, '2024-08-12', 'Ativo'),
 ('Mariana Pereira', 'mariana.pereira@example.com', 'senha_criptografada5', 5, '2024-08-15', 'Ativo');
 
+select notfisc as nota_fiscal from colaboradores;
+
 CREATE TABLE Clientes (
     id_cliente INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,

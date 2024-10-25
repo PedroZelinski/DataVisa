@@ -57,29 +57,30 @@ public class DatavisaUtils {
     public static List<String> tableFieldsMapper(String query) {
         List<String> aliases = new ArrayList<>();
 
-        // Remove quebras de linha da string de consulta e substitui múltiplos espaços por um único
+        // Remove quebras de linha e múltiplos espaços
         query = query.replaceAll("\\r?\\n", " ").replaceAll("\\s+", " ").trim();
 
-        // Extrai a parte da consulta antes do FROM (parte do SELECT)
+        // Extrai a parte da consulta antes do FROM
         String selectPart = query.split("(?i)FROM")[0].trim();
 
         // Regex para capturar apenas aliases explicitamente declarados com AS
-        String aliasRegex = "(?i)(?:[\\w.]+|\\([^\\)]+\\))\\s+AS\\s+(\\w+)";
+        String aliasRegex = "(?i)\\bAS\\s+(\\w+)\\b";
 
-        // Regex matcher para capturar os aliases
+        // Matcher para capturar os aliases
         Matcher aliasMatcher = Pattern.compile(aliasRegex).matcher(selectPart);
 
         while (aliasMatcher.find()) {
-            String alias = aliasMatcher.group(1); // Captura o alias (após o AS)
+            String alias = aliasMatcher.group(1); // Captura o alias
             if (alias != null) {
-            	alias = alias.replace("_", " "); //Formata o alias 
-                alias = capitalizeFirstLetter(alias); //Formata o alias 
-                aliases.add(alias); // Adiciona o alias à lista
+                alias = alias.replace("_", " "); // Substitui _ por espaço
+                alias = capitalizeFirstLetter(alias); // Capitaliza a primeira letra
+                aliases.add(alias); // Adiciona à lista de aliases
             }
         }
 
         return aliases;
     }
+
 
         public static String columnExtractorByType(Table table, String columnType, String columnName) {
             String response;
@@ -117,7 +118,34 @@ public class DatavisaUtils {
             }
 
             response = response.contains("\n") ? response.substring(response.indexOf('\n') + 1): response;
-            return response.replaceAll("\\r\\n", ",").trim();
+            return response.replaceAll("\\r\\n", "").trim();
+        }
+        
+        public static String sanitizeQuery(String query) {
+            if (query == null || query.isEmpty()) {
+            	throw new IllegalArgumentException("A query não pode ser nula ou vazia.");
+            }
+
+            // Remove conteúdo após ';' juntamente com o caractere indesejado
+            int semicolonIndex = query.indexOf(';');
+            if (semicolonIndex != -1) {
+                query = query.substring(0, semicolonIndex);
+            }
+
+            // Adiciona "select " no início, caso não esteja presente
+            if (!query.trim().toLowerCase().startsWith("select ")) {
+                query = "select " + query.trim();
+            }
+            
+            // Considera a query inválida por conter palavras reservadas
+            String lowerQuery = query.toLowerCase();
+            if (lowerQuery.contains("update ") || lowerQuery.contains("delete ") || 
+                lowerQuery.contains("insert ") || lowerQuery.contains("drop ") || 
+                lowerQuery.contains("alter ")) {
+                throw new IllegalArgumentException("Query inválida: somente comandos SELECT são permitidos.");
+            }
+            
+            return query.trim();
         }
     
         private static String capitalizeFirstLetter(String input) { 
@@ -127,5 +155,21 @@ public class DatavisaUtils {
             
             // Capitaliza apenas a primeira letra e mantém o restante da string como está
             return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+        }
+        
+        public static String limitQueryToOne(String query) {
+            if (query == null || query.isEmpty()) {
+            	throw new IllegalArgumentException("A query não pode ser nula ou vazia.");
+            }
+            
+            // Regex para encontrar a cláusula LIMIT na query
+            String limitRegex = "(?i)\\s+limit\\s+\\d+";
+            if (query.matches(".*" + limitRegex + ".*")) {
+                // Substitui o valor atual de LIMIT por 1
+                return query.replaceAll(limitRegex, " LIMIT 1");
+            } else {
+                // Adiciona "LIMIT 1" ao final, caso não exista
+                return query + " LIMIT 1";
+            }
         }
 }

@@ -1,9 +1,6 @@
 package com.DataVisa.Services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.DTO.TemplateDTO;
 import com.DataVisa.Models.TemplateModel;
 import com.DataVisa.Repositories.TemplateRepository;
@@ -89,15 +85,31 @@ public class TemplateService{
 			dto.setMensagemRetorno(response.getLeft());
 	        return Pair.of(dto, response.getRight());
 		}
-	
-		String table = DatavisaUtils.tableNameMapper(query);
-		List<String> items = DatavisaUtils.tableFieldsMapper(query);
-		dto.setItens(items);
-		List<String> valores = IntStream.range(0, items.size())
-		        .mapToObj(index -> tableSawService.extractCustomizesdCollumnFields(query, table, index))
-		        .collect(Collectors.toList());
-	    dto.setValores(valores);
-		return Pair.of(dto, HttpStatus.OK);
+		
+		try {
+			query = DatavisaUtils.sanitizeQuery(query);
+			String limitedQuery = DatavisaUtils.limitQueryToOne(query);
+			
+			dto.setQuery(query);
+			String table = DatavisaUtils.tableNameMapper(query);
+			dto.setTable(table);
+			List<String> items = DatavisaUtils.tableFieldsMapper(query);
+			dto.setItens(items);
+			List<String> valores = IntStream.range(0, items.size())
+			        .mapToObj(index -> tableSawService.extractCustomizesdCollumnFields(limitedQuery, table, index))
+			        .collect(Collectors.toList());
+		    dto.setValores(valores);
+		    dto.setEmpresaId(datavisaSession.getEmpresaId());
+		    dto.setConexaoId(datavisaSession.getConexao());
+		    dto.setMensagemRetorno("Query válida.");
+		    
+			return Pair.of(dto, HttpStatus.OK);
+		
+		}catch (IllegalArgumentException e) {
+			dto = new TemplateDTO();
+			dto.setMensagemRetorno(e.getMessage());
+			return Pair.of(dto, HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 }

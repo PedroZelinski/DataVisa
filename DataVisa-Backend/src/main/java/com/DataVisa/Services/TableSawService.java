@@ -171,8 +171,8 @@ public class TableSawService {
 			Table table = datavisaSession.getCustomerConnection(query, tabela);
 			String columnType = table.typeArray()[index].toString();
 			String columnName = table.columnNames().get(index);
-			column.append(columnName + ":");
-			column.append(DatavisaUtils.columnExtractorByType(table, columnType, columnName).replace(",",";"));
+			//column.append(columnName + ":");
+			column.append(DatavisaUtils.columnExtractorByType(table, columnType, columnName));
 			return column.toString();
 			
 		} catch (Exception e) {
