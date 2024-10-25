@@ -145,7 +145,7 @@ public class DatavisaUtils {
                 throw new IllegalArgumentException("Query inválida: somente comandos SELECT são permitidos.");
             }
             
-            return query.trim();
+            return query.replaceAll("\\r\\n", " ").trim();
         }
     
         private static String capitalizeFirstLetter(String input) { 
