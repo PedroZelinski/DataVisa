@@ -13,7 +13,7 @@
 				"header": [
 					{
 						"key": "email",
-						"value": "pedro@fatec.sp.gov.br",
+						"value": "administracao@pizzaria.com",
 						"type": "text"
 					},
 					{
@@ -289,7 +289,7 @@
 			"response": []
 		},
 		{
-			"name": "Add DB",
+			"name": "Add Connection",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -316,7 +316,7 @@
 			"response": []
 		},
 		{
-			"name": "GetAll DB",
+			"name": "GetAll Connections",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -334,7 +334,7 @@
 			"response": []
 		},
 		{
-			"name": "GetAll Active DB",
+			"name": "GetAll Active Connections",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -352,13 +352,13 @@
 			"response": []
 		},
 		{
-			"name": "Update DB and Tables Permitions",
+			"name": "Update Connection and Tables Permitions",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"database\": {\r\n        \"id\": 56,\r\n        \"nomeConexao\": \"Pizzaria_Conexao1\",\r\n        \"tipoDb\": \"MySQL\",\r\n        \"nomeDb\": \"Pizzaria_db\",\r\n        \"usuarioDb\": \"root\",\r\n        \"senhaDb\": \"1234\",\r\n        \"hostName\": \"localhost\",\r\n        \"portDb\": 3306,\r\n        \"caminhoDb\": \"/pizzaria_db\",\r\n        \"empresaNome\": \"Pizzaria\",\r\n        \"empresaId\": 8,\r\n        \"isActive\": 0,\r\n        \"mensagemRetorno\": null\r\n    },\"tablesPermitions\": [\r\n        {\r\n            \"id\": 1,\r\n            \"nome\": \"clientes\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"nome\": \"colaboradores\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 3,\r\n            \"nome\": \"financeiro\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"nome\": \"fornecedores\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 5,\r\n            \"nome\": \"notasfiscais\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 2\r\n        },\r\n        {\r\n            \"id\": 6,\r\n            \"nome\": \"produtos\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        },\r\n        {\r\n            \"id\": 7,\r\n            \"nome\": \"vendas\",\r\n            \"conexaoId\": 3,\r\n            \"permissaoAcesso\": 3\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"database\": {\r\n        \"nomeConexao\": \"Pizzaria_Conexao1\",\r\n        \"tipoDb\": \"MySQL\",\r\n        \"nomeDb\": \"Pizzaria_db\",\r\n        \"usuarioDb\": \"root\",\r\n        \"senhaDb\": \"1234\",\r\n        \"hostName\": \"localhost\",\r\n        \"portDb\": 3306,\r\n        \"caminhoDb\": \"/pizzaria_db\",\r\n        \"empresaId\": 8,\r\n        \"isActive\": 0\r\n    },\"tablesPermitions\": [\r\n        {\r\n            \"nome\": \"clientes\",\r\n            \"permissaoAcesso\": 2\r\n        },\r\n        {\r\n            \"nome\": \"notasfiscais\",\r\n            \"permissaoAcesso\": 1\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -379,7 +379,7 @@
 			"response": []
 		},
 		{
-			"name": "Get DB",
+			"name": "Get Connection",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -732,6 +732,116 @@
 						"getColumnFields",
 						"financeiro",
 						"tipo_transacao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Template Query",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " pp.pedido_id as numero_do_pedido, \r\n       SUM(p.preco * (p.margem_lucro / 100) * pp.quantidade) AS lucro_total,\r\n       SUM(pp.quantidade * p.preco) AS total_da_venda,\r\n       (SUM(p.preco * (p.margem_lucro / 100) * pp.quantidade) / SUM(pp.quantidade * p.preco)) * 100 AS percentual_lucro\r\nFROM pedido_pizzas as pp\r\nJOIN pizzas p ON pp.pizza_id = p.pizza_id\r\nGROUP BY pp.pedido_id\r\nORDER BY percentual_lucro DESC \r\nlimit 3;",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/template/validateQuery",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"validateQuery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add template",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"templateName\": \"Lucros2\",\r\n    \"sqlQuery\": \"select pp.pedido_id as numero_do_pedido,         SUM(p.preco * (p.margem_lucro / 100) * pp.quantidade) AS lucro_total,        SUM(pp.quantidade * p.preco) AS total_da_venda,        (SUM(p.preco * (p.margem_lucro / 100) * pp.quantidade) / SUM(pp.quantidade * p.preco)) * 100 AS percentual_lucro FROM pedido_pizzas as pp JOIN pizzas p ON pp.pizza_id = p.pizza_id GROUP BY pp.pedido_id ORDER BY percentual_lucro DESC  limit 3\",\r\n    \"tableName\": \"pedido_pizzas\",\r\n    \"items\": [\r\n        \"Numero do pedido\",\r\n        \"Lucro total\",\r\n        \"Total da venda\",\r\n        \"Percentual lucro\"\r\n    ],\r\n    \"conexaoId\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/template/addTemplate",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"addTemplate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/getTemplate/1",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"getTemplate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Templates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/getAll",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Template",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/deleteTemplate/Lucros2",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"deleteTemplate",
+						"Lucros2"
 					]
 				}
 			},
