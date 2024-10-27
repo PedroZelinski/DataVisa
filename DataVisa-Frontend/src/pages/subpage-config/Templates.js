@@ -34,6 +34,26 @@ const Templates = () => {
             })}>Adicionar</button>
         </div>
 
+        <div className="cadastro-area grid m-2 mr-3 w-full"
+          style={{ height: 'calc(100vh - 250px)' }}>
+
+          <div className='grid col-12 ml-1 font-bold text-center mt-2' 
+            style={{ height: '50px', width: '99%' }}>
+            <div className='col-1'>ID</div>
+            <div className='col-4'>Nome</div>
+            <div className='col-3'>Conexão</div>
+            <div className='col-2'>Data</div>
+            <div className='col-2'>Ações</div>
+            <div className="col-12"><hr /></div>
+          </div>
+
+          <div className="scroll-white grid col-12 text-center ml-1 mt-2"
+            style={{height: 'calc(100vh - 320px)', width: '99%'}}>
+            
+          </div>
+
+        </div>
+
       </div>
     </div>
   )

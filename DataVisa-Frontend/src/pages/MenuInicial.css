@@ -1,3 +1,16 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    max-width:100%;
+    white-space:nowrap;
+}
+
 #side-menu {
     border-right: 2px solid #B1C7F3;
     min-height: calc(100vh - 100px);
@@ -12,7 +25,9 @@
     border: solid 2px white;
     margin-top: 6px;
     cursor: pointer;
-}.side-menu-btn:hover {
+}
+
+.side-menu-btn:hover {
     border-color: #366FE1;
 }
 
@@ -30,7 +45,9 @@
     font-size: 20px;
     margin-top: 6px;
     padding: 8px
-}.side-config-btn:hover {
+}
+
+.side-config-btn:hover {
     border-color: white;
     color: white;
 }
@@ -50,7 +67,8 @@
     color: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
     cursor: pointer;
 }
-#card{
+
+#card {
     height: 220px;
     border: 2px solid transparent;
     border-radius: 5px;
@@ -162,11 +180,15 @@
     border-radius: 5px;
     box-shadow: 5px 5px 5px lightblue;
 }
+.output-area {
+    overflow-x: auto;
+    white-space: nowrap;
+}
 
-#text-color{
+#text-color {
     background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
     -webkit-background-clip: text;
-            background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -181,7 +203,7 @@
 
         /* Shadow Cover BOTTOM */
         linear-gradient(rgba(255, 255, 255, 0),
-        #ebedee 70%) center bottom,
+            #ebedee 70%) center bottom,
 
         /* Shadow TOP */
         radial-gradient(farthest-side at 50% 0,
@@ -195,10 +217,13 @@
     background-repeat: no-repeat;
     background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
     background-attachment: local, local, scroll, scroll;
-}.scroll::-webkit-scrollbar {
+}
+
+.scroll::-webkit-scrollbar {
     display: none;
 }
-.scroll-white{
+
+.scroll-white {
     height: calc(100vh - 200px);
     overflow: auto;
     padding: 15px;
@@ -209,7 +234,7 @@
 
         /* Shadow Cover BOTTOM */
         linear-gradient(rgba(255, 255, 255, 0),
-        white 70%) center bottom,
+            white 70%) center bottom,
 
         /* Shadow TOP */
         radial-gradient(farthest-side at 50% 0,
@@ -223,7 +248,9 @@
     background-repeat: no-repeat;
     background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
     background-attachment: local, local, scroll, scroll;
-}.scroll-white::-webkit-scrollbar {
+}
+
+.scroll-white::-webkit-scrollbar {
     display: none;
 }
 
@@ -233,10 +260,11 @@
     height: calc(100vh - 275px);
     overflow: auto;
 }
+
 #list::-webkit-scrollbar {
     display: none;
 }
 
-input:focus{
+input:focus {
     outline: none;
 }
