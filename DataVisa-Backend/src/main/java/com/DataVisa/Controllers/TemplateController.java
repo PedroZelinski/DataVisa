@@ -29,12 +29,11 @@ public class TemplateController {
 	}
 	
 	
-//	@GetMapping("/dataVisa/template/getTemplate/{id}")
-//	public ResponseEntity<TemplateModel> getTemplate(@PathVariable Long id){
-//		return templateService.findById(id)
-//				.map(record -> ResponseEntity.ok().body(record))
-//				.orElse(ResponseEntity.notFound().build());
-//	}
+	@GetMapping("/dataVisa/template/getTemplate/{id}")
+	public ResponseEntity<TemplateDTO> getDB(@PathVariable Long id){
+		Pair<TemplateDTO, HttpStatus> result = templateService.findById(id);
+		return new ResponseEntity<TemplateDTO>(result.getLeft(), result.getRight());
+	}
 	
 	@PostMapping("/dataVisa/template/addTemplate")
     public ResponseEntity<String> addTemplate(@RequestBody TemplateModel template){        
@@ -43,12 +42,10 @@ public class TemplateController {
     }
 	
 //	@PutMapping("/dataVisa/template/updateTemplate")
-//    public ResponseEntity<String> updateTemplate(@RequestBody TemplateModel template){
-//		return  templateService.save(template)
-//	    		.map(message -> ResponseEntity.ok(message))
-//	            .orElse(ResponseEntity.internalServerError().build());          
+//    public ResponseEntity<String> updateDB(@RequestBody TemplateModel template){
+//		Pair<String, HttpStatus> result = templateService.updateTemplate(template);
+//    	return new ResponseEntity<>(result.getLeft(), result.getRight());        
 //    }
-//	
 
 	@DeleteMapping("/dataVisa/template/deleteTemplate/{templateName}")
     public  ResponseEntity<String> deleteDB(@PathVariable String templateName){

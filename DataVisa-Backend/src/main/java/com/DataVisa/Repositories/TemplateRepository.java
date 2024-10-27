@@ -2,7 +2,7 @@ package com.DataVisa.Repositories;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,10 @@ public class TemplateRepository {
             Gson gson = new Gson();
             String itemsJson = gson.toJson(template.getItems());
             insertQuery.setParameter("items", itemsJson);
+
+            Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+            insertQuery.setParameter("lastModification", currentTimestamp);
             
-            insertQuery.setParameter("lastModification", java.sql.Date.valueOf(LocalDate.now(ZoneId.systemDefault())));
             insertQuery.setParameter("empresaId", template.getEmpresaId());
             insertQuery.setParameter("conexaoId", template.getConexaoId());
 	        insertQuery.executeUpdate();
@@ -66,9 +68,13 @@ public class TemplateRepository {
             template.setTemplateName((String) result[1]);
             template.setSqlQuery((String) result[2]);
             template.setTableName((String) result[3]);
-            template.setLastModification((Timestamp) result[4]);
-            template.setEmpresaId(((Number) result[5]).longValue());
-            template.setConexaoId(((Number) result[6]).longValue());
+            Gson gson = new Gson();
+            String itemsJson = (String) result[4]; 
+            List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
+            template.setItems(items);
+            template.setLastModification((Timestamp) result[5]);
+            template.setEmpresaId(((Number) result[6]).longValue());
+            template.setConexaoId(((Number) result[7]).longValue());
 
             return template;
         } catch (NoResultException e) {
@@ -106,11 +112,10 @@ public class TemplateRepository {
         }
     }
 
-    // Método para atualizar um registro existente
-    @Transactional
     public void updateTemplate(TemplateModel template) {
-        String tableName = "template_" + template.getEmpresaId();
-        String query = "UPDATE " + tableName + " SET templateName = :templateName, sqlQuery = :sqlQuery, tableName = :tableName, items = :items, " +
+        String tableName = "templates_" + template.getEmpresaId();
+        String query = "UPDATE " + tableName + 
+                       " SET templateName = :templateName, sqlQuery = :sqlQuery, tableName = :tableName, items = :items, " +
                        "lastModification = :lastModification, conexaoId = :conexaoId " +
                        "WHERE id = :id";
 
@@ -118,8 +123,12 @@ public class TemplateRepository {
         updateQuery.setParameter("templateName", template.getTemplateName());
         updateQuery.setParameter("sqlQuery", template.getSqlQuery());
         updateQuery.setParameter("tableName", template.getTableName());
-        updateQuery.setParameter("items", template.getItems());
-        updateQuery.setParameter("lastModification", java.sql.Date.valueOf(LocalDate.now(ZoneId.systemDefault())));
+        Gson gson = new Gson();
+        String itemsJson = gson.toJson(template.getItems());
+        updateQuery.setParameter("items", itemsJson);
+        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+        updateQuery.setParameter("lastModification", currentTimestamp);
+        
         updateQuery.setParameter("conexaoId", template.getConexaoId());
         updateQuery.setParameter("id", template.getId());
 

@@ -34,7 +34,7 @@ public class TemplateService{
 	@Autowired
 	TableSawService tableSawService;
 
-public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
+	public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
 		
 		Pair<String, HttpStatus> response;;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
@@ -63,58 +63,80 @@ public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
 		}
 	}
 
-		public Pair<String, HttpStatus> delete(String nomeTemplate){
-			Pair<String, HttpStatus> response;;
-			if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
-		        return Pair.of(response);
-		    }
-		    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
-		        return Pair.of(response);
-		    }
+	public Pair<String, HttpStatus> delete(String nomeTemplate){
+		Pair<String, HttpStatus> response;;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }
+		
+		try {
 			
-			try {
-				
-				TemplateModel template = templateRepository.findByName(nomeTemplate, datavisaSession.getEmpresaId());
-				
-				//Verifica se o template existe
-				if (template == null) {
-	                throw new RuntimeException("Template não encontrado.");
-	            }
-				
-				templateRepository.delete(template);
-				
-				//Verifica se o template foi excluido
-	            if (templateRepository.findById(template.getId(), template.getEmpresaId()) != null) {
-	                throw new RuntimeException("Falha ao excluir o template.");
-	            }
-	            
-			} catch (Exception ex){
-				return Pair.of("Template não excluído! \nErro: " + ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);			
-			}
+			TemplateModel template = templateRepository.findByName(nomeTemplate, datavisaSession.getEmpresaId());
 			
-			return Pair.of("Template excluído com sucesso!",HttpStatus.OK);
+			//Verifica se o template existe
+			if (template == null) {
+                throw new RuntimeException("Template não encontrado.");
+            }
+			
+			templateRepository.delete(template);
+			
+			//Verifica se o template foi excluido
+            if (templateRepository.findById(template.getId(), template.getEmpresaId()) != null) {
+                throw new RuntimeException("Falha ao excluir o template.");
+            }
+            
+		} catch (Exception ex){
+			return Pair.of("Template não excluído! \nErro: " + ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);			
 		}
-//
-//	public Optional<TemplateModel> findById(Long id){
-//		return documentRepository.findById(id);
-//	}
-//
-		public Pair<Object, HttpStatus> getAll(){
-			Pair<String, HttpStatus> response;
-			if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
-		        return Pair.of(response,  response.getRight());
-		    }
-		    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
-		        return Pair.of(response, response.getRight());
-		    }
-		    try {
-			    List<TemplateModel> templates = templateRepository.getAll(datavisaSession.getEmpresaId());
-			  
-		        return Pair.of(templates, HttpStatus.OK);
-		    } catch (Exception e) {
-		    	return Pair.of("Erro ao buscar a lista de templates! \nErro: ",HttpStatus.INTERNAL_SERVER_ERROR);
-		    }
-		}
+		
+		return Pair.of("Template excluído com sucesso!",HttpStatus.OK);
+	}
+
+	public  Pair<TemplateDTO, HttpStatus> findById(Long id){
+		Pair<String, HttpStatus> response;
+		TemplateDTO templateResponse;
+		
+		
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+			templateResponse =  new TemplateDTO(response.getLeft());
+	        return Pair.of(templateResponse, response.getRight());
+	    }
+		 try {
+			 
+			 
+			 templateResponse = new TemplateDTO(templateRepository.findById(id , datavisaSession.getEmpresaId()));
+			 if (!datavisaSession.getEmpresaId().equals(templateResponse.getEmpresaId()) && !datavisaSession.getEmpresaId().equals(1L)){
+				templateResponse = new TemplateDTO("Erro: O usuário não pertence a empresa correspondente ao template informado.");
+	    		return  Pair.of(templateResponse, HttpStatus.FORBIDDEN);
+			 }
+			 
+		 } catch (Exception e) {
+			 templateResponse= new TemplateDTO("Template não encontrado");
+		    return Pair.of(templateResponse,HttpStatus.NOT_FOUND);
+	    }
+		 	
+		    return Pair.of(templateResponse,HttpStatus.OK);
+	}
+	
+	public Pair<Object, HttpStatus> getAll(){
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response,  response.getRight());
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response, response.getRight());
+	    }
+	    try {
+		    List<TemplateModel> templates = templateRepository.getAll(datavisaSession.getEmpresaId());
+		  
+	        return Pair.of(templates, HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return Pair.of("Erro ao buscar a lista de templates! \nErro: ",HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 	
 	public Pair<TemplateDTO, HttpStatus> validateQuery(String query){
 		TemplateDTO dto = new TemplateDTO();

@@ -4,13 +4,31 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.DataVisa.Models.TemplateModel;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class TemplateDTO implements Serializable {
+	public TemplateDTO(String mensagemRetorno){
+		this.mensagemRetorno = mensagemRetorno;
+	}
+	
+	public TemplateDTO(TemplateModel templateModel) {
+        this.id = templateModel.getId();
+        this.nome = templateModel.getTemplateName();
+        this.query = templateModel.getSqlQuery();
+        this.tableName = templateModel.getTableName();
+        this.items = templateModel.getItems();
+        this.lastModification = templateModel.getLastModification();
+        this.empresaId = templateModel.getEmpresaId();
+        this.conexaoId = templateModel.getConexaoId();
+    }
 
 	private static final long serialVersionUID = 1L;
 	
