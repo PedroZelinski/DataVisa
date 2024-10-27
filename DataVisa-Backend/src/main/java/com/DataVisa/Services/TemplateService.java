@@ -58,7 +58,7 @@ public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
 			return response;
 			
 		} catch (Exception ex){
-			response = Pair.of("Ocorreu um erro, Template não cadastrado! " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			response = Pair.of("Ocorreu um erro, Template não cadastrado! \nErro: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			return response; 
 		}
 	}
@@ -89,7 +89,7 @@ public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
 	            }
 	            
 			} catch (Exception ex){
-				return Pair.of("Erro: Template não excluído! \nErro: " + ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);			
+				return Pair.of("Template não excluído! \nErro: " + ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);			
 			}
 			
 			return Pair.of("Template excluído com sucesso!",HttpStatus.OK);
@@ -99,9 +99,22 @@ public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
 //		return documentRepository.findById(id);
 //	}
 //
-//	public List<TemplateModel> findAll(){
-//		return documentRepository.findAll();
-//	}
+		public Pair<Object, HttpStatus> getAll(){
+			Pair<String, HttpStatus> response;
+			if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+		        return Pair.of(response,  response.getRight());
+		    }
+		    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+		        return Pair.of(response, response.getRight());
+		    }
+		    try {
+			    List<TemplateModel> templates = templateRepository.getAll(datavisaSession.getEmpresaId());
+			  
+		        return Pair.of(templates, HttpStatus.OK);
+		    } catch (Exception e) {
+		    	return Pair.of("Erro ao buscar a lista de templates! \nErro: ",HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+		}
 	
 	public Pair<TemplateDTO, HttpStatus> validateQuery(String query){
 		TemplateDTO dto = new TemplateDTO();

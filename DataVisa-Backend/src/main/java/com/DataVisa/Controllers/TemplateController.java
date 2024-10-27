@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,10 +56,10 @@ public class TemplateController {
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
 	
-//    
-//    @GetMapping("/dataVisa/template/getAll")
-//	public List<TemplateModel> getAll(){
-//		return templateService.findAll();
-//	}
+	@GetMapping("/dataVisa/template/getAll")
+    public ResponseEntity<?> getAll(){
+    	Pair<Object, HttpStatus> result = templateService.getAll();
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
+	}
 	
 }

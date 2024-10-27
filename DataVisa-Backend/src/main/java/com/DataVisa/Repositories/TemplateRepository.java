@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -137,12 +138,33 @@ public class TemplateRepository {
         deleteQuery.executeUpdate();
     }
 
-    // Método para buscar todos os registros
     @SuppressWarnings("unchecked")
-    public List<Object[]> findAllTemplates(Long empresaId) {
+    public List<TemplateModel> getAll(Long empresaId) {
         String tableName = "templates_" + empresaId;
-        String query = "SELECT * FROM " + tableName;
-        
-        return entityManager.createNativeQuery(query).getResultList();
+        String query = "SELECT id, templateName, sqlQuery, tableName, items, lastModification, empresaId, conexaoId FROM " + tableName;
+
+        List<Object[]> results = entityManager.createNativeQuery(query).getResultList();
+        List<TemplateModel> templates = new ArrayList<>();
+
+        for (Object[] result : results) {
+            TemplateModel template = new TemplateModel();
+            template.setId(((Number) result[0]).longValue());
+            template.setTemplateName((String) result[1]);
+            template.setSqlQuery((String) result[2]);
+            template.setTableName((String) result[3]);
+
+            Gson gson = new Gson();
+            String itemsJson = (String) result[4];
+            List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
+            template.setItems(items);
+
+            template.setLastModification((Timestamp) result[5]);
+            template.setEmpresaId(((Number) result[6]).longValue());
+            template.setConexaoId(((Number) result[7]).longValue());
+
+            templates.add(template);
+        }
+
+        return templates;
     }
 }
