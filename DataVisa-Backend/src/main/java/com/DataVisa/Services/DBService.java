@@ -69,6 +69,8 @@ public class DBService{
 			
 			database = databaseRepository.save(database);
 			setConnection(database.getNomeConexao());
+			
+			//cria a tabela de controle de permissão
 			tableSawService.addPermitionsTable(database);
 			
 			 response = Pair.of("Banco cadastrado com sucesso!",HttpStatus.OK);

@@ -1,6 +1,7 @@
 package com.DataVisa.DTO;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +22,13 @@ public class TemplateDTO implements Serializable {
 	
 	private String query;
 	
-	private String table;
+	private String tableName;
 	
-	private List<String> itens;
+	private List<String> items;
 
-	private List<String> valores;
+	private List<String> values;
+	
+	private Timestamp lastModification;
 	
 	private Long empresaId;
 	

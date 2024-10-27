@@ -1,33 +1,35 @@
 package com.DataVisa.Models;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
 
-import com.DataVisa.Models.Inferfaces.ArtifactModel;
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Data;
 
-@Entity
-@Table(name = "templates")
 @Data
-public class TemplateModel extends ArtifactModel implements Serializable {
+public class TemplateModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String nome;
+	private String templateName;
 	
-	private String query;
+	private String sqlQuery;
 	
-	private String [] itens;
+	private String tableName;
 	
+	private List<String> items;
+	
+	private Timestamp lastModification;
+
 	private Long empresaId;
 	
 	private Long conexaoId;

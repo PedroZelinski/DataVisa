@@ -15,6 +15,8 @@ import com.DataVisa.DTO.DatavisaDbDTO;
 import com.DataVisa.DTO.DbDTO;
 import com.DataVisa.Models.DBModel;
 import com.DataVisa.Models.TableModel;
+import com.DataVisa.Models.TemplateModel;
+import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Repositories.TableRepository;
 import com.DataVisa.Session.DatavisaSession;
 import com.DataVisa.Utils.DatavisaUtils;
@@ -37,6 +39,9 @@ public class TableSawService {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	DBRepository databaseRepository;
 	
 	public Pair<String, HttpStatus> getTable(String tabela){
 
@@ -285,6 +290,28 @@ public class TableSawService {
 		int permissoes = getDatavisaTable(query , nomeEmpresa +"_permissoes").rowCount();
 		return String.valueOf(permissoes);
 		
+	}
+	
+	public void addTemplate(TemplateModel template) throws Exception {
+		String query;
+		String empresaId =  databaseRepository.findById(template.getConexaoId()).get().getEmpresaId().toString();
+		try {
+			query = "CREATE TABLE templates_" +  empresaId
+					+ "    id BIGINT AUTO_INCREMENT PRIMARY KEY,"
+					+ "    nome VARCHAR(255),"
+					+ "    query TEXT,"
+					+ "    itens JSON,"
+					+ "    valores JSON,"
+					+ "    data_criacao TIMESTAMP,"
+					+ "    empresa_id BIGINT,"
+					+ "    conexao_id BIGINT,"
+					+ "	FOREIGN KEY (empresaId) REFERENCES empresas(id),"
+					+ "	FOREIGN KEY (conexaoId) REFERENCES conexao(id)"
+					+ ");";
+			executeQueryDatavisa(query); 
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
 	}
 	
 }
