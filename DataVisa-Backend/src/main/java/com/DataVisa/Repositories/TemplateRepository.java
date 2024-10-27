@@ -1,6 +1,5 @@
 package com.DataVisa.Repositories;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -53,7 +52,7 @@ public class TemplateRepository {
     
     public TemplateModel findById(Long id, Long empresaId) {
     	String tableName = "templates_" + empresaId;
-        String query = "SELECT id, templateName, sqlQuery, tableName, items, dataCriacao, empresaId, conexaoId FROM templates_" + tableName + " WHERE id = :id LIMIT 1";
+        String query = "SELECT id, templateName, sqlQuery, tableName, items, lastModification, empresaId, conexaoId FROM " + tableName + " WHERE id = :id LIMIT 1";
 
         try {
             Object[] result = (Object[]) entityManager.createNativeQuery(query)
@@ -128,8 +127,8 @@ public class TemplateRepository {
 
     // Método para remover um registro pelo ID
     @Transactional
-    public void removeTemplate(TemplateModel template) {
-        String tableName = "template_" + template.getEmpresaId();
+    public void delete(TemplateModel template) {
+        String tableName = "templates_" + template.getEmpresaId();
         String query = "DELETE FROM " + tableName + " WHERE id = :id";
         
         Query deleteQuery = entityManager.createNativeQuery(query);
@@ -141,7 +140,7 @@ public class TemplateRepository {
     // Método para buscar todos os registros
     @SuppressWarnings("unchecked")
     public List<Object[]> findAllTemplates(Long empresaId) {
-        String tableName = "template_" + empresaId;
+        String tableName = "templates_" + empresaId;
         String query = "SELECT * FROM " + tableName;
         
         return entityManager.createNativeQuery(query).getResultList();

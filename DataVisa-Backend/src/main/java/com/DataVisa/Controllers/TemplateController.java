@@ -4,6 +4,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,10 +48,13 @@ public class TemplateController {
 //	            .orElse(ResponseEntity.internalServerError().build());          
 //    }
 //	
-//    @DeleteMapping("/dataVisa/template/deleteTemplate")
-//    public String deleteTemplate(@RequestBody TemplateModel template){
-//        return  templateService.delete(template);
-//    }
+
+	@DeleteMapping("/dataVisa/template/deleteTemplate/{templateName}")
+    public  ResponseEntity<String> deleteDB(@PathVariable String templateName){
+    	Pair<String, HttpStatus> result = templateService.delete(templateName);
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
+    }
+	
 //    
 //    @GetMapping("/dataVisa/template/getAll")
 //	public List<TemplateModel> getAll(){

@@ -62,28 +62,38 @@ public Pair<String, HttpStatus> addTemplate(TemplateModel template) {
 			return response; 
 		}
 	}
-//
-//	public String delete(TemplateModel document){
-//		try {
-//			
-//			//Verifica se o documento existe
-//			if (documentRepository.findById(document.getId()).isEmpty()) {
-//                throw new RuntimeException("Usuário não encontrado.");
-//            }
-//			
-//			documentRepository.delete(document);
-//			
-//			//Verifica se o documento foi excluido
-//            if (documentRepository.findById(document.getId()).isPresent()) {
-//                throw new RuntimeException("Falha ao excluir o documento.");
-//            }
-//            
-//		} catch (Exception ex){
-//			return "Ocorreu um erro! " + ex.getMessage();			
-//		}
-//		
-//		return "Documento excluído com sucesso!";
-//	}
+
+		public Pair<String, HttpStatus> delete(String nomeTemplate){
+			Pair<String, HttpStatus> response;;
+			if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+		        return Pair.of(response);
+		    }
+		    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+		        return Pair.of(response);
+		    }
+			
+			try {
+				
+				TemplateModel template = templateRepository.findByName(nomeTemplate, datavisaSession.getEmpresaId());
+				
+				//Verifica se o template existe
+				if (template == null) {
+	                throw new RuntimeException("Template não encontrado.");
+	            }
+				
+				templateRepository.delete(template);
+				
+				//Verifica se o template foi excluido
+	            if (templateRepository.findById(template.getId(), template.getEmpresaId()) != null) {
+	                throw new RuntimeException("Falha ao excluir o template.");
+	            }
+	            
+			} catch (Exception ex){
+				return Pair.of("Erro: Template não excluído! \nErro: " + ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);			
+			}
+			
+			return Pair.of("Template excluído com sucesso!",HttpStatus.OK);
+		}
 //
 //	public Optional<TemplateModel> findById(Long id){
 //		return documentRepository.findById(id);
