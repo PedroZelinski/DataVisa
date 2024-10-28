@@ -107,9 +107,9 @@ const Templates = () => {
           <div className='grid col-12 ml-1 font-bold text-center mt-2'
             style={{ height: '50px', width: '99%' }}>
             <div className='col-1'>ID</div>
-            <div className='col-4'>Nome</div>
+            <div className='col-3'>Nome</div>
             <div className='col-3'>Conexão</div>
-            <div className='col-2'>Última Modificação</div>
+            <div className='col-3'>Última Modificação</div>
             <div className='col-2'>Ações</div>
             <div className="col-12"><hr /></div>
           </div>
@@ -119,14 +119,14 @@ const Templates = () => {
             {templates.map((template) => (
               <Fragment key={template.id}>
                 <div className="col-1">{template.id}</div>
-                <div className="col-4">{template.templateName}</div>
-                <div className="col-3">{template.conexaoId}</div>
-                <div className="col-2">{formatarData(template.lastModification)}</div>
+                <div className="col-3">{template.nome}</div>
+                <div className="col-3">{template.conexaoName}</div>
+                <div className="col-3">{formatarData(template.lastModification)}</div>
                 <div className="col-2">
                   <button className='cadastro-btn-blue mr-2'
                     onClick={() => templateCadastro(template.id)}>Editar</button>
                   <button className='cadastro-btn-red'
-                    onClick={() => confirmDelete(template.templateName)}>Deletar</button>
+                    onClick={() => confirmDelete(template.nome)}>Deletar</button>
                 </div>
               </Fragment>
             ))}
