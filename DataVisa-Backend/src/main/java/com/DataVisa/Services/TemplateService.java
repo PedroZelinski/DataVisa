@@ -45,7 +45,11 @@ public class TemplateService{
 	    }
 		
 		try {
-			
+			if (datavisaSession.getConexao() == null) {
+				response = Pair.of("Ocorreu um erro, Template não cadastrado! \nErro: Conexão não selecionada." , HttpStatus.BAD_REQUEST);
+				return response; 
+			}
+				
 			template.setEmpresaId(dbRepository.findById(datavisaSession.getConexao()).get().getEmpresaId());
 			
 			//Verifica se o banco já existe
@@ -61,6 +65,40 @@ public class TemplateService{
 			response = Pair.of("Ocorreu um erro, Template não cadastrado! \nErro: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			return response; 
 		}
+	}
+	
+	public Pair<String, HttpStatus> updateTemplate(TemplateModel template) {
+		
+		Pair<String, HttpStatus> response;;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response);
+	    }
+		
+		try {
+			
+			if (datavisaSession.getConexao() == null) {
+				response = Pair.of("Ocorreu um erro, Template não atualizado! \nErro: Conexão não selecionada." , HttpStatus.BAD_REQUEST);
+				return response; 
+			}
+			
+			//Verifica se o Template já existe
+			if (templateRepository.findById(template.getId(), datavisaSession.getEmpresaId()) == null) {
+				throw new IllegalArgumentException("Template não cadastrado.");
+			}
+			
+			template.setEmpresaId(dbRepository.findById(datavisaSession.getConexao()).get().getEmpresaId());
+			templateRepository.updateTemplate(template);
+			
+			response = Pair.of("Banco atualizado com sucesso!", HttpStatus.OK);
+			
+		} catch (Exception ex){
+			response = Pair.of("Falha ao atualizar o template no banco de dados. \nErro: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return response; 
+		}
+		return response;
 	}
 
 	public Pair<String, HttpStatus> delete(String nomeTemplate){

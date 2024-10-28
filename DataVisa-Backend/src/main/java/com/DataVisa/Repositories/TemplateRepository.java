@@ -111,28 +111,33 @@ public class TemplateRepository {
             return null; // Retorna null se nenhum registro for encontrado
         }
     }
-
-    public void updateTemplate(TemplateModel template) {
+    
+    @Transactional
+    public void updateTemplate(TemplateModel template) throws SQLException {
         String tableName = "templates_" + template.getEmpresaId();
         String query = "UPDATE " + tableName + 
                        " SET templateName = :templateName, sqlQuery = :sqlQuery, tableName = :tableName, items = :items, " +
                        "lastModification = :lastModification, conexaoId = :conexaoId " +
                        "WHERE id = :id";
-
-        Query updateQuery = entityManager.createNativeQuery(query);
-        updateQuery.setParameter("templateName", template.getTemplateName());
-        updateQuery.setParameter("sqlQuery", template.getSqlQuery());
-        updateQuery.setParameter("tableName", template.getTableName());
-        Gson gson = new Gson();
-        String itemsJson = gson.toJson(template.getItems());
-        updateQuery.setParameter("items", itemsJson);
-        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
-        updateQuery.setParameter("lastModification", currentTimestamp);
-        
-        updateQuery.setParameter("conexaoId", template.getConexaoId());
-        updateQuery.setParameter("id", template.getId());
-
-        updateQuery.executeUpdate();
+        try {
+	        Query updateQuery = entityManager.createNativeQuery(query);
+	        updateQuery.setParameter("templateName", template.getTemplateName());
+	        updateQuery.setParameter("sqlQuery", template.getSqlQuery());
+	        updateQuery.setParameter("tableName", template.getTableName());
+	        Gson gson = new Gson();
+	        String itemsJson = gson.toJson(template.getItems());
+	        updateQuery.setParameter("items", itemsJson);
+	        Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now(ZoneId.systemDefault()));
+	        updateQuery.setParameter("lastModification", currentTimestamp);
+	        
+	        updateQuery.setParameter("conexaoId", template.getConexaoId());
+	        updateQuery.setParameter("id", template.getId());
+	
+	        updateQuery.executeUpdate();
+        } catch (Exception e) {
+            // Caso queira lançar uma exceção personalizada
+            throw new SQLException(e);
+        }
     }
 
     // Método para remover um registro pelo ID
