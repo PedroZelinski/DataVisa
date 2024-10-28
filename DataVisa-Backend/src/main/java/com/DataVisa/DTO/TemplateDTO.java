@@ -47,8 +47,10 @@ public class TemplateDTO implements Serializable {
 	private List<String> values;
 	
 	private Timestamp lastModification;
-	
+
 	private Long empresaId;
+	
+	private String conexaoName;
 	
 	private Long conexaoId;
 	

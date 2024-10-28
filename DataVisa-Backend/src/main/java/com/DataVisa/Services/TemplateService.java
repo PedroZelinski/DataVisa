@@ -1,5 +1,6 @@
 package com.DataVisa.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -146,6 +147,7 @@ public class TemplateService{
 			 
 			 
 			 templateResponse = new TemplateDTO(templateRepository.findById(id , datavisaSession.getEmpresaId()));
+			 templateResponse.setConexaoName(dbRepository.findById(templateResponse.getConexaoId()).get().getNomeConexao());
 			 if (!datavisaSession.getEmpresaId().equals(templateResponse.getEmpresaId()) && !datavisaSession.getEmpresaId().equals(1L)){
 				templateResponse = new TemplateDTO("Erro: O usuário não pertence a empresa correspondente ao template informado.");
 	    		return  Pair.of(templateResponse, HttpStatus.FORBIDDEN);
@@ -168,9 +170,15 @@ public class TemplateService{
 	        return Pair.of(response, response.getRight());
 	    }
 	    try {
-		    List<TemplateModel> templates = templateRepository.getAll(datavisaSession.getEmpresaId());
+		    List<TemplateModel> templatesResponse = templateRepository.getAll(datavisaSession.getEmpresaId());
+		    List<TemplateDTO> dtos = new ArrayList<>();
+		    for (TemplateModel template : templatesResponse) {
+	            TemplateDTO dto = new TemplateDTO(template);
+	            dto.setConexaoName(dbRepository.findById(template.getConexaoId()).get().getNomeConexao());
+	            dtos.add(dto);
+	        }
 		  
-	        return Pair.of(templates, HttpStatus.OK);
+	        return Pair.of(dtos, HttpStatus.OK);
 	    } catch (Exception e) {
 	    	return Pair.of("Erro ao buscar a lista de templates! \nErro: ",HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
