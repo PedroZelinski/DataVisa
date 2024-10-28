@@ -11,7 +11,7 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
 
     useEffect(() => {
         DBClient.get("/dataVisa/business/getAll").then((res) => {
-            setBusinessList(res.data)
+            setBusinessList(res.data.slice(2))
             console.log(res.data)
         })
     }, []);
