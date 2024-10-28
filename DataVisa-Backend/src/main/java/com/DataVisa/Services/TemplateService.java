@@ -51,6 +51,7 @@ public class TemplateService{
 				return response; 
 			}
 				
+			template.setTableName(DatavisaUtils.tableNameMapper(template.getSqlQuery()));
 			template.setEmpresaId(dbRepository.findById(datavisaSession.getConexao()).get().getEmpresaId());
 			
 			//Verifica se o banco já existe
