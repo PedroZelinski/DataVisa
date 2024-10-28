@@ -27,6 +27,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
     load();
     if(location.state.nome != null){
       setControle(1)
+      conectar(location.state.conexaoName, location.state.query)
     }
   }, [])
 
@@ -47,7 +48,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       }, 0);
     }
   }
-  async function conectar(nomeDb) {
+  async function conectar(nomeDb, script) {
     try {
       await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
         () => executarQuery(formatarQuery(script))
@@ -172,7 +173,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
             </div>
             <div className="col-1">
               <button className='cadastro-btn-blue'
-                onClick={() => conectar(conexao.nomeConexao)}>Executar</button>
+                onClick={() => conectar(conexao.nomeConexao, script)}>Executar</button>
             </div>
 
             <div className="col-12 font-bold">Output</div>

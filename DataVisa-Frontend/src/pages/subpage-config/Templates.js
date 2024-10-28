@@ -107,9 +107,11 @@ const Templates = () => {
           <div className='grid col-12 ml-1 font-bold text-center mt-2'
             style={{ height: '50px', width: '99%' }}>
             <div className='col-1'>ID</div>
-            <div className='col-3'>Nome</div>
-            <div className='col-3'>Conexão</div>
-            <div className='col-3'>Última Modificação</div>
+            <div className='col-2'>Nome</div>
+            <div className='col-2'>Conexão</div>
+            <div className="col-2">Tabela</div>
+            <div className='col-2'>Última Mod.</div>
+            <div className="col-1">Status</div>
             <div className='col-2'>Ações</div>
             <div className="col-12"><hr /></div>
           </div>
@@ -118,10 +120,12 @@ const Templates = () => {
             style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
             {templates.map((template) => (
               <Fragment key={template.id}>
-                <div className="col-1">{template.id}</div>
-                <div className="col-3">{template.nome}</div>
-                <div className="col-3">{template.conexaoName}</div>
-                <div className="col-3">{formatarData(template.lastModification)}</div>
+                <div className="col-1 mt-2">{template.id}</div>
+                <div className="col-2 mt-2">{template.nome}</div>
+                <div className="col-2 mt-2">{template.conexaoName}</div>
+                <div className="col-2 mt-2">{template.tableName}</div>
+                <div className="col-2 mt-2">{formatarData(template.lastModification)}</div>
+                <div className="col-1 mt-2">Ativo</div>
                 <div className="col-2">
                   <button className='cadastro-btn-blue mr-2'
                     onClick={() => templateCadastro(template.id)}>Editar</button>
