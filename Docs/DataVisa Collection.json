@@ -829,6 +829,33 @@
 			"response": []
 		},
 		{
+			"name": "Update Template",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"luiza@pizzaria.com\",\r\n    \"senha\": \"1234\",\r\n    \"nome\": \"Luiza\",\r\n    \"nivelAcesso\": 1,\r\n    \"permissaoTabela\": 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/user/updateUser",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"user",
+						"updateUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Template",
 			"request": {
 				"method": "DELETE",
