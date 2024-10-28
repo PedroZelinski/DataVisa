@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown'
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import DBClient from '../../utils/DBClient.js'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const CadastroTemplate = ({ exibeMensagem }) => {
+  const [controle, setControle] = useState(0)
   const [conexoes, setConexoes] = useState([])
   const [conexao, setConexao] = useState('')
   const [script, setScript] = useState('')
   const [itens, setItens] = useState([])
-  const [valores, setValores] = useState({})
+  const [valores, setValores] = useState([])
   const [retorno, setRetorno] = useState([])
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
+    setScript(location.state.query)
     const load = async () => {
       await DBClient.get("/dataVisa/database/getAll").then((res) => {
+        //console.log(location.state)
         setConexoes(res.data)
+        setConexao(res.data.find(obj => obj.id == location.state.conexaoId))
       })
     }
     load();
+    if(location.state.nome != null){
+      setControle(1)
+    }
   }, [])
 
   const handleKeyDown = (event) => {
@@ -38,13 +46,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
         event.target.selectionStart = event.target.selectionEnd = start + indentation.length;
       }, 0);
     }
-  };
-  function formatarQuery(query) {
-    return query
-      .replace(/\s+/g, ' ')
-      .trim();
   }
-
   async function conectar(nomeDb) {
     try {
       await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
@@ -55,18 +57,63 @@ const CadastroTemplate = ({ exibeMensagem }) => {
         error.response.data)
     }
   }
+
+  function formatarQuery(query) {
+    return query
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
   async function executarQuery(query) {
     console.log(query)
     try {
-      DBClient.post("/dataVisa/template/validateQuery", query,
+      await DBClient.post("/dataVisa/template/validateQuery", query,
         { headers: { 'Content-Type': "text/plain" } }).then(
           (res) => {
             console.log(res.data)
             setRetorno(res.data)
-            setItens(res.data.itens)
-            setValores(res.data.valores)
+            setItens(res.data.items)
+            setValores(res.data.values)
           }
         )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
+
+  async function cadastrarTemplate() {
+    const dadosQuery = {
+      templateName: document.getElementById("nome").value,
+      sqlQuery: script,
+      tableName: retorno.tableName,
+      items: itens,
+      conexaoId: conexao.id
+    }
+    try {
+      await DBClient.post("/dataVisa/template/addTemplate", dadosQuery).then(
+        (res) => {
+          exibeMensagem(res.data)
+          navigate("/config/templates") //Temporario
+        }
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
+  async function salvarTemplate() {
+    const dadosQuery = {
+      id: location.state.id,
+      templateName: document.getElementById("nome").value,
+      sqlQuery: script,
+      tableName: retorno.tableName,
+      items: itens,
+      conexaoId: conexao.id
+    }
+    try {
+      await DBClient.put("/dataVisa/template/updateTemplate", dadosQuery).then(
+        (res) => exibeMensagem(res.data)
+      )
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
@@ -77,10 +124,14 @@ const CadastroTemplate = ({ exibeMensagem }) => {
     <div className="col-12">
       <div className="grid nested-grid">
 
-        <div className="col-11 font-bold">Cadastro do Template</div>
-        <div className="col-1">
+        <div className="col-10 font-bold">Cadastro do Template</div>
+        <div className="col-1 text-right ml-5">
           <button className="cadastro-btn-color"
-            type="submit" form='cadastro'>Salvar</button>
+            type="submit" form='cadastro' onClick={() => {
+              controle == 0 ?
+                cadastrarTemplate() : salvarTemplate()
+            }}>
+            {controle == 0 ? "Cadastrar" : "Salvar"}</button>
         </div>
 
         <div className="cadastro-area grid col-10 m-2">
@@ -93,54 +144,58 @@ const CadastroTemplate = ({ exibeMensagem }) => {
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                       type="text" id="nome" placeholder="Nome"
-                      required />
+                      defaultValue={location.state.nome} required />
                   </div>
                 </label>
               </div>
               <div className="col-4">
                 <label className='font-bold'>Conexão
                   <Dropdown value={conexao} options={conexoes}
-                    optionLabel="nomeConexao" optionValue='nomeConexao'
+                    optionLabel="nomeConexao"
                     onChange={(e) => setConexao(e.value)}
                     style={{
                       width: "90%", background: '#EBEDEE',
                       border: '1px #374957 solid', opacity: '0.60',
                     }}
-                    scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
+                    scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} required />
                 </label>
               </div>
             </div>
 
             <div className="col-12 font-bold">Query</div>
-            <div className="col-12">OBS: O Select já está inserido na query e não é necessário no script abaixo.</div>
+            <div className="col-12">OBS: O Select já está inserido no script e não é necessário na query.</div>
             <div className="col-12">
               <InputTextarea value={script} rows={7} cols={70} id='textarea'
                 onChange={(e) => setScript(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleKeyDown} required
               />
             </div>
             <div className="col-1">
               <button className='cadastro-btn-blue'
-                onClick={() => conectar(conexao)}>Executar</button>
+                onClick={() => conectar(conexao.nomeConexao)}>Executar</button>
             </div>
 
             <div className="col-12 font-bold">Output</div>
             <div className="output-area col-12">
-              {itens.length > 0 ? 
+              {itens.length > 0 ?
                 <table>
-                  <tr>
-                    {itens.map((item) => (
-                      <th>{item}</th>
-                    ))}
-                  </tr>
-                  <tr>
-                    {valores.map((valor) => (
-                      <td>{valor}</td>
-                    ))}
-                  </tr>
+                  <thead>
+                    <tr>
+                      {itens.map((item) => (
+                        <th key={itens[item]}>{item}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {valores.map((valor) => (
+                        <td key={valores[valor]}>{valor}</td>
+                      ))}
+                    </tr>
+                  </tbody>
                 </table>
-              
-              : ""}
+
+                : "Execute a query para trazer resultados."}
             </div>
 
           </div>

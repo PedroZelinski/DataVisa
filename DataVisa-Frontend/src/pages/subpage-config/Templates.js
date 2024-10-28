@@ -1,9 +1,77 @@
-import React from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { confirmDialog } from 'primereact/confirmdialog'
+import DBClient from '../../utils/DBClient';
 
 const Templates = () => {
   const [session, alteraModo, exibeMensagem] = useOutletContext();
+  const [controle, setControle] = useState(0);
+  const [templates, setTemplates] = useState([])
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const load = async () => {
+      await DBClient.get("/dataVisa/template/getAll").then(
+        (res) => {
+          setTemplates(res.data)
+          console.log(res.data)
+        }
+      )
+    }
+    load()
+  }, [controle])
+
+  function formatarData(data) {
+    const newdata = new Date(data);
+
+    const dataFormatada = newdata.toLocaleDateString("pt-BR");
+    const horaFormatada = newdata.toLocaleTimeString("pt-BR", { hour12: false });
+
+    return `${dataFormatada} ${horaFormatada}`
+  }
+  async function templateCadastro(template) {
+    try {
+      await DBClient.get("/dataVisa/template/getTemplate/" + template).then(
+        (res) => {
+          console.log(res.data)
+          navigate("/config/cadastro/template", { state: res.data })
+        }
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
+  const confirmDelete = (template) => {
+    confirmDialog({
+      message: 'Deseja mesmo excluir o template ' + template + '?',
+      header: 'Confirmar ação',
+      icon: 'pi pi-info-circle',
+      defaultFocus: 'reject',
+      acceptClassName: 'p-button-danger',
+      rejectLabel: "Não",
+      acceptLabel: "Sim",
+      accept() {
+        deletarTemplate(template)
+      },
+      reject() {
+        return
+      }
+    })
+  }
+  async function deletarTemplate(template) {
+    try {
+      await DBClient.delete("/dataVisa/template/deleteTemplate/" + template).then(
+        (res) => {
+          exibeMensagem(res.data)
+          setControle(controle + 1)
+        }
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
 
   return (
     <div className='col-12'>
@@ -28,8 +96,7 @@ const Templates = () => {
           <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
             navigate("/config/cadastro/template", {
               state: {
-                nomeConexao: null,
-                isActive: 0
+                nome: null,
               }
             })}>Adicionar</button>
         </div>
@@ -37,19 +104,32 @@ const Templates = () => {
         <div className="cadastro-area grid m-2 mr-3 w-full"
           style={{ height: 'calc(100vh - 250px)' }}>
 
-          <div className='grid col-12 ml-1 font-bold text-center mt-2' 
+          <div className='grid col-12 ml-1 font-bold text-center mt-2'
             style={{ height: '50px', width: '99%' }}>
             <div className='col-1'>ID</div>
             <div className='col-4'>Nome</div>
             <div className='col-3'>Conexão</div>
-            <div className='col-2'>Data</div>
+            <div className='col-2'>Última Modificação</div>
             <div className='col-2'>Ações</div>
             <div className="col-12"><hr /></div>
           </div>
 
           <div className="scroll-white grid col-12 text-center ml-1 mt-2"
-            style={{height: 'calc(100vh - 320px)', width: '99%'}}>
-            
+            style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
+            {templates.map((template) => (
+              <Fragment key={template.id}>
+                <div className="col-1">{template.id}</div>
+                <div className="col-4">{template.templateName}</div>
+                <div className="col-3">{template.conexaoId}</div>
+                <div className="col-2">{formatarData(template.lastModification)}</div>
+                <div className="col-2">
+                  <button className='cadastro-btn-blue mr-2'
+                    onClick={() => templateCadastro(template.id)}>Editar</button>
+                  <button className='cadastro-btn-red'
+                    onClick={() => confirmDelete(template.templateName)}>Deletar</button>
+                </div>
+              </Fragment>
+            ))}
           </div>
 
         </div>
