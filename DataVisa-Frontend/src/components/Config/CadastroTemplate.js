@@ -25,7 +25,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       })
     }
     load();
-    if(location.state.nome != null){
+    if (location.state.nome != null) {
       setControle(1)
       conectar(location.state.conexaoName, location.state.query)
     }
@@ -49,6 +49,9 @@ const CadastroTemplate = ({ exibeMensagem }) => {
     }
   }
   async function conectar(nomeDb, script) {
+    if (script == null) {
+      return exibeMensagem("Query vazia.")
+    }
     try {
       await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
         () => executarQuery(formatarQuery(script))
@@ -65,7 +68,6 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       .trim();
   }
   async function executarQuery(query) {
-    console.log(query)
     try {
       await DBClient.post("/dataVisa/template/validateQuery", query,
         { headers: { 'Content-Type': "text/plain" } }).then(
@@ -83,6 +85,16 @@ const CadastroTemplate = ({ exibeMensagem }) => {
   }
 
   async function cadastrarTemplate() {
+    if (conexao == null) {
+      return exibeMensagem("Conexão não informada.")
+    }
+    if (script == null) {
+      return exibeMensagem("Query vazia.")
+    }
+    if (document.getElementById("nome").value == "") {
+      return exibeMensagem("Nome vazio.")
+    }
+
     const dadosQuery = {
       templateName: document.getElementById("nome").value,
       sqlQuery: script,
@@ -94,6 +106,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       await DBClient.post("/dataVisa/template/addTemplate", dadosQuery).then(
         (res) => {
           exibeMensagem(res.data)
+          conectar(conexao.nomeConexao, script)
           navigate("/config/templates") //Temporario
         }
       )
@@ -102,7 +115,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
         error.response.data)
     }
   }
-  async function salvarTemplate() {
+  async function salvarTemplate(nomeDb) {
     const dadosQuery = {
       id: location.state.id,
       templateName: document.getElementById("nome").value,
@@ -113,7 +126,9 @@ const CadastroTemplate = ({ exibeMensagem }) => {
     }
     try {
       await DBClient.put("/dataVisa/template/updateTemplate", dadosQuery).then(
-        (res) => exibeMensagem(res.data)
+        (res) => {
+          exibeMensagem(res.data)
+        }
       )
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
@@ -173,7 +188,11 @@ const CadastroTemplate = ({ exibeMensagem }) => {
             </div>
             <div className="col-1">
               <button className='cadastro-btn-blue'
-                onClick={() => conectar(conexao.nomeConexao, script)}>Executar</button>
+                onClick={() => {
+                  conexao == null ?
+                  exibeMensagem("Conexão não informada.") :
+                  conectar(conexao.nomeConexao, script)
+                }}>Executar</button>
             </div>
 
             <div className="col-12 font-bold">Output</div>
