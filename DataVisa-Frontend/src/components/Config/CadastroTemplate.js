@@ -79,8 +79,9 @@ const CadastroTemplate = ({ exibeMensagem }) => {
           }
         )
     } catch (error) {
+      console.log(error)
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
-        error.response.data)
+        error.response.data.mensagemRetorno)
     }
   }
 
@@ -115,7 +116,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
         error.response.data)
     }
   }
-  async function salvarTemplate(nomeDb) {
+  async function salvarTemplate() {
     const dadosQuery = {
       id: location.state.id,
       templateName: document.getElementById("nome").value,
