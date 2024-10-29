@@ -210,8 +210,12 @@ public class TemplateService{
 		    dto.setValues(valores);
 		    dto.setEmpresaId(datavisaSession.getEmpresaId());
 		    dto.setConexaoId(datavisaSession.getConexao());
-		    dto.setMensagemRetorno("Query válida.");
 		    
+		    if(dto.getTableName() == null || dto.getItems().isEmpty()){
+		    	 throw new IllegalArgumentException("Query inválida.");
+		    }
+		    
+		    dto.setMensagemRetorno("Query válida.");
 			return Pair.of(dto, HttpStatus.OK);
 		
 		}catch (IllegalArgumentException e) {
