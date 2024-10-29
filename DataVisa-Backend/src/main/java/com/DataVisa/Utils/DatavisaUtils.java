@@ -12,7 +12,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import tech.tablesaw.api.DoubleColumn;
 import tech.tablesaw.api.Table;
+import tech.tablesaw.columns.numbers.NumberColumnFormatter;
 
 public class DatavisaUtils {
 
@@ -84,6 +86,7 @@ public class DatavisaUtils {
 
         public static String columnExtractorByType(Table table, String columnType, String columnName) {
             String response;
+            StringBuilder formattedValues;
             switch (columnType.toLowerCase()) {
                 case "int":
                 case "integer":
@@ -101,10 +104,18 @@ public class DatavisaUtils {
                 	response = table.dateTimeColumn(columnName).print();
                     break;
                 case "float":
-                	response = table.floatColumn(columnName).print();
+                	formattedValues = new StringBuilder();
+                    table.floatColumn(columnName).forEach(value -> formattedValues.append(String.format("%.2f", value)).append(", "));
+                    response = formattedValues.length() > 0
+                        ? formattedValues.substring(0, formattedValues.length() - 2)
+                        : "";
                     break;
                 case "double":
-                	response = table.doubleColumn(columnName).print();
+                    formattedValues = new StringBuilder();
+                    table.doubleColumn(columnName).forEach(value -> formattedValues.append(String.format("%.2f", value)).append(", "));
+                    response = formattedValues.length() > 0
+                        ? formattedValues.substring(0, formattedValues.length() - 2)
+                        : "";
                     break;
                 case "boolean":
                 case "bool":
