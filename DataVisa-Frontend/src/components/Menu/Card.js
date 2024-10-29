@@ -1,11 +1,26 @@
 import React from 'react'
-import { Panel } from 'primereact/panel'
-import Barras from '../Templates/Barras'
 
-const Card = ({img, gerar}) => {
+const Card = ({ img, gerar }) => {
   return (
-    <div className="col-3 grid m-2" id='card' onClick={gerar}>
-        <img src={img} alt="" style={{height:"200px", width:"250px"}}/>
+    <div className="card-area col-3 grid m-2 ml-4">
+
+      <div className="col-10 font-bold">Nome do Modelo</div>
+
+      <div className="col-2 font-bold" style={{ fontSize: '20px' }}>
+        <i className='fi fi-rr-info' style={{ cursor: 'pointer' }}
+          onClick={() => alert("info")} />
+      </div>
+
+      <div className="col-12" style={{ fontSize: '12px' }}>
+        Descrição
+        <hr />
+      </div>
+
+
+      <div className="col-12 text-center" style={{ cursor: 'pointer' }}
+        onClick={() => gerar()}>
+        <img src={img} alt="" style={{ height: '100px' }}/>
+      </div>
     </div>
   )
 }
