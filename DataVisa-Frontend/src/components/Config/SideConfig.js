@@ -57,10 +57,10 @@ const SideConfig = ({ alteraModo, nivel }) => {
                 <br />
             </div> : <div />}
             <div>
-                <button onClick={() => {
-                    console.log(location.pathname.split('/').slice(-2)[0])
-                    retornar(location.pathname)}} className='side-config-btn'>
-                    <i className='fi fi-rr-undo-alt' /> Retornar</button>
+                <button onClick={() => retornar(location.pathname)} className='side-config-btn'>
+                    <i className='fi fi-rr-undo-alt' /> 
+                    {location.pathname.split('/').slice(-2)[0] == "cadastro" ? " Retornar" : " Menu"}
+                </button>
             </div>
         </div>
     )

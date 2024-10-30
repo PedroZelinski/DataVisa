@@ -68,6 +68,18 @@ td, th {
     cursor: pointer;
 }
 
+.gerar-btn{
+    background-color: transparent;
+    color: #366FE1;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 15px;
+    border-radius: 10px;
+    border: solid 2px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
 #top-menu {
     background-color: #5786E6;
 }
@@ -171,7 +183,6 @@ td, th {
     background: white;
     border-radius: 5px;
     box-shadow: 1px 1px 5px  lightblue;
-    /* cursor: pointer; */
 }
 
 .cadastro-area {

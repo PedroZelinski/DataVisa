@@ -14,8 +14,8 @@ const Pizza = ({ nome, valores, labels }) => {
             }
             layout={
                 {
-                    width: 500,
-                    height: 300,
+                    width: 535,
+                    height: 350,
                     title: nome,
                     margin: {
                         r: 30, l: 110, t: 40, b: 20

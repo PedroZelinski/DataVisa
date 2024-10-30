@@ -215,7 +215,6 @@ const CadastroTemplate = ({ exibeMensagem }) => {
                     </tr>
                   </tbody>
                 </table>
-
                 : "Execute a query para trazer resultados."}
             </div>
 
