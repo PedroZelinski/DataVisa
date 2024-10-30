@@ -7,7 +7,7 @@ const SideMenu = () => {
     return (
         <div id='side-menu' className='col-2 text-center'>
             <div>
-                <button className='side-menu-btn' 
+                <button className='side-menu-btn' onClick={() => navigate('/menu/criar')}
                 style={{fontWeight: 'bolder', border: 'solid 2px', fontSize: '20px'}}>Criar</button>
             </div>
             <br />

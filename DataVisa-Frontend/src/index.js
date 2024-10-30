@@ -18,6 +18,7 @@ import Recentes from './pages/subpage-menu/Recentes';
 import Pesquisar from './pages/subpage-menu/Pesquisar';
 import Gerar from './pages/subpage-menu/Gerar';
 import Criar from './pages/subpage-menu/Criar';
+import Filtrar from './pages/subpage-menu/Filtrar';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
         path: "gerar",
         element: <Gerar />
       },
+      {
+        path: "filtrar",
+        element: <Filtrar/>
+      }
     ]
   },
   {
