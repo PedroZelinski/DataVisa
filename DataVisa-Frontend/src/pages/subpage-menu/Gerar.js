@@ -11,7 +11,7 @@ const Gerar = () => {
       <div className="grid nested-grid">
 
         <div className="col-12 grid">
-          <div className="col-11 font-bold" style={{fontSize: '25px'}}>
+          <div className="col-11 font-bold" style={{ fontSize: '25px' }}>
             Resultado
           </div>
           <div className="col-1">
@@ -29,14 +29,23 @@ const Gerar = () => {
             <Pizza
               valores={["25", "30", "67", "6"]}
               labels={["Text 1", "Text 2", "Text 3", "Text 4"]}
-              nome={"Grafico de Teste"}
+              layout={
+                {
+                  width: 535,
+                  height: 350,
+                  title: "Grafico de Teste",
+                  margin: {
+                    r: 30, l: 110, t: 40, b: 20
+                  }
+                }
+              }
             />
           </div>
 
           <div className="col-3 text-center">
             <div className="col-12">
               <button className='gerar-btn'>
-                Visualizar <i className='fi-rr-eye ml-1'/>
+                Visualizar <i className='fi-rr-eye ml-1' />
               </button>
             </div>
             <div className="col-12">
