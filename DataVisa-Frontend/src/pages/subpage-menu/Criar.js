@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router-dom'
 
 const Criar = () => {
   const navigate = useNavigate()
-  const filtrar = () => navigate("/menu/filtrar")
+  function filtrar(grafico) {
+    navigate("/menu/filtrar", { state: grafico })
+  }
 
   return (
     <div className='col-12'>
@@ -22,10 +24,10 @@ const Criar = () => {
         </div>
 
         <div className="scroll-white grid col-12 mt-2" style={{height: 'calc(100vh - 240px)'}}>
-          <CardModelo img={pieChart} filtrar={filtrar}/>
-          <CardModelo img={barChart} filtrar={filtrar}/>
-          <CardModelo img={lineChart} filtrar={filtrar}/>
-          <CardModelo img={spreadsheet} filtrar={filtrar}/>
+          <CardModelo img={pieChart} filtrar={filtrar} tipo="Pizza"/>
+          <CardModelo img={barChart} filtrar={filtrar} tipo="Barras"/>
+          <CardModelo img={lineChart} filtrar={filtrar} tipo="Linhas"/>
+          <CardModelo img={spreadsheet} filtrar={filtrar} tipo="Planilha"/>
         </div>
 
       </div>

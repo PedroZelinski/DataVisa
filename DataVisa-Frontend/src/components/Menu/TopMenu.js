@@ -63,7 +63,7 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
             <div className='col-2 flex align-items-center justify-content-center mt-3'>
                 <img src={logo} alt="Logo" id="logo-menu" onClick={() => {
                     alteraModo(1)
-                    navigate('/menu')
+                    navigate('/menu/recentes')
                 }} />
             </div>
 

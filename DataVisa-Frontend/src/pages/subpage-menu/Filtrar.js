@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'primereact/dropdown'
 import Pizza from '../../components/Templates/Pizza'
-import { useNavigate } from 'react-router-dom'
+import Barras from '../../components/Templates/Barras'
+import Linhas from '../../components/Templates/Linhas'
+import Planilha from '../../components/Templates/Planilha'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const Filtrar = ({ modelo }) => {
+const Filtrar = () => {
   const navigate = useNavigate()
   const [area, setArea] = useState('')
   const [item, setItem] = useState('')
   const [order, setOrder] = useState('Crescente')
   const [orderBy, setOrderBy] = useState('')
   const [where, setWhere] = useState('')
+  const location = useLocation()
 
   const areas = ["area 1", "area 2"]
   const items = ["item 1", "item 2"]
@@ -102,20 +106,71 @@ const Filtrar = ({ modelo }) => {
 
 
           <div className="card-area grid col-6 ml-4">
-            <Pizza
-              valores={["25", "30", "67", "6"]}
-              labels={["Valor 1", "Valor 2", "Valor 3", "Valor 4"]}
-              layout={
-                {
-                  width: 500,
-                  height: 350,
-                  title: "Grafico de Exemplo",
-                  margin: {
-                    r: 30, l: 110, t: 40, b: 20
+            {location.state == "Pizza" ?
+              <Pizza
+                valores={["25", "30", "67", "6"]}
+                labels={["Valor 1", "Valor 2", "Valor 3", "Valor 4"]}
+                layout={
+                  {
+                    width: 500,
+                    height: 350,
+                    title: "Grafico de Exemplo",
+                    margin: {
+                      r: 30, l: 110, t: 40, b: 20
+                    }
                   }
                 }
-              }
-            />
+              />
+              :
+              location.state == "Barras" ?
+                <Barras
+                  valores={[31, 23, 57]}
+                  labels={["Valor 1", "Valor 2", "Valor 3"]}
+                  layout={
+                    {
+                      width: 500,
+                      height: 350,
+                      title: "Grafico de Exemplo",
+                      margin: {
+                        r: 30, l: 50, t: 50, b: 30
+                      }
+                    }}
+                />
+                :
+                location.state == "Linhas" ?
+                  <Linhas
+                    valores={[15, 5, 12, 43]}
+                    labels={["Valor 1", "Valor 2", "Valor 3", "valor 4"]}
+                    layout={
+                      {
+                        width: 500,
+                        height: 350,
+                        title: "Grafico de Exemplo",
+                        margin: {
+                          r: 30, l: 50, t: 50, b: 30
+                        }
+                      }}
+                  />
+                  :
+                  <Planilha
+                    headers={["Id", "Data", "Responsavel", "Valor"]}
+                    valores={[
+                      [1, 2, 3],
+                      ["10/01/2024", "12/01/2024", "23/02/2024"],
+                      ["Rafael", "Jhonatan", "Pedro"],
+                      ["R$ 199,99", "R$ 350,00", "R$ 264,50"]
+                    ]}
+                    layout={
+                      {
+                        width: 500,
+                        height: 350,
+                        title: "Planilha de Exemplo",
+                        margin: {
+                          r: 30, l: 50, t: 50, b: 30
+                        }
+                      }}
+                  />
+            }
           </div>
         </div>
       </div>

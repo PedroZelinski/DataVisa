@@ -1,7 +1,8 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
 
-const Pizza = ({ nome, valores, labels, layout }) => {
+const Pizza = ({ valores, labels, layout }) => {
+    
     return (
         <Plot
             data={
