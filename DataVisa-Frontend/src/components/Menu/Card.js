@@ -12,7 +12,7 @@ const Card = ({ img, gerar }) => {
       </div>
 
       <div className="col-12" style={{ fontSize: '12px' }}>
-        Descrição
+        Criado em: --/--/----
         <hr />
       </div>
 

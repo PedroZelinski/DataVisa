@@ -1,9 +1,6 @@
 import React from 'react'
 import Card from '../../components/Menu/Card'
 import plus from '../../assets/plus.png'
-import barrasDefault from '../../assets/barrasDefault.png'
-import pizzaDefault from '../../assets/pizzaDefault.png'
-import linhaDefault from '../../assets/linhaDefault.png'
 import pieChart from '../../assets/pie-chart.png'
 import lineChart from '../../assets/line-chart.png'
 import barChart from '../../assets/bar-chart.png'
@@ -31,20 +28,6 @@ const Recentes = () => {
               Crie seu grafico ou tabela
             </div>
           </div>
-
-          {/* <div className="card-area col-3 grid m-2">
-            <div className="col-10 font-bold">Primary Text</div>
-            <div className="col-2"><i className='fi fi-rr-info' /></div>
-
-            <div className="col-12" style={{ fontSize: '12px' }}>
-              Secondary Text <hr />
-            </div>
-
-            <div className="col-12 text-center">
-              <i className='fi fi-tr-chart-pie' style={{ fontSize: "90px" }} />
-              <i className='fi fi-rr-list ml-1' style={{ fontSize: "30px" }} />
-            </div>
-          </div> */}
 
           <Card img={pieChart} gerar={gerar}></Card>
           <Card img={barChart} gerar={gerar}></Card>
