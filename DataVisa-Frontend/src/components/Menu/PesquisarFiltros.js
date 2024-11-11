@@ -37,7 +37,7 @@ const PesquisarFiltros = ({
     }
 
     return (
-        <div className="col-12" style={{border: "solid 1px #366FE1", borderRadius:"5px"}}>
+        <div className="col-12">
 
             <div className="mt-1">Modelos Encontrados: 100</div>
             <div className="mt-3 mb-3"><hr /></div>

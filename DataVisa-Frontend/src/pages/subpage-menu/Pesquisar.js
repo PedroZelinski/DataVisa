@@ -31,8 +31,10 @@ const Pesquisar = () => {
         <div className="col-12">Resultados</div>
         <div className="grid nested-grid col-12">
 
-          <div className="grid col-3">
-            <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 220px)' }}>
+          <div className="grid col-3 ml-1 mt-2"
+            style={{ border: "solid 1px #366FE1", borderRadius: "5px", height: 'calc(100vh - 235px)' }}>
+            <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 240px)', borderRadius: "5px" }}>
+
               <PesquisarFiltros
                 checkedTodos={checkedTodos} setCheckedTodos={setCheckedTodos}
                 checkedPizza={checkedPizza} setCheckedPizza={setCheckedPizza}
@@ -40,13 +42,13 @@ const Pesquisar = () => {
                 checkedBarras={checkedBarras} setCheckedBarras={setCheckedBarras}
                 checkedPlan={checkedPlan} setCheckedPlan={setCheckedPlan}
               />
-
+              
             </div>
           </div>
-
 
           <div className="grid col-9 ml-2">
             <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 220px)' }}>
+
               {checkedPizza == true ? <Card img={pieChart} gerar={gerar} col="col-4"></Card> : ""}
               {checkedBarras == true ? <Card img={barChart} gerar={gerar} col="col-4"></Card> : ""}
               {checkedLinhas == true ? <Card img={lineChart} gerar={gerar} col="col-4"></Card> : ""}
@@ -56,8 +58,8 @@ const Pesquisar = () => {
               {checkedLinhas == true ? <Card img={lineChart} gerar={gerar} col="col-4"></Card> : ""}
               {checkedPlan == true ? <Card img={spreadsheet} gerar={gerar} col="col-4"></Card> : ""}
             </div>
-
           </div>
+
         </div>
       </div>
     </div>
