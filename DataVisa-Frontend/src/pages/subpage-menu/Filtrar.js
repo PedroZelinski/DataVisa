@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'primereact/dropdown'
 import Pizza from '../../components/Templates/Pizza'
 import Barras from '../../components/Templates/Barras'
@@ -13,19 +13,24 @@ const Filtrar = () => {
   const [order, setOrder] = useState('Crescente')
   const [orderBy, setOrderBy] = useState('')
   const [where, setWhere] = useState('')
+  const [modelo, setModelo] = useState('')
   const location = useLocation()
 
+  const modelos = ["Gráfico de Pizza", "Gráfico de Linhas", "Gráfico de Barras", "Planilha"]
   const areas = ["area 1", "area 2"]
   const items = ["item 1", "item 2"]
   const orders = ["Crescente", "Decrescente"]
   const wheres = ["Igual a", "Maior que", "Menor que", "Entre"]
-
   const dropStyle = {
     width: "90%",
     background: '#EBEDEE',
     border: '1px #374957 solid',
     opacity: '0.60',
   }
+
+  useEffect(() => {
+    setModelo(location.state)
+  }, [])
 
   return (
     <div className="col-12">
@@ -42,11 +47,16 @@ const Filtrar = () => {
             <div className="scroll-white col-12">
               <div className="col-12 grid">
 
-                <label className='font-bold col-10'>Nome do Modelo
+                <label className='font-bold col-10'>Tipo de Modelo
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE' }}
                       type="text" id="nome" placeholder="Nome" required />
                   </div>
+                </label>
+                <label className='font-bold col-10'>Modelo
+                  <Dropdown value={modelo} options={modelos}
+                    onChange={(e) => setModelo(e.value)} style={dropStyle}
+                    scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
 
                 <label className='font-bold col-6'>Área
@@ -106,7 +116,7 @@ const Filtrar = () => {
 
 
           <div className="card-area grid col-6 ml-4">
-            {location.state == "Pizza" ?
+            {modelo == "Gráfico de Pizza" ?
               <Pizza
                 valores={["25", "30", "67", "6"]}
                 labels={["Valor 1", "Valor 2", "Valor 3", "Valor 4"]}
@@ -122,7 +132,7 @@ const Filtrar = () => {
                 }
               />
               :
-              location.state == "Barras" ?
+              modelo == "Gráfico de Barras" ?
                 <Barras
                   valores={[31, 23, 57]}
                   labels={["Valor 1", "Valor 2", "Valor 3"]}
@@ -137,7 +147,7 @@ const Filtrar = () => {
                     }}
                 />
                 :
-                location.state == "Linhas" ?
+                modelo == "Gráfico de Linhas" ?
                   <Linhas
                     valores={[15, 5, 12, 43]}
                     labels={["Valor 1", "Valor 2", "Valor 3", "valor 4"]}

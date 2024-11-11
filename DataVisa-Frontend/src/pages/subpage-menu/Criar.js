@@ -24,9 +24,9 @@ const Criar = () => {
         </div>
 
         <div className="scroll-white grid col-12 mt-2" style={{height: 'calc(100vh - 240px)'}}>
-          <CardModelo img={pieChart} filtrar={filtrar} tipo="Pizza"/>
-          <CardModelo img={barChart} filtrar={filtrar} tipo="Barras"/>
-          <CardModelo img={lineChart} filtrar={filtrar} tipo="Linhas"/>
+          <CardModelo img={pieChart} filtrar={filtrar} tipo="Gráfico de Pizza"/>
+          <CardModelo img={barChart} filtrar={filtrar} tipo="Gráfico de Barras"/>
+          <CardModelo img={lineChart} filtrar={filtrar} tipo="Gráfico de Linhas"/>
           <CardModelo img={spreadsheet} filtrar={filtrar} tipo="Planilha"/>
         </div>
 
