@@ -33,7 +33,7 @@ public class TemplateRepository {
                        "VALUES (:templateName, :sqlQuery, :tableName, :items,  :lastModification, :empresaId, :conexaoId)";
         try {
             Query insertQuery = entityManager.createNativeQuery(query);
-            insertQuery.setParameter("templateName", template.getTemplateName());
+            insertQuery.setParameter("templateName", template.getTemplateName().trim());
             insertQuery.setParameter("sqlQuery", template.getSqlQuery());
             insertQuery.setParameter("tableName", template.getTableName());
             

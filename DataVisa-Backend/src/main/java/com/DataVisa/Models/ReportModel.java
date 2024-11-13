@@ -1,8 +1,8 @@
 package com.DataVisa.Models;
 
 import java.io.Serializable;
-
-import com.DataVisa.Models.Inferfaces.ArtifactModel;
+import java.sql.Timestamp;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,9 +12,9 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "templates")
+@Table(name = "reports")
 @Data
-public class ArtefactModel extends ArtifactModel implements Serializable {
+public class ReportModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,14 +22,20 @@ public class ArtefactModel extends ArtifactModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String nome;
+	private String name;
 	
-	private String tipo;
+	private String graphType;
 	
-	private String payload;
+	private List<String> reportLabels;
+	
+	private List<String> reportValues;
 	
 	private Long empresaId;
 	
 	private Long conexaoId;
+	
+	private int accessLevel;
+	
+	private Timestamp date;
 	
 }  

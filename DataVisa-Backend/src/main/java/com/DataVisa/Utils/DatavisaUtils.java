@@ -2,9 +2,9 @@ package com.DataVisa.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.DataVisa.DTO.DatavisaUserDTO;
 import com.DataVisa.Models.UserModel;
@@ -12,9 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import tech.tablesaw.api.DoubleColumn;
 import tech.tablesaw.api.Table;
-import tech.tablesaw.columns.numbers.NumberColumnFormatter;
 
 public class DatavisaUtils {
 
@@ -153,7 +151,7 @@ public class DatavisaUtils {
             if (lowerQuery.contains("update ") || lowerQuery.contains("delete ") || 
                 lowerQuery.contains("insert ") || lowerQuery.contains("drop ") || 
                 lowerQuery.contains("alter ")) {
-                throw new IllegalArgumentException("Query inválida: somente comandos SELECT são permitidos.");
+                throw new IllegalArgumentException("Query inválida: somente comandos com a cláusula SELECT são permitidos.");
             }
             
             return query.replaceAll("\\r\\n", " ").trim();
