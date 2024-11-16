@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 const ListUser = ({ list, userCadastro, confirmDelete, setControle }) => {
 
@@ -11,7 +11,7 @@ const ListUser = ({ list, userCadastro, confirmDelete, setControle }) => {
             style={{ height: 'calc(100vh - 250px)' }}>
 
             <div className='grid col-12 ml-1 font-bold text-center mt-2'
-                style={{ height: '50px', width: '99%' }}>
+                style={{ height: '50px', width: '97.5%' }}>
                 <div className='col-1 text-center'>N°</div>
                 <div className='col-2 text-center'>Nome</div>
                 <div className='col-3 text-center'>Email</div>
@@ -22,10 +22,11 @@ const ListUser = ({ list, userCadastro, confirmDelete, setControle }) => {
                 <div className='col 12'><hr /></div>
             </div>
 
-            <div className="scroll-white grid col-12 text-center ml-1 mt-2"
+            <div className="scroll-white col-12 text-center ml-1 mt-2"
                 style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
+
                 {list.map((user) => (
-                    <Fragment key={user.email}>
+                    <div className="grid col-12" key={user.email}>
                         <div className='col-1 mt-2'>{list.indexOf(user) + 1}</div>
                         <div className='col-2 mt-2'>{user.nome}</div>
                         <div className='col-3 mt-2'>{user.email}</div>
@@ -40,7 +41,7 @@ const ListUser = ({ list, userCadastro, confirmDelete, setControle }) => {
                                 onClick={() => confirmDelete(user)}>
                                 Deletar</button>
                         </div>
-                    </Fragment>
+                    </div>
                 ))}
             </div>
         </div>

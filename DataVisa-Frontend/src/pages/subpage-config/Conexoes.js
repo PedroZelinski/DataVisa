@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
@@ -96,8 +96,8 @@ const Conexoes = () => {
         <div className="cadastro-area grid m-2 mr-3 w-full"
           style={{ height: 'calc(100vh - 250px)' }}>
 
-          <div className='grid col-12 ml-1 font-bold text-center mt-2' 
-            style={{ height: '50px', width: '99%' }}>
+          <div className='grid col-12 ml-1 font-bold text-center mt-2'
+            style={{ height: '50px', width: '97.5%' }}>
             <div className='col-1'>ID</div>
             <div className='col-3'>Nome</div>
             <div className='col-2'>Tipo</div>
@@ -107,22 +107,23 @@ const Conexoes = () => {
             <div className="col-12"><hr /></div>
           </div>
 
-          <div className="scroll-white grid col-12 text-center ml-1 mt-2"
-            style={{height: 'calc(100vh - 320px)', width: '99%'}}>
+          <div className="scroll-white col-12 text-center ml-1 mt-2"
+            style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
+
             {dbs.map((db) => (
-              <Fragment key={db.id}>
-                <div className='col-1'>{db.id}</div>
-                <div className='col-3'>{db.nomeConexao}</div>
-                <div className='col-2'>{db.tipoDb}</div>
-                <div className='col-2'>Data de Conexão</div>
-                <div className='col-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
-                <div className='col-2'>
-                  <button className='cadastro-btn-blue mr-2'
-                    onClick={() => conexaoCadastro(db.id)}>Editar</button>
-                  <button className='cadastro-btn-red'
-                    onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
-                </div>
-              </Fragment>
+              <div className="grid col-12" key={db.id}>
+                  <div className='col-1 mt-2'>{db.id}</div>
+                  <div className='col-3 mt-2'>{db.nomeConexao}</div>
+                  <div className='col-2 mt-2'>{db.tipoDb}</div>
+                  <div className='col-2 mt-2'>Data de Conexão</div>
+                  <div className='col-2 mt-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
+                  <div className='col-2'>
+                    <button className='cadastro-btn-blue mr-2'
+                      onClick={() => conexaoCadastro(db.id)}>Editar</button>
+                    <button className='cadastro-btn-red'
+                      onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
+                  </div>
+              </div>
             ))}
           </div>
 

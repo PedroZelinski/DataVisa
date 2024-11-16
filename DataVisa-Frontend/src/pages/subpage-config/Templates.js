@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
@@ -101,11 +101,11 @@ const Templates = () => {
             })}>Adicionar</button>
         </div>
 
-        <div className="cadastro-area grid m-2 mr-3 w-full"
+        <div className="cadastro-area m-2 mr-3 w-full"
           style={{ height: 'calc(100vh - 250px)' }}>
 
           <div className='grid col-12 ml-1 font-bold text-center mt-2'
-            style={{ height: '50px', width: '99%' }}>
+            style={{ height: '50px', width: '97.5%' }}>
             <div className='col-1'>ID</div>
             <div className='col-2'>Nome</div>
             <div className='col-2'>Conexão</div>
@@ -116,10 +116,12 @@ const Templates = () => {
             <div className="col-12"><hr /></div>
           </div>
 
-          <div className="scroll-white grid col-12 text-center ml-1 mt-2"
+          <div className="scroll-white col-12 text-center ml-1 mt-2"
             style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
+
             {templates.map((template) => (
-              <Fragment key={template.id}>
+
+              <div className='grid col-12' key={template.id}>
                 <div className="col-1 mt-2">{template.id}</div>
                 <div className="col-2 mt-2">{template.nome}</div>
                 <div className="col-2 mt-2">{template.conexaoName}</div>
@@ -132,7 +134,7 @@ const Templates = () => {
                   <button className='cadastro-btn-red'
                     onClick={() => confirmDelete(template.nome)}>Deletar</button>
                 </div>
-              </Fragment>
+              </div>
             ))}
           </div>
 
