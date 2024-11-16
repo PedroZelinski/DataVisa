@@ -67,7 +67,7 @@ const CadastroUser = ({ exibeMensagem }) => {
                 navigate("/config/usuarios")
             })
         } catch (error) {
-            alert("Ocorreu um erro: " + error.response.status + "\n"
+            exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
                 + error.response.data)
         }
     }
