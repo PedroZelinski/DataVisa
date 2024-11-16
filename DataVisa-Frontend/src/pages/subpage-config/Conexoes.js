@@ -81,7 +81,7 @@ const Conexoes = () => {
         <div className='col-2 pr-5 pl-5'>
           <button className='cadastro-btn-blue m-1 w-full' onClick={() => {
             alteraModo(1)
-            navigate('/menu')
+            navigate('/menu/recentes')
           }}>Menu</button>
           <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
             navigate("/config/cadastro/conexao", {
