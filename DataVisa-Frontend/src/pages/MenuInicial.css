@@ -25,10 +25,23 @@ td, th {
     border: solid 2px white;
     margin-top: 6px;
     cursor: pointer;
-}
-
-.side-menu-btn:hover {
+}.side-menu-btn:hover {
     border-color: #366FE1;
+}
+.side-menu-create-btn {
+    background-color: transparent;
+    color: #366FE1;
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 15px;
+    border-radius: 10px;
+    border: solid 2px #366FE1;
+    margin-top: 6px;
+    cursor: pointer;
+}.side-menu-create-btn:hover {
+    border-color: white;
+    color: white;
+    background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
 }
 
 #side-config {
@@ -45,9 +58,7 @@ td, th {
     font-size: 20px;
     margin-top: 6px;
     padding: 8px
-}
-
-.side-config-btn:hover {
+}.side-config-btn:hover {
     border-color: white;
     color: white;
 }

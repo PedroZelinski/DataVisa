@@ -32,7 +32,7 @@ const Gerar = () => {
           </div>
           <div className="col-1">
             <button className='cadastro-btn-blue' onClick={() => navigate("/menu/recentes")}>
-              Menu</button>
+              Concluir</button>
           </div>
         </div>
 
