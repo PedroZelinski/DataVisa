@@ -15,6 +15,7 @@ const Linhas = ({ valores, labels, layout }) => {
         ]
       }
       layout={layout}
+      config={{modeBarButtonsToRemove: ['toImage']}}
     />
   )
 }

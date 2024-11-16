@@ -14,6 +14,7 @@ const Pizza = ({ valores, labels, layout }) => {
                     }]
             }
             layout={layout}
+            config={{modeBarButtonsToRemove: ['toImage']}}
         />
 
     )

@@ -16,6 +16,7 @@ const Barras = ({ valores, labels, layout }) => {
                 ]
             }
             layout={layout}
+            config={{modeBarButtonsToRemove: ['toImage']}}
         />
     )
 }

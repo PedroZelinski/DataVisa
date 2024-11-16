@@ -7,6 +7,7 @@ import html2canvas from 'html2canvas';
 
 const Gerar = () => {
   const navigate = useNavigate()
+  const nomeGrafico = "Grafico de teste" // para teste
 
   const printDoc = () => {
     const input = document.getElementById('resultado')
@@ -18,7 +19,7 @@ const Gerar = () => {
         }
       )
       pdf.addImage(imgData, 'JPEG', 0, 0)
-      pdf.save("DataVisa.pdf")
+      pdf.save("DataVisa - " + nomeGrafico + ".pdf")
     })
   }
 

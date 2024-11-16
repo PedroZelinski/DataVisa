@@ -25,6 +25,7 @@ const Planilha = ({ valores, headers, layout }) => {
         ]
       }
       layout={layout}
+      config={{modeBarButtonsToRemove: ['toImage']}}
     />
   )
 }
