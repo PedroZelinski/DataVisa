@@ -10,7 +10,7 @@ const SideConfig = ({ alteraModo, nivel }) => {
             navigate(-1)
         } else {
             alteraModo(1)
-            navigate("/menu")
+            navigate("/menu/recentes")
         }
     }
 

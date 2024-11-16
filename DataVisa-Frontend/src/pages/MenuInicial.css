@@ -70,13 +70,14 @@ td, th {
 
 #create-btn {
     height: 225px;
-    background:
-        linear-gradient(white 0 0) padding-box,
-        linear-gradient(44deg, #044BD9 0%, #00A6AB 100%) border-box;
-    border: 2px solid transparent;
+    border: 2px solid #366FE1;
     border-radius: 5px;
-    color: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+    color: #366FE1;
     cursor: pointer;
+}#create-btn:hover{
+    background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
+    color: white;
+    border-color: white
 }
 
 .gerar-btn{
@@ -98,12 +99,17 @@ td, th {
 .top-menu-btn {
     margin-right: 15px;
     background-color: transparent;
-    border: none;
+    border: solid 2px transparent;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 25px;
+    font-size: 26px;
+    height: 45px;
+    width: 45px;
+}.top-menu-btn:hover {
+    border-color: white;
 }
 
-.top-menu-btn-2 {
+.top-menu-btn-config {
     background-color: transparent;
     border: solid 1px #8CACEE;
     padding: 10px;
@@ -111,6 +117,21 @@ td, th {
     margin-top: 10px;
     cursor: pointer;
     width: 100%;
+}.top-menu-btn-config:hover{
+    color: white;
+    background-color: #044BD9;
+}
+.top-menu-btn-exit {
+    background-color: transparent;
+    border: solid 1px #ee8c8c;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%;
+}.top-menu-btn-exit:hover {
+    color: white;
+    background-color: #E54A64;
 }
 
 .cadastro-btn-blue {
@@ -194,6 +215,8 @@ td, th {
     background: white;
     border-radius: 5px;
     box-shadow: 1px 1px 5px  lightblue;
+}.card-area:hover{
+    box-shadow: 4px 4px 9px  lightblue
 }
 
 .cadastro-area {
@@ -204,13 +227,6 @@ td, th {
 .output-area {
     overflow-x: auto;
     white-space: nowrap;
-}
-
-#text-color {
-    background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .scroll {

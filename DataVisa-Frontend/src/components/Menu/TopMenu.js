@@ -70,7 +70,7 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
             <div className='col-3 col-offset-7 flex align-items-center justify-content-center mt-3'>
                 {nivel <= 2 ?
                     <div>
-                        <button className="top-menu-btn" onClick={(e) => inspect.current.toggle(e)}>
+                        <button className="top-menu-btn pt-2" onClick={(e) => inspect.current.toggle(e)}>
                             <i className='icon-white fi fi-rr-chart-histogram' />
                         </button>
                         <OverlayPanel ref={inspect}>
@@ -78,10 +78,10 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                                 <i className='icon-black fi fi-rr-chart-histogram' style={{ fontSize: '20px' }} />
                                 <br />
                                 <div style={{ fontWeight: 'bold', color: 'black' }}>Inspecionar</div>
-                                <button className='top-menu-btn-2'
+                                <button className='top-menu-btn-config'
                                     onClick={(e) => { navegar(e, inspect, "conexoes") }}>Conexões</button>
                                 <br />
-                                <button className='top-menu-btn-2'
+                                <button className='top-menu-btn-config'
                                     onClick={(e) => { navegar(e, inspect, "templates") }}>Templates</button>
                             </div>
                         </OverlayPanel>
@@ -89,7 +89,7 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
 
                 {nivel <= 1 ?
                     <div>
-                        <button className="top-menu-btn" onClick={(e) => config.current.toggle(e)}>
+                        <button className="top-menu-btn pt-2" onClick={(e) => config.current.toggle(e)}>
                             <i className='icon-white fi fi-rr-settings' />
                         </button>
                         <OverlayPanel ref={config}>
@@ -98,19 +98,19 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                                 <br />
                                 <div style={{ fontWeight: 'bold', color: 'black' }}>Configurações</div>
 
-                                <button className='top-menu-btn-2'
+                                <button className='top-menu-btn-config'
                                     onClick={(e) => { navegar(e, config, "usuarios") }}>Usuarios</button>
                                 <br />
-                                <button className='top-menu-btn-2'
+                                <button className='top-menu-btn-config'
                                     onClick={(e) => { navegar(e, config, "pendentes") }}>Pendentes</button>
                                 <br />
-                                <button className='top-menu-btn-2'
+                                <button className='top-menu-btn-config'
                                     onClick={(e) => { navegar(e, config, "audit") }}>Auditoria</button>
                             </div>
                         </OverlayPanel>
                     </div> : <div />}
 
-                <button className="top-menu-btn" onClick={(e) => user.current.toggle(e)}>
+                <button className="top-menu-btn pt-2" onClick={(e) => user.current.toggle(e)}>
                     <i className='icon-white fi fi-rr-user' />
                 </button>
                 <OverlayPanel ref={user}>
@@ -119,10 +119,10 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                         <br />
                         <div style={{ fontWeight: 'bold', color: 'black' }}>Usuário</div>
 
-                        <button className='top-menu-btn-2'
+                        <button className='top-menu-btn-config'
                             onClick={(e) => { navegar(e, user, "perfil") }}>Ver Perfil</button>
                         <br />
-                        <button className='top-menu-btn-2'
+                        <button className='top-menu-btn-exit'
                             onClick={() => confirmLogout(exibeMensagem)}>Sair</button>
                     </div>
                 </OverlayPanel>

@@ -7,37 +7,39 @@ import barChart from '../../assets/bar-chart.png'
 import spreadsheet from '../../assets/spreadsheet.png'
 import { useNavigate } from 'react-router-dom'
 
+
 const Recentes = () => {
   const navigate = useNavigate();
-  const gerar = () => navigate("/menu/gerar")
+
 
   return (
     <div className='col-12'>
+
+
       <div className="grid nested-grid">
 
         <div className="col-12">Recentes</div>
 
-        <div className="scroll-white grid col-12" style={{height: 'calc(100vh - 170px)'}}>
+        <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 170px)' }}>
 
           <div className="col-3 grid m-2 ml-4" id='create-btn' onClick={() => navigate("/menu/criar")}>
-            <div className="col-12 mt-3 text-center">
-              <img src={plus} alt="" style={{ height: "80px" }} />
-            </div>
-            <div className="col-12 p-0 text-center" id='text-color'
-              style={{ fontSize: "15px" }}>
-              Crie seu grafico ou tabela
+            <div className="col-12 mt-5 text-center">
+              <div>
+                <i className='fi fi-rr-plus' style={{fontSize:"70px"}}/>
+              </div>
+              <div className='mt-3'>Crie seu gráfico ou tabela</div>
             </div>
           </div>
 
-          <Card img={pieChart} gerar={gerar}></Card>
-          <Card img={barChart} gerar={gerar}></Card>
-          <Card img={lineChart} gerar={gerar}></Card>
-          <Card img={spreadsheet} gerar={gerar}></Card>
-          <Card img={pieChart} gerar={gerar}></Card>
-          <Card img={barChart} gerar={gerar}></Card>
-          <Card img={lineChart} gerar={gerar}></Card>
-          <Card img={spreadsheet} gerar={gerar}></Card>
-          
+          <Card img={pieChart} navigate={navigate} ></Card>
+          <Card img={barChart} navigate={navigate} ></Card>
+          <Card img={lineChart} navigate={navigate} ></Card>
+          <Card img={spreadsheet} navigate={navigate} ></Card>
+          <Card img={pieChart} navigate={navigate} ></Card>
+          <Card img={barChart} navigate={navigate} ></Card>
+          <Card img={lineChart} navigate={navigate} ></Card>
+          <Card img={spreadsheet} navigate={navigate} ></Card>
+
         </div>
 
       </div>
