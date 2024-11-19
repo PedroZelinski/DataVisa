@@ -1,12 +1,12 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const SideConfig = ({ alteraModo, nivel }) => {
+const SideConfig = ({ modo, alteraModo, nivel }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const retornar = (path) => {
-        if(path.split('/').slice(-2)[0] == "cadastro"){
+        if (path.split('/').slice(-2)[0] == "cadastro") {
             navigate(-1)
         } else {
             alteraModo(1)
@@ -16,13 +16,17 @@ const SideConfig = ({ alteraModo, nivel }) => {
 
     function selected(path) {
         if (path == location.pathname) {
-            return {color: 'white', border: 'solid 2px', borderRadius: '10px'}
+            return { color: 'white', border: 'solid 2px', borderRadius: '10px' }
         }
     }
 
     return (
         <div id='side-config' className='col-2 text-center'>
-            {nivel <= 1 ? <div>
+            {nivel <= 1 && modo == 3 ? <div>
+                <div className='mt-3' style={{ fontSize: "20px", fontWeight: 'bold' }}>
+                    <i className='fi fi-rr-settings' /> Configurações
+                </div>
+                <br /><hr className='ml-1'/>
                 <div>
                     <button onClick={() => navigate('/config/usuarios')}
                         className='side-config-btn' style={selected("/config/usuarios")}>
@@ -42,7 +46,11 @@ const SideConfig = ({ alteraModo, nivel }) => {
                 </div>
                 <br />
             </div> : <div />}
-            {nivel <= 2 ? <div>
+            {nivel <= 2 && modo == 2 ? <div>
+                <div className='mt-3' style={{ fontSize: "20px", fontWeight: 'bold' }}>
+                    <i className='fi-rr-chart-histogram' /> Inspecionar
+                </div>
+                <br /><hr className='ml-1'/>
                 <div>
                     <button onClick={() => navigate('/config/conexoes')}
                         className='side-config-btn' style={selected("/config/conexoes")}>
@@ -56,9 +64,10 @@ const SideConfig = ({ alteraModo, nivel }) => {
                 </div>
                 <br />
             </div> : <div />}
+            <hr className='ml-1'/>
             <div>
                 <button onClick={() => retornar(location.pathname)} className='side-config-btn'>
-                    <i className='fi fi-rr-undo-alt' /> 
+                    <i className='fi fi-rr-undo-alt' />
                     {location.pathname.split('/').slice(-2)[0] == "cadastro" ? " Retornar" : " Menu"}
                 </button>
             </div>

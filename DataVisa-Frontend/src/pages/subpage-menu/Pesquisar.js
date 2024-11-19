@@ -28,7 +28,7 @@ const Pesquisar = () => {
             style={{ border: 'none', width: '92%' }} />
         </div>
 
-        <div className="col-12">Resultados</div>
+        <div className="col-12 font-bold">Resultados</div>
         <div className="grid nested-grid col-12">
 
           <div className="grid col-3 ml-1 mt-2"

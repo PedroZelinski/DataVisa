@@ -53,9 +53,14 @@ export default class MenuInicial extends Component {
           exibeMensagem={this.exibeMensagem} />
 
         {this.state.modo == 1 ?
-          <SideMenu alteraModo={this.alteraModo} nivel={this.state.session.nivelAcesso} />
+          <SideMenu
+            alteraModo={this.alteraModo}
+            nivel={this.state.session.nivelAcesso} />
           :
-          <SideConfig alteraModo={this.alteraModo} nivel={this.state.session.nivelAcesso} />
+          <SideConfig
+            modo={this.state.modo}
+            alteraModo={this.alteraModo}
+            nivel={this.state.session.nivelAcesso} />
         }
 
         <div className='col-10 flex justify-content-center' id="outlet" style={

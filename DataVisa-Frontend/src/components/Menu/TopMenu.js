@@ -11,12 +11,12 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
     const config = useRef(null);
     const inspect = useRef(null);
 
-    function navegar(e, panel, path) {
+    function navegar(e, panel, path, modo) {
         if (path != "perfil") {
-            alteraModo(2)
+            alteraModo(modo)
             navigate('/config/' + path)
         } else {
-            alteraModo(1)
+            alteraModo(modo)
             navigate('/menu/' + path)
         }
         panel.current.toggle(e)
@@ -79,10 +79,10 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                                 <br />
                                 <div style={{ fontWeight: 'bold', color: 'black' }}>Inspecionar</div>
                                 <button className='top-menu-btn-config'
-                                    onClick={(e) => { navegar(e, inspect, "conexoes") }}>Conexões</button>
+                                    onClick={(e) => { navegar(e, inspect, "conexoes", 2) }}>Conexões</button>
                                 <br />
                                 <button className='top-menu-btn-config'
-                                    onClick={(e) => { navegar(e, inspect, "templates") }}>Templates</button>
+                                    onClick={(e) => { navegar(e, inspect, "templates", 2) }}>Templates</button>
                             </div>
                         </OverlayPanel>
                     </div> : <div />}
@@ -99,13 +99,13 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                                 <div style={{ fontWeight: 'bold', color: 'black' }}>Configurações</div>
 
                                 <button className='top-menu-btn-config'
-                                    onClick={(e) => { navegar(e, config, "usuarios") }}>Usuarios</button>
+                                    onClick={(e) => { navegar(e, config, "usuarios", 3) }}>Usuarios</button>
                                 <br />
                                 <button className='top-menu-btn-config'
-                                    onClick={(e) => { navegar(e, config, "pendentes") }}>Pendentes</button>
+                                    onClick={(e) => { navegar(e, config, "pendentes", 3) }}>Pendentes</button>
                                 <br />
                                 <button className='top-menu-btn-config'
-                                    onClick={(e) => { navegar(e, config, "audit") }}>Auditoria</button>
+                                    onClick={(e) => { navegar(e, config, "audit", 3) }}>Auditoria</button>
                             </div>
                         </OverlayPanel>
                     </div> : <div />}
@@ -120,7 +120,7 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                         <div style={{ fontWeight: 'bold', color: 'black' }}>Usuário</div>
 
                         <button className='top-menu-btn-config'
-                            onClick={(e) => { navegar(e, user, "perfil") }}>Ver Perfil</button>
+                            onClick={(e) => { navegar(e, user, "perfil", 1) }}>Ver Perfil</button>
                         <br />
                         <button className='top-menu-btn-exit'
                             onClick={() => confirmLogout(exibeMensagem)}>Sair</button>

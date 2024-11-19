@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'primereact/dropdown'
+import { Checkbox } from "primereact/checkbox";
 import Pizza from '../../components/Templates/Pizza'
 import Barras from '../../components/Templates/Barras'
 import Linhas from '../../components/Templates/Linhas'
@@ -14,6 +15,7 @@ const Filtrar = () => {
   const [orderBy, setOrderBy] = useState('')
   const [where, setWhere] = useState('')
   const [modelo, setModelo] = useState('')
+  const [checkedPublico, setCheckedPublico] = useState(false)
   const location = useLocation()
 
   const modelos = ["Gráfico de Pizza", "Gráfico de Linhas", "Gráfico de Barras", "Planilha"]
@@ -36,7 +38,7 @@ const Filtrar = () => {
     <div className="col-12">
       <div className="grid nested-grid">
 
-        <div className="col-10">Crie uma personalização para o modelo</div>
+        <div className="col-10 font-bold">Crie uma personalização para o modelo</div>
         <div className="col-2">
           <button className='cadastro-btn-blue' onClick={() => navigate("/menu/gerar")}>
             Avançar</button>
@@ -53,6 +55,7 @@ const Filtrar = () => {
                       type="text" id="nome" placeholder="Nome" required />
                   </div>
                 </label>
+
                 <label className='font-bold col-10'>Modelo
                   <Dropdown value={modelo} options={modelos}
                     onChange={(e) => setModelo(e.value)} style={dropStyle}
@@ -110,6 +113,12 @@ const Filtrar = () => {
                         type="text" id="valorMax" required />
                     </div>
                   </label> : <div />}
+
+                <label className='font-bold col-6'>Tornar Público
+                  <Checkbox inputId="checkTodos"
+                    onChange={e => setCheckedPublico(e.checked)} checked={checkedPublico}>
+                  </Checkbox>
+                </label>
               </div>
             </div>
           </div>

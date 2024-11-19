@@ -51,7 +51,7 @@ const Gerar = () => {
                 layout={
                   {
                     width: 535,
-                    height: 350,
+                    height: 340,
                     title: "Grafico de Teste",
                     margin: {
                       r: 30, l: 110, t: 40, b: 20

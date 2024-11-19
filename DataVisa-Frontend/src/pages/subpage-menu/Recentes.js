@@ -18,7 +18,7 @@ const Recentes = () => {
 
       <div className="grid nested-grid">
 
-        <div className="col-12">Recentes</div>
+        <div className="col-12 font-bold">Recentes</div>
 
         <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 170px)' }}>
 

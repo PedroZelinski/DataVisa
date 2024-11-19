@@ -77,7 +77,7 @@ td, th {
 }#create-btn:hover{
     background: linear-gradient(44deg, #044BD9 0%, #00A6AB 100%);
     color: white;
-    border-color: white
+    border: none
 }
 
 .gerar-btn{
@@ -217,6 +217,12 @@ td, th {
     box-shadow: 1px 1px 5px  lightblue;
 }.card-area:hover{
     box-shadow: 4px 4px 9px  lightblue
+}
+.card-info-btn {
+    cursor: pointer;
+    font-size: 20px;
+}.card-info-btn:hover{
+    color: #044BD9;
 }
 
 .cadastro-area {

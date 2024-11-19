@@ -15,7 +15,7 @@ const Criar = () => {
   return (
     <div className='col-12'>
       <div className="grid nested-grid">
-        <div className="col-12">Escolha o modelo</div>
+        <div className="col-12 font-bold">Escolha o modelo</div>
 
         <div className='cadastro-area grid col-5 m-2'>
           <i className='fi fi-rr-search mr-2 pt-2' />

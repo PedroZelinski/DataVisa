@@ -56,8 +56,8 @@ const Card = ({ img, navigate }) => {
 
       <div className="col-10 font-bold">Nome do Modelo</div>
 
-      <div className="col-2 font-bold" style={{ fontSize: '20px' }}>
-        <i className='fi fi-rr-info' style={{ cursor: 'pointer' }}
+      <div className="col-2 font-bold">
+        <i className='card-info-btn fi fi-rr-info'
           onClick={() => setInfo(true)} />
       </div>
 
