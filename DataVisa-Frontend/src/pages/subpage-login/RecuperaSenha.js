@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../../assets/logoOriginal.png'
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
-const LoginSenha = ({ alteraModo, exibeMensagem }) => {
-    const [value, setValue] = React.useState('');
+const RecuperaSenha = () => {
+    const [value, setValue] = useState('');
+    const [exibeMensagem] = useOutletContext();
+    const navigate = useNavigate()
+
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -13,7 +17,7 @@ const LoginSenha = ({ alteraModo, exibeMensagem }) => {
     }
     async function resetarSenha(email) {
         exibeMensagem("Nova senha enviada para o email "+email)
-        alteraModo(1)
+        navigate("/login/acesso")
     }
 
     return (
@@ -40,16 +44,17 @@ const LoginSenha = ({ alteraModo, exibeMensagem }) => {
 
                 <div className='mt-2'>
                     Já possui conta?
-                    <a onClick={() => alteraModo(1)}
+                    <a onClick={() => navigate("/login/acesso")}
                         className="link"> Clique Aqui</a>
                 </div>
                 <div className='mt-2'>
                     Ainda não possui conta?
-                    <a onClick={() => alteraModo(3)}
+                    <a onClick={() => navigate("/login/cadastro")}
                         className="link"> Cadastre-se</a>
                 </div>
             </form>
         </div>
     )
 }
-export default LoginSenha
+
+export default RecuperaSenha

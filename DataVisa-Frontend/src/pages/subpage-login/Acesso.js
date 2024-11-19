@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import DBClient from '../../utils/DBClient';
 import logo from '../../assets/logoOriginal.png'
 
-const LoginHome = ({ alteraModo, exibeMensagem }) => {
-    const navigate = useNavigate();
+const Acesso = () => {
     const [value, setValue] = useState('');
     const [view, setView] = useState(false)
+    const navigate = useNavigate();
+    const [exibeMensagem] = useOutletContext();
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -75,17 +76,17 @@ const LoginHome = ({ alteraModo, exibeMensagem }) => {
 
                 <div className='mt-2'>
                     Esqueceu sua senha?
-                    <a onClick={() => alteraModo(2)}
+                    <a onClick={() => navigate("/login/recupera-senha")}
                         className="link"> Clique aqui</a>
                 </div>
                 <div className="mt-2">
                     Ainda não possui conta?
-                    <a onClick={() => alteraModo(3)}
+                    <a onClick={() => navigate("/login/cadastro")}
                         className="link"> Cadastre-se</a>
                 </div>
             </form>
         </div>
     )
-
 }
-export default LoginHome
+
+export default Acesso

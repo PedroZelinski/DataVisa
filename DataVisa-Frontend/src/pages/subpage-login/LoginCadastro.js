@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import DBClient from '../../utils/DBClient'
 import { Dropdown } from 'primereact/dropdown'
 import logo from '../../assets/logoOriginal.png'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 
-const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
+const LoginCadastro = () => {
     const [value, setValue] = useState('');
     const [view, setView] = useState(false)
     const [businessList, setBusinessList] = useState([]);
     const [business, setBusiness] = useState('');
+    const [exibeMensagem] = useOutletContext();
+    const navigate = useNavigate()
 
     useEffect(() => {
         DBClient.get("/dataVisa/business/getAll").then((res) => {
@@ -44,7 +47,7 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
                 dadosUsuario
             ).then((res) => {
                 if (res.status == 200) {
-                    alteraModo(4)
+                    navigate("/login/confirmacao")
                 }
             });
         } catch (error) {
@@ -134,7 +137,7 @@ const LoginCadastro = ({ alteraModo, exibeMensagem }) => {
             </form>
             <div className='mt-2' style={{ marginLeft: '20px' }}>
                 Já possui conta?
-                <a onClick={() => alteraModo(1)}
+                <a onClick={() => navigate("/login/acesso")}
                     className="link"> Clique aqui</a>
             </div>
 

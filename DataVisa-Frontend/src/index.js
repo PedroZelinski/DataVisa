@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import 'primeflex/primeflex.css'
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider
 } from 'react-router-dom'
 import Login from './pages/Login';
@@ -19,11 +20,37 @@ import Pesquisar from './pages/subpage-menu/Pesquisar';
 import Gerar from './pages/subpage-menu/Gerar';
 import Criar from './pages/subpage-menu/Criar';
 import Filtrar from './pages/subpage-menu/Filtrar';
+import Acesso from './pages/subpage-login/Acesso';
+import RecuperaSenha from './pages/subpage-login/RecuperaSenha';
+import LoginCadastro from './pages/subpage-login/LoginCadastro';
+import Confirmacao from './pages/subpage-login/Confirmacao';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />
+    element: <Navigate to="/login/acesso" replace />
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    children: [
+      {
+        path: "acesso",
+        element: <Acesso />
+      },
+      {
+        path: "recupera-senha",
+        element: <RecuperaSenha/>
+      },
+      {
+        path: "cadastro",
+        element: <LoginCadastro />
+      },
+      {
+        path: "confirmacao",
+        element: <Confirmacao />
+      }
+    ]
   },
   {
     path: "/menu",

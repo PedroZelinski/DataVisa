@@ -1,7 +1,9 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/logoOriginal.png'
 
-const LoginConfirmacao = ({alteraModo}) => {
+const Confirmacao = () => {
+    const navigate = useNavigate()
 
     return (
         <div className='col-6 text-center'>
@@ -21,10 +23,11 @@ const LoginConfirmacao = ({alteraModo}) => {
             </div>
             <div className="submit-div mt-2">
                 <button className="submit-btn"
-                onClick={() => alteraModo(1)}>OK</button>
+                onClick={() => navigate("/login/acesso")}>OK</button>
 
             </div>
         </div>
     )
 }
-export default LoginConfirmacao
+
+export default Confirmacao

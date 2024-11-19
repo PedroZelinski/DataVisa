@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
+import { Outlet } from 'react-router-dom'
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import LoginHome from '../components/Login/LoginHome'
-import LoginCadastro from '../components/Login/LoginCadastro'
-import LoginConfirmacao from '../components/Login/LoginConfirmacao'
-import LoginSenha from '../components/Login/LoginSenha'
 import waves from '../assets/login.jpg'
 import './Login.css'
 
 export default class Login extends Component {
 
   state = {
-    modo: 1, //1=inicial, 2=senha, 3=cadastro, 4=confirmacao
     visible: false,
     message: ""
   }
@@ -49,17 +45,7 @@ export default class Login extends Component {
 
         <div className='grid nested-grid mt-6' id="panel">
 
-          {this.state.modo == 1 ?
-            <LoginHome alteraModo={this.alteraModo} exibeMensagem={this.exibeMensagem} />
-            :
-            this.state.modo == 2 ?
-              <LoginSenha alteraModo={this.alteraModo} exibeMensagem={this.exibeMensagem} />
-              :
-              this.state.modo == 3 ?
-                <LoginCadastro alteraModo={this.alteraModo} exibeMensagem={this.exibeMensagem} />
-                :
-                <LoginConfirmacao alteraModo={this.alteraModo} exibeMensagem={this.exibeMensagem} />
-          }
+          <Outlet context={[this.exibeMensagem]} />
 
           <div className='col-6 p-0 h-full'>
             <img id="waves" src={waves} />

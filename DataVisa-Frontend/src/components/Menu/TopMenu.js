@@ -46,7 +46,7 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
                     if (res.status == 200) {
                         exibeMensagem(res.data)
                         localStorage.clear()
-                        navigate("/")
+                        navigate("/login/acesso")
                     }
                 }
             )
