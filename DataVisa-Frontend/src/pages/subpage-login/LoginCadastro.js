@@ -65,82 +65,82 @@ const LoginCadastro = () => {
                 Cadastre-se
             </div>
 
-            <form onSubmit={onFormSubmit} onChange={handleChange}
-                className='grid nested-grid mt-1' id='cadastro-form'>
-                <div className="scroll-white" style={{ height: "calc(100vh - 260px)" }}>
+            <div className="scroll-white" style={{ height: "calc(100vh - 250px)", padding: "0px" }}>
+                <form onSubmit={onFormSubmit} onChange={handleChange} style={{ marginLeft: "20px" }}>
+                    <div className="grid nested-grid mt-1">
 
-                    <div className='col-12'>
-                        <label>Empresa
-                            <Dropdown
-                                value={business} options={businessList}
-                                optionLabel="nome" optionValue="id"
-                                onChange={(e) => setBusiness(e.value)}
-                                filter required placeholder="Informe sua empresa"
-                                style={{
-                                    width: "90%", background: '#C1C7CB',
-                                    border: '1px #374957 solid', opacity: '0.60'
-                                }} />
-                        </label>
-                    </div>
+                        <div className='col-12'>
+                            <label>Empresa
+                                <Dropdown
+                                    value={business} options={businessList}
+                                    optionLabel="nome" optionValue="id"
+                                    onChange={(e) => setBusiness(e.value)}
+                                    filter required placeholder="Informe sua empresa"
+                                    style={{
+                                        width: "90%", background: '#C1C7CB',
+                                        border: '1px #374957 solid', opacity: '0.60'
+                                    }} />
+                            </label>
+                        </div>
 
-                    <div className='col-12'>
-                        <label>Nome Completo
-                            <div className="input-div">
-                                <input className="input-field" placeholder="Digite seu nome completo"
-                                    type="text" id="nome" required />
-                            </div>
-                        </label>
-                    </div>
-
-                    <div className='col-12'>
-                        <label>E-mail
-                            <div className="input-div">
-                                <input className="input-field" placeholder="Digite seu e-mail"
-                                    type="email" id="email" required />
-                            </div>
-                        </label>
-                    </div>
-
-                    <div className="grid col-12">
-                        <div className='col-5'>
-                            <label>Senha
+                        <div className='col-12'>
+                            <label>Nome Completo
                                 <div className="input-div">
-                                    <input className="input-field" placeholder="Digite sua senha"
-                                        type={view == true ? "text" : "password"} id="senha"
-                                        minLength={8} required />
+                                    <input className="input-field" placeholder="Digite seu nome completo"
+                                        type="text" id="nome" required />
                                 </div>
                             </label>
                         </div>
 
-                        <div className='col-5'>
-                            <label>Confirmar senha
+                        <div className='col-12'>
+                            <label>E-mail
                                 <div className="input-div">
-                                    <input className="input-field" placeholder="Confirme a senha"
-                                        type={view == true ? "text" : "password"} id="confsenha"
-                                        minLength={8} required />
+                                    <input className="input-field" placeholder="Digite seu e-mail"
+                                        type="email" id="email" required />
                                 </div>
                             </label>
                         </div>
-                        <div className="col-2 align-content-center pt-5">
-                            <i className={view == true ? 'fi fi-rr-eye-crossed' : 'fi fi-rr-eye'}
-                                id='eye' onClick={() => setView(!view)} />
+
+                        <div className="grid col-12">
+                            <div className='col-5'>
+                                <label>Senha
+                                    <div className="input-div">
+                                        <input className="input-field" placeholder="Digite sua senha"
+                                            type={view == true ? "text" : "password"} id="senha"
+                                            minLength={8} required />
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div className='col-5'>
+                                <label>Confirmar senha
+                                    <div className="input-div">
+                                        <input className="input-field" placeholder="Confirme a senha"
+                                            type={view == true ? "text" : "password"} id="confsenha"
+                                            minLength={8} required />
+                                    </div>
+                                </label>
+                            </div>
+                            <div className="col-2 align-content-center pt-5">
+                                <i className={view == true ? 'fi fi-rr-eye-crossed' : 'fi fi-rr-eye'}
+                                    id='eye' onClick={() => setView(!view)} />
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div className='submit-div' style={{ marginLeft: '8px' }}>
-                        <input className="submit-btn"
-                            type="submit"
-                            value="Cadastrar" />
+                        <button className='login-btn' type='submit'
+                            style={{ marginLeft: "8px" }}>
+                            Cadastrar
+                        </button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+
             <div className='mt-2' style={{ marginLeft: '20px' }}>
                 Já possui conta?
                 <a onClick={() => navigate("/login/acesso")}
-                    className="link"> Clique aqui</a>
+                    className="link ml-1">Clique aqui</a>
             </div>
-
         </div>
     )
 }

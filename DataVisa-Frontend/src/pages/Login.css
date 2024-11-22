@@ -44,7 +44,19 @@ label{
 .input-field:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px #C1C7CB inset !important;
 }
-
+.login-btn{
+    height: 36px;
+    padding: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 5px;
+    border: 1px #171F25 solid;
+    background: transparent;
+}.login-btn:hover{
+    background: #044BD9;
+    color: white;
+    border: none
+}
 .submit-div{
     height: 36px;
     padding: 5px;
@@ -56,7 +68,9 @@ label{
     display: inline-flex;
     margin-bottom: 4px;
     word-spacing: 4px;
-}.submit-btn{
+}
+
+.submit-btn{
     color: #171F25;
     font-size: 14px;
     font-weight: 400;
@@ -67,13 +81,7 @@ label{
     word-wrap: break-word;
 }
 
-#cadastro-form{
-    margin-left: 13px;
-    height: calc(100vh - 270px);
-    overflow: auto;
-}#cadastro-form::-webkit-scrollbar {
-    display: none;
-}
+
 #eye{
     font-size: 20px;
     font-weight: 400;
@@ -84,6 +92,8 @@ label{
     text-decoration: none; 
     color: #044BD9;
     cursor: pointer;
+}.link:hover{
+    text-decoration: underline;
 }
 #logo-login{
     margin-top: 15x;
@@ -93,7 +103,7 @@ label{
     background: white;
     border-radius: 5px;
     width: 70%;
-    height: 80%;
+    height: calc(100vh - 100px);
     font-size: 14px;
 }
 #waves{

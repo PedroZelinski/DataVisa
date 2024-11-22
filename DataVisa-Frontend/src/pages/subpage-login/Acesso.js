@@ -18,6 +18,8 @@ const Acesso = () => {
     }
 
     async function fazerLogin() {
+    console.log(document.getElementById('email').value + " " + document.getElementById('senha').value)
+
         try {
             await DBClient.get('/dataVisa/user/login', {
                 headers: {
@@ -45,46 +47,47 @@ const Acesso = () => {
                 Digite seu e-mail e senha, para acessar sua conta.
             </div>
 
-            <form onSubmit={onFormSubmit} onChange={handleChange}
-                style={{ marginLeft: '20px', marginTop: '10px' }}>
+            <div className="scroll-white" style={{ height: "calc(100vh - 275px)" }}>
+                <form onSubmit={onFormSubmit} onChange={handleChange}
+                    style={{ marginLeft: '5px' }}>
 
-                <div className='mt-1'>
-                    <label>E-mail
-                        <div className="input-div">
-                            <input className='input-field' placeholder="Digite seu e-mail"
-                                type="email" id="email" required />
-                        </div>
-                    </label>
-                </div>
+                    <div className='mt-1' style={{ width: "80%" }}>
+                        <label>E-mail
+                            <div className="input-div">
+                                <input className='input-field' placeholder="Digite seu e-mail"
+                                    type="email" id="email" required />
+                            </div>
+                        </label>
+                    </div>
 
-                <div className='mt-2'>
-                    <label>Senha
-                        <div className="input-div" style={{ width: "96.7%" }}>
-                            <input className="input-field" placeholder="Digite sua senha"
-                                type={view == true ? "text" : "password"} id="senha" required />
-                            <i className={view == true ? 'fi fi-rr-eye-crossed' : 'fi fi-rr-eye'}
-                                id='eye' onClick={() => setView(!view)} />
-                        </div>
-                    </label>
-                </div>
+                    <div className='mt-2' style={{ width: "87.8%" }}>
+                        <label>Senha
+                            <div className="input-div">
+                                <input className="input-field" placeholder="Digite sua senha"
+                                    type={view == true ? "text" : "password"} id="senha" required />
+                                <i className={view == true ? 'fi fi-rr-eye-crossed' : 'fi fi-rr-eye'}
+                                    id='eye' onClick={() => setView(!view)} />
+                            </div>
+                        </label>
+                    </div>
+                    <button className='login-btn mt-2' type='submit'>
+                        Acessar
+                    </button>
+                </form>
+            </div>
 
-                <div className='submit-div mt-2'>
-                    <input className="submit-btn"
-                        type="submit"
-                        value="Acessar" />
-                </div>
-
+            <div style={{ marginLeft: '20px' }}>
                 <div className='mt-2'>
                     Esqueceu sua senha?
                     <a onClick={() => navigate("/login/recupera-senha")}
-                        className="link"> Clique aqui</a>
+                        className="link ml-1">Clique aqui</a>
                 </div>
                 <div className="mt-2">
                     Ainda não possui conta?
                     <a onClick={() => navigate("/login/cadastro")}
-                        className="link"> Cadastre-se</a>
+                        className="link ml-1">Cadastre-se</a>
                 </div>
-            </form>
+            </div>
         </div>
     )
 }
