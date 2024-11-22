@@ -24,11 +24,8 @@ const Confirmacao = () => {
                         Agradecemos pela sua paciência.
                     </p>
                 </div>
-                <div className="submit-div mt-2">
-                    <button className="submit-btn"
+                    <button className="login-btn mt-2"
                         onClick={() => navigate("/login/acesso")}>OK</button>
-
-                </div>
             </div>
         </div>
     )
