@@ -23,12 +23,12 @@ const CadastroTemplate = ({ exibeMensagem }) => {
           setConexoes(res.data)
           setConexao(res.data.find(obj => obj.id == location.state.conexaoId))
         })
-        load();
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
           + error.response.data)
       }
     }
+    load();
     if (location.state.nome != null) {
       setControle(1)
       conectar(location.state.conexaoName, location.state.query)

@@ -19,12 +19,12 @@ const LoginCadastro = () => {
                     setBusinessList(res.data.slice(2))
                     console.log(res.data)
                 })
-                load();
             } catch (error) {
                 exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
                     + error.response.data)
             }
         }
+        load();
     }, []);
 
     const handleChange = (event) => {

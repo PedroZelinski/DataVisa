@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
 
-const Conexoes = () => {
+const Conexoes = ({}) => {
   const [dbs, setDbs] = useState([])
   const [session, alteraModo, exibeMensagem] = useOutletContext();
   const [controle, setControle] = useState(0);
@@ -16,12 +16,12 @@ const Conexoes = () => {
           setDbs(res.data)
           console.log(res.data)
         })
-        load();
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
           + error.response.data)
       }
     }
+    load();
   }, [controle])
 
   async function conexaoCadastro(id) {

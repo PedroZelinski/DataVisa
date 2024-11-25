@@ -5,11 +5,13 @@ import Pizza from '../../components/Templates/Pizza'
 import Barras from '../../components/Templates/Barras'
 import Linhas from '../../components/Templates/Linhas'
 import Planilha from '../../components/Templates/Planilha'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
 import DBClient from '../../utils/DBClient';
 
-const Filtrar = ({ exibeMensagem }) => {
+const Filtrar = () => {
   const navigate = useNavigate()
+  const [session, alteraModo, exibeMensagem] = useOutletContext();
+
   const [area, setArea] = useState('')
   const [areas, setAreas] = useState([])
 
@@ -38,16 +40,17 @@ const Filtrar = ({ exibeMensagem }) => {
   useEffect(() => {
     const load = async () => {
       try {
-        await DBClient.get("/dataVisa/template/getAll").then((res) => {
-          setAreas(res.data)
-          console.log(res.data)
-        })
-        load();
+        await DBClient.get("/dataVisa/template/getAll").then(
+          (res) => {
+            setAreas(res.data)
+            console.log(res.data)
+          })
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
           + error.response.data)
       }
     }
+    load();
     setModelo(location.state)
   }, [])
 
