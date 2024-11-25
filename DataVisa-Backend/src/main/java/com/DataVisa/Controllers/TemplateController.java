@@ -60,4 +60,10 @@ public class TemplateController {
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
+	@GetMapping("/dataVisa/template/getActives")
+    public ResponseEntity<?> getActives(){
+    	Pair<Object, HttpStatus> result = templateService.getActives();
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
+	}
+	
 }

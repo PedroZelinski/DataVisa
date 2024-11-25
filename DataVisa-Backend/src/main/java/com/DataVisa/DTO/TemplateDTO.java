@@ -28,6 +28,7 @@ public class TemplateDTO implements Serializable {
         this.lastModification = templateModel.getLastModification();
         this.empresaId = templateModel.getEmpresaId();
         this.conexaoId = templateModel.getConexaoId();
+		this.isActive = templateModel.getIsActive();
     }
 
 	private static final long serialVersionUID = 1L;
@@ -56,4 +57,5 @@ public class TemplateDTO implements Serializable {
 	
 	private String mensagemRetorno;
 	
+	private int isActive;
 }  

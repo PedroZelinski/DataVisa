@@ -1,6 +1,9 @@
 package com.DataVisa.Services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.ReportDTO;
-import com.DataVisa.DTO.TemplateDTO;
 import com.DataVisa.Models.ReportModel;
 import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Repositories.ReportRepository;
@@ -110,38 +112,32 @@ public class ReportService {
 	}
 
 	
-//	public Pair<Object, HttpStatus> findAll(){
-//		
-//		Pair<String, HttpStatus> response;
-//		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
-//	        return Pair.of(response,  response.getRight());
-//	    }
-//
-//	    List<ReportModel> userList = datavisaSession.getEmpresaId().equals(1L) ?
-//	        reportRepository.findAll():
-//	        reportRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
-//	    
-//	    try {
-//	        List<DatavisaUserDTO> dtoList = userList.stream().map(userModel -> {
-//	            DatavisaUserDTO dto = new DatavisaUserDTO(userModel);
-//	            try {
-//	                String nomeEmpresa = tableService.getNomeEmpresa(userModel.getEmpresaId());
-//	                dto.setEmpresaNome(nomeEmpresa);
-//	                dto.setDepartamento(tableService.getDepartamento(userModel.getPermissaoTabela(), nomeEmpresa));
-//	            } catch (Exception e) {
-//	                // Tratar exceção de forma apropriada, como logar o erro e definir valores padrão
-//	                dto.setEmpresaNome("Erro ao obter nome da empresa");
-//	                dto.setDepartamento("Erro ao obter departamento");
-//	            }
-//	            return dto;
-//	        }).collect(Collectors.toList());
-//
-//	        return Pair.of(dtoList, HttpStatus.OK);
-//	    } catch (Exception e) {
-//	        return Pair.of("Erro ao processar a lista de usuários", HttpStatus.INTERNAL_SERVER_ERROR);
-//	    }
-//	    
-//	}
+	public Pair<Object, HttpStatus> findAllActives(){
+		
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response,  response.getRight());
+	    }
+	
+	    List<ReportModel> reports = reportRepository.findAllByEmpresaId(datavisaSession.getEmpresaId());
+	    
+	    List<ReportDTO> dtos = new ArrayList<>();
+	    if (!reports.isEmpty()) {
+	        try {
+	            dtos = reports.stream()
+	                .filter(reportModel -> 
+	                	reportModel.getCreatorEmail().equals(datavisaSession.getEmail()) ||
+		                reportModel.getEmpresaId().equals(datavisaSession.getEmpresaId()) &&
+		                reportModel.getIsPublic() == 1 && 
+	                    reportModel.getTablePermition() <= datavisaSession.getPermissaoTabela() )
+	                .map(ReportDTO::new)
+	                .collect(Collectors.toList());
+	        } catch (Exception e) {
+	            return Pair.of("Erro ao processar a lista de relatórios", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+	    return Pair.of(dtos, HttpStatus.OK);
+	}
 	
 }
 

@@ -14,7 +14,6 @@ public class TemplateModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,6 +24,8 @@ public class TemplateModel implements Serializable {
 	
 	private String tableName;
 	
+	private int tablePermition;
+	
 	private List<String> items;
 	
 	private Timestamp lastModification;
@@ -32,5 +33,9 @@ public class TemplateModel implements Serializable {
 	private Long empresaId;
 	
 	private Long conexaoId;
+	
+	private String conexaoName;
+	
+	private int isActive;
 	
 }  

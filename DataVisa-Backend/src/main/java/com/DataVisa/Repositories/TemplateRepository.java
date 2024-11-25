@@ -155,30 +155,39 @@ public class TemplateRepository {
     @SuppressWarnings("unchecked")
     public List<TemplateModel> getAll(Long empresaId) {
         String tableName = "templates_" + empresaId;
-        String query = "SELECT id, templateName, sqlQuery, tableName, items, lastModification, empresaId, conexaoId FROM " + tableName;
+        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, conexaoName, isActive FROM " + tableName;
+        
+        List<Object[]> results;
+        try {
+            results = entityManager.createNativeQuery(query).getResultList();
+        
 
-        List<Object[]> results = entityManager.createNativeQuery(query).getResultList();
-        List<TemplateModel> templates = new ArrayList<>();
-
-        for (Object[] result : results) {
-            TemplateModel template = new TemplateModel();
-            template.setId(((Number) result[0]).longValue());
-            template.setTemplateName((String) result[1]);
-            template.setSqlQuery((String) result[2]);
-            template.setTableName((String) result[3]);
-
-            Gson gson = new Gson();
-            String itemsJson = (String) result[4];
-            List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
-            template.setItems(items);
-
-            template.setLastModification((Timestamp) result[5]);
-            template.setEmpresaId(((Number) result[6]).longValue());
-            template.setConexaoId(((Number) result[7]).longValue());
-
-            templates.add(template);
+	        List<TemplateModel> templates = new ArrayList<>();
+	        for (Object[] result : results) {
+	            TemplateModel template = new TemplateModel();
+	            template.setId(((Number) result[0]).longValue());
+	            template.setTemplateName((String) result[1]);
+	            template.setSqlQuery((String) result[2]);
+	            template.setTableName((String) result[3]);
+	            template.setTablePermition(((Number) result[4]).intValue());
+	
+	            Gson gson = new Gson();
+	            String itemsJson = (String) result[5];
+	            List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
+	            template.setItems(items);
+	
+	            template.setLastModification((Timestamp) result[6]);
+	            template.setEmpresaId(((Number) result[7]).longValue());
+	            template.setConexaoId(((Number) result[8]).longValue());
+	            template.setConexaoName((String) result[9]);
+	            template.setIsActive(((Number) result[10]).intValue());
+	
+	            templates.add(template);
+	        }
+	        return templates;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao executrar a query: " + query, e);
         }
 
-        return templates;
     }
 }

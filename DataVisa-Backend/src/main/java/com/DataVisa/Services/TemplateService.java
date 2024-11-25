@@ -51,10 +51,13 @@ public class TemplateService{
 				return response; 
 			}
 				
+			template.setConexaoId(datavisaSession.getConexao());
+			template.setConexaoName(datavisaSession.getNomeConexao());;
 			template.setTableName(DatavisaUtils.tableNameMapper(template.getSqlQuery()));
 			template.setEmpresaId(dbRepository.findById(datavisaSession.getConexao()).get().getEmpresaId());
+			template.setTablePermition(tableSawService.getTablePermition(template.getTableName(), template.getConexaoName()));	
 			
-			//Verifica se o banco já existe
+			//Verifica se o template já existe
 			if (templateRepository.findByName(template.getTemplateName(), template.getEmpresaId()) != null) {
 				throw new IllegalArgumentException("Template já existente.");
 			}
@@ -177,6 +180,31 @@ public class TemplateService{
 	            TemplateDTO dto = new TemplateDTO(template);
 	            dto.setConexaoName(dbRepository.findById(template.getConexaoId()).get().getNomeConexao());
 	            dtos.add(dto);
+	        }
+		  
+	        return Pair.of(dtos, HttpStatus.OK);
+	    } catch (Exception e) {
+	    	return Pair.of("Erro ao buscar a lista de templates! \nErro: ",HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
+	public Pair<Object, HttpStatus> getActives(){
+		Pair<String, HttpStatus> response;
+		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response,  response.getRight());
+	    }
+	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
+	        return Pair.of(response, response.getRight());
+	    }
+	    try {
+		    List<TemplateModel> templatesResponse = templateRepository.getAll(datavisaSession.getEmpresaId());
+		    List<TemplateDTO> dtos = new ArrayList<>();
+		    for (TemplateModel template : templatesResponse) {
+		    	if (template.getIsActive() == 1 && template.getTablePermition() >= datavisaSession.getPermissaoTabela()) {
+		            TemplateDTO dto = new TemplateDTO(template);
+		            dto.setConexaoName(dbRepository.findById(template.getConexaoId()).get().getNomeConexao());
+		            dtos.add(dto);
+		    	}
 	        }
 		  
 	        return Pair.of(dtos, HttpStatus.OK);

@@ -246,7 +246,13 @@ public class TableSawService {
 		datavisaConnection.close();
 	}
 	
-	private Pair<String, HttpStatus> checkTablePermitions(String tabela) {	
+	public int getTablePermition(String tabela, String nomeConexao) throws Exception {
+		DatavisaDbDTO db = dBService.findById(datavisaSession.getConexao()).getLeft();
+		String query = "select permissaoAcesso from  tabelas_" + db.getNomeConexao() + " where nome = '" + tabela + "'";
+		return getDatavisaTable(query, "tabelas_" + db.getNomeConexao()).intColumn("permissaoAcesso").getInt(0);
+	}
+	
+	public Pair<String, HttpStatus> checkTablePermitions(String tabela) {	
 		Pair<String, HttpStatus> response;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED) || 
 				!(response = datavisaSession.checkConnection()).getRight().equals(HttpStatus.ACCEPTED)) {
