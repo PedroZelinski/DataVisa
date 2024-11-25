@@ -1,7 +1,7 @@
 import React from 'react'
 import Plot from 'react-plotly.js'
 
-const Planilha = ({ valores, headers, layout }) => {
+const Planilha = ({ valores, labels, layout }) => {
   return (
     <Plot
       data={
@@ -9,7 +9,7 @@ const Planilha = ({ valores, headers, layout }) => {
           {
             type: 'table',
             header: {
-              values: headers,
+              values: labels,
               align: "center", height: 40,
               line: {width: 1, color: 'black'},
               fill: {color: "#5786E6"},

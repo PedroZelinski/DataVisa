@@ -11,6 +11,7 @@ const Card = ({ tipo, navigate, nome, data }) => {
   const img = tipo == "Pizza" ? pieChart
     : tipo == "Barras" ? barChart 
     : tipo == "Linhas" ? lineChart : spreadsheet
+    
   const footer = (
     <div className='relative mt-5'>
 

@@ -27,7 +27,7 @@ const Filtrar = () => {
   //const areas1 = ["area 1", "area 2"]
   //const items1 = ["item 1", "item 2"]
   const orders = ["Crescente", "Decrescente"]
-  const wheres = ["Nenhuma","Igual a", "Maior que", "Menor que", "Entre"]
+  const wheres = ["Nenhuma", "Igual a", "Maior que", "Menor que", "Entre"]
   const dropStyle = {
     width: "90%",
     background: '#EBEDEE',
@@ -42,7 +42,7 @@ const Filtrar = () => {
         console.log(res.data)
       })
     }
-    load();
+    //load();
     setModelo(location.state)
   }, [])
 
@@ -52,7 +52,7 @@ const Filtrar = () => {
 
         <div className="col-10 font-bold">Crie uma personalização para o modelo</div>
         <div className="col-2">
-          <button className='cadastro-btn-blue' onClick={() => navigate("/menu/gerar")}>
+          <button className='cadastro-btn-blue' onClick={() => navigate("/menu/gerar", {state: modelo})}>
             Avançar</button>
         </div>
 
@@ -113,7 +113,7 @@ const Filtrar = () => {
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
 
-                {where != '' ?
+                {where != "Nenhuma" ?
                   <label className='font-bold col-6'>{where == "Entre" ? "Valor minimo" : "Valor"}
                     <div className="input-div">
                       <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
@@ -187,7 +187,7 @@ const Filtrar = () => {
                   />
                   :
                   <Planilha
-                    headers={["Id", "Data", "Responsavel", "Valor"]}
+                    labels={["Id", "Data", "Responsavel", "Valor"]}
                     valores={[
                       [1, 2, 3],
                       ["10/01/2024", "12/01/2024", "23/02/2024"],

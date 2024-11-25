@@ -42,12 +42,12 @@ const Recentes = () => {
 
         <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 170px)' }}>
 
-          <div className="col-3 grid m-2 ml-4" id='create-btn' onClick={() => navigate("/menu/criar")}>
+          <div className="col-3 grid m-2 ml-4 relative" id='create-btn' onClick={() => navigate("/menu/criar")}>
             <div className="col-12 mt-5 text-center">
               <div>
                 <i className='fi fi-rr-plus' style={{ fontSize: "70px" }} />
               </div>
-              <div className='mt-3'>Crie seu gráfico ou tabela</div>
+              <div className='mb-5 ml-3 absolute bottom-0'>Crie seu gráfico ou tabela</div>
             </div>
           </div>
 
