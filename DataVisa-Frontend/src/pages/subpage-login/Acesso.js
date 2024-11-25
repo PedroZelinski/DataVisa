@@ -47,7 +47,7 @@ const Acesso = () => {
                 Digite seu e-mail e senha, para acessar sua conta.
             </div>
 
-            <div className="scroll-white" style={{ height: "calc(100vh - 275px)" }}>
+            <div className="scroll-white" style={{ height: "calc(100vh - 275px)", maxHeight:"335px" }}>
                 <form onSubmit={onFormSubmit} onChange={handleChange}
                     style={{ marginLeft: '5px' }}>
 

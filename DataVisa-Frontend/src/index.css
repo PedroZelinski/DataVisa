@@ -11,7 +11,7 @@ html, body {
     overflow: hidden;
 }
 
-#border{ /* Classe pra teste */
+.border{ /* Classe pra teste */
     border: 2px;
     border-style: solid;
 }

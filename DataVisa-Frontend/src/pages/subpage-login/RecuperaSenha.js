@@ -25,15 +25,16 @@ const RecuperaSenha = () => {
             <img src={logo} alt="Logo" id="logo-login" />
             <div className='header-div mt-2'>Redefinir senha</div>
 
-            <div className="scroll-white" style={{ height: "calc(100vh - 275px)", padding: "0px" }}>
+            <div className="scroll-white"
+                style={{ height: "calc(100vh - 275px)", padding: "0px", maxHeight: "335px" }}>
                 <form onChange={handleChange} onSubmit={onFormSubmit}
                     style={{ marginLeft: '20px', marginTop: '10px' }}>
 
                     <div className='mt-1'>
                         <label>E-mail
-                            <div className="input-div" style={{width: "80%"}}>
+                            <div className="input-div" style={{ width: "80%" }}>
                                 <input className="input-field" placeholder="Digite seu e-mail"
-                                    type="email" id="email" required/>
+                                    type="email" id="email" required />
                             </div>
                         </label>
                     </div>
