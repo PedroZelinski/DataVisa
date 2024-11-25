@@ -225,6 +225,14 @@ td, th {
     color: #044BD9;
 }
 
+.preview{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
 .cadastro-area {
     background: white;
     border-radius: 5px;

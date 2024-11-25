@@ -139,7 +139,9 @@ const Filtrar = () => {
           </div>
 
 
-          <div className="card-area grid col-6 ml-4">
+          <div className="card-area grid col-6 ml-4 relative">
+            <div className='preview'>
+
             {modelo == "Gráfico de Pizza" ?
               <Pizza
                 valores={["25", "30", "67", "6"]}
@@ -205,6 +207,7 @@ const Filtrar = () => {
                       }}
                   />
             }
+            </div>
           </div>
         </div>
       </div>
