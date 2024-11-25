@@ -6,7 +6,8 @@ const PesquisarFiltros = ({
     checkedPizza, setCheckedPizza,
     checkedLinhas, setCheckedLinhas,
     checkedBarras, setCheckedBarras,
-    checkedPlan, setCheckedPlan
+    checkedPlan, setCheckedPlan,
+    qtd
 }) => {
 
     const [controle, setControle] = useState(0)
@@ -39,7 +40,7 @@ const PesquisarFiltros = ({
     return (
         <div className="col-12">
 
-            <div className="mt-1">Modelos Encontrados: 100</div>
+            <div>Modelos Encontrados:<br/>{qtd}</div>
             <div className="mt-3 mb-3"><hr /></div>
 
             <div className="font-bold">Tipo de modelo</div>

@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import Card from '../../components/Menu/Card'
-import pieChart from '../../assets/pie-chart.png'
-import lineChart from '../../assets/line-chart.png'
-import barChart from '../../assets/bar-chart.png'
-import spreadsheet from '../../assets/spreadsheet.png'
 import PesquisarFiltros from '../../components/Menu/PesquisarFiltros'
 import { useNavigate } from 'react-router-dom'
-import { Checkbox } from "primereact/checkbox";
-
 
 const Pesquisar = () => {
   const [checkedTodos, setCheckedTodos] = useState(true);
@@ -16,7 +10,33 @@ const Pesquisar = () => {
   const [checkedBarras, setCheckedBarras] = useState(true);
   const [checkedPlan, setCheckedPlan] = useState(true);
   const navigate = useNavigate();
-  const gerar = () => navigate("/menu/gerar")
+  
+  const cards = [
+    {
+      nome: "Pizzas mais vendidas",
+      tipo: "Pizza",
+      data: "27/02/2024"
+    },
+    {
+      nome: "Vendas semanais",
+      tipo: "Barras",
+      data: "16/02/2024"
+    },
+    {
+      nome: "Lucro diário",
+      tipo: "Linhas",
+      data: "15/02/2024"
+    },
+    {
+      nome: "Vendas por entregador",
+      tipo: "Planilha",
+      data: "29/01/2024"
+    }, {
+      nome: "Comissões",
+      tipo: "Pizza",
+      data: "23/01/2024"
+    }
+  ]
 
   return (
     <div className='col-12'>
@@ -40,23 +60,27 @@ const Pesquisar = () => {
                 checkedPizza={checkedPizza} setCheckedPizza={setCheckedPizza}
                 checkedLinhas={checkedLinhas} setCheckedLinhas={setCheckedLinhas}
                 checkedBarras={checkedBarras} setCheckedBarras={setCheckedBarras}
-                checkedPlan={checkedPlan} setCheckedPlan={setCheckedPlan}
-              />
-              
+                checkedPlan={checkedPlan} setCheckedPlan={setCheckedPlan} 
+                qtd={cards.length}/>
+
             </div>
           </div>
 
           <div className="grid col-9 ml-2">
             <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 220px)' }}>
 
-              {checkedPizza == true ? <Card img={pieChart} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedBarras == true ? <Card img={barChart} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedLinhas == true ? <Card img={lineChart} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedPlan == true ? <Card img={spreadsheet} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedPizza == true ? <Card img={pieChart} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedBarras == true ? <Card img={barChart} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedLinhas == true ? <Card img={lineChart} gerar={gerar} col="col-4"></Card> : ""}
-              {checkedPlan == true ? <Card img={spreadsheet} gerar={gerar} col="col-4"></Card> : ""}
+              {cards.map((card) => (
+                card.tipo == "Pizza" && checkedPizza == true ||
+                  card.tipo == "Barras" && checkedBarras == true ||
+                  card.tipo == "Linhas" && checkedLinhas == true ||
+                  card.tipo == "Planilha" && checkedPlan == true ?
+                  <Card
+                    tipo={card.tipo}
+                    navigate={navigate}
+                    nome={card.nome}
+                    data={card.data} />
+                  : null
+              ))}
             </div>
           </div>
 

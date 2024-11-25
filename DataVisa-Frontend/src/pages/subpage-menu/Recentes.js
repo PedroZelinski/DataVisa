@@ -1,20 +1,40 @@
 import React from 'react'
 import Card from '../../components/Menu/Card'
-import plus from '../../assets/plus.png'
-import pieChart from '../../assets/pie-chart.png'
-import lineChart from '../../assets/line-chart.png'
-import barChart from '../../assets/bar-chart.png'
-import spreadsheet from '../../assets/spreadsheet.png'
+
 import { useNavigate } from 'react-router-dom'
 
 
 const Recentes = () => {
   const navigate = useNavigate();
-
+  const cards = [
+    {
+      nome: "Pizzas mais vendidas",
+      tipo: "Pizza",
+      data: "27/02/2024"
+    },
+    {
+      nome: "Vendas semanais",
+      tipo: "Barras",
+      data: "16/02/2024"
+    },
+    {
+      nome: "Lucro diário",
+      tipo: "Linhas",
+      data: "15/02/2024"
+    },
+    {
+      nome: "Vendas por entregador",
+      tipo: "Planilha",
+      data: "29/01/2024"
+    }, {
+      nome: "Comissões",
+      tipo: "Pizza",
+      data: "23/01/2024"
+    }
+  ]
 
   return (
     <div className='col-12'>
-
 
       <div className="grid nested-grid">
 
@@ -25,23 +45,21 @@ const Recentes = () => {
           <div className="col-3 grid m-2 ml-4" id='create-btn' onClick={() => navigate("/menu/criar")}>
             <div className="col-12 mt-5 text-center">
               <div>
-                <i className='fi fi-rr-plus' style={{fontSize:"70px"}}/>
+                <i className='fi fi-rr-plus' style={{ fontSize: "70px" }} />
               </div>
               <div className='mt-3'>Crie seu gráfico ou tabela</div>
             </div>
           </div>
 
-          <Card img={pieChart} navigate={navigate} ></Card>
-          <Card img={barChart} navigate={navigate} ></Card>
-          <Card img={lineChart} navigate={navigate} ></Card>
-          <Card img={spreadsheet} navigate={navigate} ></Card>
-          <Card img={pieChart} navigate={navigate} ></Card>
-          <Card img={barChart} navigate={navigate} ></Card>
-          <Card img={lineChart} navigate={navigate} ></Card>
-          <Card img={spreadsheet} navigate={navigate} ></Card>
+          {cards.map((card) => (
+            <Card
+              tipo={card.tipo}
+              navigate={navigate}
+              nome={card.nome}
+              data={card.data} />
+          ))}
 
         </div>
-
       </div>
     </div>
   )

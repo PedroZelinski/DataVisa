@@ -6,23 +6,28 @@ import Barras from '../../components/Templates/Barras'
 import Linhas from '../../components/Templates/Linhas'
 import Planilha from '../../components/Templates/Planilha'
 import { useLocation, useNavigate } from 'react-router-dom'
+import DBClient from '../../utils/DBClient';
 
 const Filtrar = () => {
   const navigate = useNavigate()
   const [area, setArea] = useState('')
+  const [areas, setAreas] = useState([])
+
   const [item, setItem] = useState('')
+  const [items, setItems] = useState([])
+
   const [order, setOrder] = useState('Crescente')
   const [orderBy, setOrderBy] = useState('')
-  const [where, setWhere] = useState('')
+  const [where, setWhere] = useState("Nenhuma")
   const [modelo, setModelo] = useState('')
   const [checkedPublico, setCheckedPublico] = useState(false)
   const location = useLocation()
 
   const modelos = ["Gráfico de Pizza", "Gráfico de Linhas", "Gráfico de Barras", "Planilha"]
-  const areas = ["area 1", "area 2"]
-  const items = ["item 1", "item 2"]
+  //const areas1 = ["area 1", "area 2"]
+  //const items1 = ["item 1", "item 2"]
   const orders = ["Crescente", "Decrescente"]
-  const wheres = ["Igual a", "Maior que", "Menor que", "Entre"]
+  const wheres = ["Nenhuma","Igual a", "Maior que", "Menor que", "Entre"]
   const dropStyle = {
     width: "90%",
     background: '#EBEDEE',
@@ -31,6 +36,13 @@ const Filtrar = () => {
   }
 
   useEffect(() => {
+    const load = async () => {
+      await DBClient.get("/dataVisa/template/getAll").then((res) => {
+        setAreas(res.data)
+        console.log(res.data)
+      })
+    }
+    load();
     setModelo(location.state)
   }, [])
 
@@ -63,8 +75,11 @@ const Filtrar = () => {
                 </label>
 
                 <label className='font-bold col-6'>Área
-                  <Dropdown value={area} options={areas}
-                    onChange={(e) => setArea(e.value)} style={dropStyle}
+                  <Dropdown value={area} options={areas} optionLabel='nome'
+                    onChange={(e) => {
+                      setArea(e.value)
+                      setItems(e.value.items)
+                    }} style={dropStyle}
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
 
