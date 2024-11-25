@@ -36,13 +36,18 @@ const Filtrar = () => {
   }
 
   useEffect(() => {
-    const load = async () => {
-      await DBClient.get("/dataVisa/template/getAll").then((res) => {
-        setAreas(res.data)
-        console.log(res.data)
-      })
+    try {
+      const load = async () => {
+        await DBClient.get("/dataVisa/template/getAll").then((res) => {
+          setAreas(res.data)
+          console.log(res.data)
+        })
+      }
+      load();
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+        + error.response.data)
     }
-    //load();
     setModelo(location.state)
   }, [])
 
@@ -52,7 +57,7 @@ const Filtrar = () => {
 
         <div className="col-10 font-bold">Crie uma personalização para o modelo</div>
         <div className="col-2">
-          <button className='cadastro-btn-blue' onClick={() => navigate("/menu/gerar", {state: modelo})}>
+          <button className='cadastro-btn-blue' onClick={() => navigate("/menu/gerar", { state: modelo })}>
             Avançar</button>
         </div>
 
@@ -142,41 +147,26 @@ const Filtrar = () => {
           <div className="card-area grid col-6 ml-4 relative">
             <div className='preview'>
 
-            {modelo == "Gráfico de Pizza" ?
-              <Pizza
-                valores={["25", "30", "67", "6"]}
-                labels={["Valor 1", "Valor 2", "Valor 3", "Valor 4"]}
-                layout={
-                  {
-                    width: 500,
-                    height: 350,
-                    title: "Grafico de Exemplo",
-                    margin: {
-                      r: 30, l: 110, t: 40, b: 20
-                    }
-                  }
-                }
-              />
-              :
-              modelo == "Gráfico de Barras" ?
-                <Barras
-                  valores={[31, 23, 57]}
-                  labels={["Valor 1", "Valor 2", "Valor 3"]}
+              {modelo == "Gráfico de Pizza" ?
+                <Pizza
+                  valores={["25", "30", "67", "6"]}
+                  labels={["Valor 1", "Valor 2", "Valor 3", "Valor 4"]}
                   layout={
                     {
                       width: 500,
                       height: 350,
                       title: "Grafico de Exemplo",
                       margin: {
-                        r: 30, l: 50, t: 50, b: 30
+                        r: 30, l: 110, t: 40, b: 20
                       }
-                    }}
+                    }
+                  }
                 />
                 :
-                modelo == "Gráfico de Linhas" ?
-                  <Linhas
-                    valores={[15, 5, 12, 43]}
-                    labels={["Valor 1", "Valor 2", "Valor 3", "valor 4"]}
+                modelo == "Gráfico de Barras" ?
+                  <Barras
+                    valores={[31, 23, 57]}
+                    labels={["Valor 1", "Valor 2", "Valor 3"]}
                     layout={
                       {
                         width: 500,
@@ -188,25 +178,40 @@ const Filtrar = () => {
                       }}
                   />
                   :
-                  <Planilha
-                    labels={["Id", "Data", "Responsavel", "Valor"]}
-                    valores={[
-                      [1, 2, 3],
-                      ["10/01/2024", "12/01/2024", "23/02/2024"],
-                      ["Rafael", "Jhonatan", "Pedro"],
-                      ["R$ 199,99", "R$ 350,00", "R$ 264,50"]
-                    ]}
-                    layout={
-                      {
-                        width: 500,
-                        height: 350,
-                        title: "Planilha de Exemplo",
-                        margin: {
-                          r: 30, l: 50, t: 50, b: 30
-                        }
-                      }}
-                  />
-            }
+                  modelo == "Gráfico de Linhas" ?
+                    <Linhas
+                      valores={[15, 5, 12, 43]}
+                      labels={["Valor 1", "Valor 2", "Valor 3", "valor 4"]}
+                      layout={
+                        {
+                          width: 500,
+                          height: 350,
+                          title: "Grafico de Exemplo",
+                          margin: {
+                            r: 30, l: 50, t: 50, b: 30
+                          }
+                        }}
+                    />
+                    :
+                    <Planilha
+                      labels={["Id", "Data", "Responsavel", "Valor"]}
+                      valores={[
+                        [1, 2, 3],
+                        ["10/01/2024", "12/01/2024", "23/02/2024"],
+                        ["Rafael", "Jhonatan", "Pedro"],
+                        ["R$ 199,99", "R$ 350,00", "R$ 264,50"]
+                      ]}
+                      layout={
+                        {
+                          width: 500,
+                          height: 350,
+                          title: "Planilha de Exemplo",
+                          margin: {
+                            r: 30, l: 50, t: 50, b: 30
+                          }
+                        }}
+                    />
+              }
             </div>
           </div>
         </div>

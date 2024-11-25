@@ -10,13 +10,18 @@ const Conexoes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const load = async () => {
-      await DBClient.get("/dataVisa/database/getAll").then((res) => {
-        setDbs(res.data)
-        console.log(res.data)
-      })
+    try {
+      const load = async () => {
+        await DBClient.get("/dataVisa/database/getAll").then((res) => {
+          setDbs(res.data)
+          console.log(res.data)
+        })
+      }
+      load();
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+        + error.response.data)
     }
-    load();
   }, [controle])
 
   async function conexaoCadastro(id) {
@@ -112,17 +117,17 @@ const Conexoes = () => {
 
             {dbs.map((db) => (
               <div className="grid col-12" key={db.id}>
-                  <div className='col-1 mt-2'>{db.id}</div>
-                  <div className='col-3 mt-2'>{db.nomeConexao}</div>
-                  <div className='col-2 mt-2'>{db.tipoDb}</div>
-                  <div className='col-2 mt-2'>Data de Conexão</div>
-                  <div className='col-2 mt-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
-                  <div className='col-2'>
-                    <button className='cadastro-btn-blue mr-2'
-                      onClick={() => conexaoCadastro(db.id)}>Editar</button>
-                    <button className='cadastro-btn-red'
-                      onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
-                  </div>
+                <div className='col-1 mt-2'>{db.id}</div>
+                <div className='col-3 mt-2'>{db.nomeConexao}</div>
+                <div className='col-2 mt-2'>{db.tipoDb}</div>
+                <div className='col-2 mt-2'>Data de Conexão</div>
+                <div className='col-2 mt-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
+                <div className='col-2'>
+                  <button className='cadastro-btn-blue mr-2'
+                    onClick={() => conexaoCadastro(db.id)}>Editar</button>
+                  <button className='cadastro-btn-red'
+                    onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
+                </div>
               </div>
             ))}
           </div>

@@ -23,9 +23,6 @@ export default class Login extends Component {
     </div>
   );
 
-  alteraModo = (newModo) => {
-    this.setState({ modo: newModo })
-  }
   exibeMensagem = (msg) => {
     this.setState({ message: msg, visible: true })
   }

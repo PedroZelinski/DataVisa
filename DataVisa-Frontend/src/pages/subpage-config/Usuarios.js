@@ -80,11 +80,16 @@ const Usuarios = () => {
   }
 
   async function rejeitarUser(userEmail) {
-    await DBClient.delete("/dataVisa/user/refusePendingUser",
-      { data: { email: userEmail } }).then((res) => {
-        setControle(prevControle => prevControle + 1);
-        exibeMensagem(res.data)
-      })
+    try {
+      await DBClient.delete("/dataVisa/user/refusePendingUser",
+        { data: { email: userEmail } }).then((res) => {
+          setControle(prevControle => prevControle + 1);
+          exibeMensagem(res.data)
+        })
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+        + error.response.data)
+    }
   }
 
   return (

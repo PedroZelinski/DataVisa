@@ -17,14 +17,19 @@ const CadastroTemplate = ({ exibeMensagem }) => {
 
   useEffect(() => {
     setScript(location.state.query)
-    const load = async () => {
-      await DBClient.get("/dataVisa/database/getAll").then((res) => {
-        //console.log(location.state)
-        setConexoes(res.data)
-        setConexao(res.data.find(obj => obj.id == location.state.conexaoId))
-      })
+    try {
+      const load = async () => {
+        await DBClient.get("/dataVisa/database/getAll").then((res) => {
+          //console.log(location.state)
+          setConexoes(res.data)
+          setConexao(res.data.find(obj => obj.id == location.state.conexaoId))
+        })
+      }
+      load();
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+        + error.response.data)
     }
-    load();
     if (location.state.nome != null) {
       setControle(1)
       conectar(location.state.conexaoName, location.state.query)

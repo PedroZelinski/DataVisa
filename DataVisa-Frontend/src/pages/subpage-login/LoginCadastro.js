@@ -13,10 +13,18 @@ const LoginCadastro = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        DBClient.get("/dataVisa/business/getAll").then((res) => {
-            setBusinessList(res.data.slice(2))
-            console.log(res.data)
-        })
+        try {
+            const load = async () => {
+                DBClient.get("/dataVisa/business/getAll").then((res) => {
+                    setBusinessList(res.data.slice(2))
+                    console.log(res.data)
+                })
+            }
+            load();
+        } catch (error) {
+            exibeMensageexibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+                + error.response.data)
+        }
     }, []);
 
     const handleChange = (event) => {
@@ -65,8 +73,8 @@ const LoginCadastro = () => {
                 Cadastre-se
             </div>
 
-            <div className="scroll-white" 
-            style={{ height: "calc(100vh - 250px)", padding: "0px", maxHeight:"365px" }}>
+            <div className="scroll-white"
+                style={{ height: "calc(100vh - 250px)", padding: "0px", maxHeight: "365px" }}>
                 <form onSubmit={onFormSubmit} onChange={handleChange} style={{ marginLeft: "20px" }}>
                     <div className="grid nested-grid mt-1">
 

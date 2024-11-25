@@ -11,12 +11,18 @@ const Templates = () => {
 
   useEffect(() => {
     const load = async () => {
-      await DBClient.get("/dataVisa/template/getAll").then(
-        (res) => {
-          setTemplates(res.data)
-          console.log(res.data)
-        }
-      )
+      try {
+        await DBClient.get("/dataVisa/template/getAll").then(
+          (res) => {
+            setTemplates(res.data)
+            console.log(res.data)
+          }
+        )
+      } catch (error) {
+        console.log(error)
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+          error.response.data)
+      }
     }
     load()
   }, [controle])
