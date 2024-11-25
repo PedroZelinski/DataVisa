@@ -8,7 +8,7 @@ import Planilha from '../../components/Templates/Planilha'
 import { useLocation, useNavigate } from 'react-router-dom'
 import DBClient from '../../utils/DBClient';
 
-const Filtrar = () => {
+const Filtrar = ({ exibeMensagem }) => {
   const navigate = useNavigate()
   const [area, setArea] = useState('')
   const [areas, setAreas] = useState([])
@@ -36,17 +36,17 @@ const Filtrar = () => {
   }
 
   useEffect(() => {
-    try {
-      const load = async () => {
+    const load = async () => {
+      try {
         await DBClient.get("/dataVisa/template/getAll").then((res) => {
           setAreas(res.data)
           console.log(res.data)
         })
+        load();
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+          + error.response.data)
       }
-      load();
-    } catch (error) {
-      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
-        + error.response.data)
     }
     setModelo(location.state)
   }, [])

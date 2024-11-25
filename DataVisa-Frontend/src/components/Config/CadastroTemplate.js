@@ -17,18 +17,17 @@ const CadastroTemplate = ({ exibeMensagem }) => {
 
   useEffect(() => {
     setScript(location.state.query)
-    try {
-      const load = async () => {
+    const load = async () => {
+      try {
         await DBClient.get("/dataVisa/database/getAll").then((res) => {
-          //console.log(location.state)
           setConexoes(res.data)
           setConexao(res.data.find(obj => obj.id == location.state.conexaoId))
         })
+        load();
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+          + error.response.data)
       }
-      load();
-    } catch (error) {
-      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
-        + error.response.data)
     }
     if (location.state.nome != null) {
       setControle(1)
@@ -196,8 +195,8 @@ const CadastroTemplate = ({ exibeMensagem }) => {
               <button className='cadastro-btn-blue'
                 onClick={() => {
                   conexao == null ?
-                  exibeMensagem("Conexão não informada.") :
-                  conectar(conexao.nomeConexao, script)
+                    exibeMensagem("Conexão não informada.") :
+                    conectar(conexao.nomeConexao, script)
                 }}>Executar</button>
             </div>
 

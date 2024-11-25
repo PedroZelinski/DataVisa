@@ -13,17 +13,17 @@ const LoginCadastro = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        try {
-            const load = async () => {
-                DBClient.get("/dataVisa/business/getAll").then((res) => {
+        const load = async () => {
+            try {
+                await DBClient.get("/dataVisa/business/getAll").then((res) => {
                     setBusinessList(res.data.slice(2))
                     console.log(res.data)
                 })
+                load();
+            } catch (error) {
+                exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+                    + error.response.data)
             }
-            load();
-        } catch (error) {
-            exibeMensageexibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
-                + error.response.data)
         }
     }, []);
 

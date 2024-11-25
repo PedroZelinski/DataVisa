@@ -10,17 +10,17 @@ const Conexoes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const load = async () => {
+    const load = async () => {
+      try {
         await DBClient.get("/dataVisa/database/getAll").then((res) => {
           setDbs(res.data)
           console.log(res.data)
         })
+        load();
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+          + error.response.data)
       }
-      load();
-    } catch (error) {
-      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
-        + error.response.data)
     }
   }, [controle])
 
