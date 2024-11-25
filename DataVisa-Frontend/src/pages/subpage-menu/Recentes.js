@@ -30,7 +30,7 @@ const Recentes = () => {
       nome: "Comissões",
       tipo: "Pizza",
       data: "23/01/2024"
-    }
+    },
   ]
 
   return (
@@ -53,6 +53,7 @@ const Recentes = () => {
 
           {cards.map((card) => (
             <Card
+              imgHeight={100}
               tipo={card.tipo}
               navigate={navigate}
               nome={card.nome}

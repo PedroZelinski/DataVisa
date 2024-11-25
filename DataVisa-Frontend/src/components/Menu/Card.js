@@ -6,7 +6,7 @@ import lineChart from '../../assets/line-chart.png'
 import barChart from '../../assets/bar-chart.png'
 import spreadsheet from '../../assets/spreadsheet.png'
 
-const Card = ({ tipo, navigate, nome, data }) => {
+const Card = ({ imgHeight, tipo, navigate, nome, data }) => {
   const [info, setInfo] = useState(false)
   const img = tipo == "Pizza" ? pieChart
     : tipo == "Barras" ? barChart 
@@ -73,7 +73,7 @@ const Card = ({ tipo, navigate, nome, data }) => {
 
       <div className="col-12 text-center" style={{ cursor: 'pointer' }}
         onClick={() => navigate("/menu/gerar")}>
-        <img src={img} alt="" style={{ height: '100px' }} />
+        <img src={img} alt="" style={{ height: imgHeight }} />
       </div>
     </div>
   )

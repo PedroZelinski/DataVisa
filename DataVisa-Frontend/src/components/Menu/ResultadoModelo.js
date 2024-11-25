@@ -13,7 +13,7 @@ const ResultadoModelo = ({ height, tipo, valores, labels }) => {
                     labels={["Text 1", "Text 2", "Text 3", "Text 4"]}
                     layout={
                         {
-                            width: 535,
+                            width: 600,
                             height: height - 230,
                             title: "Grafico de Teste",
                             margin: {
@@ -28,7 +28,7 @@ const ResultadoModelo = ({ height, tipo, valores, labels }) => {
                         labels={["Valor 1", "Valor 2", "Valor 3"]}
                         layout={
                             {
-                                width: 550,
+                                width: 600,
                                 height: height - 230,
                                 title: "Grafico de Exemplo",
                                 margin: {
@@ -41,7 +41,7 @@ const ResultadoModelo = ({ height, tipo, valores, labels }) => {
                             labels={["Valor 1", "Valor 2", "Valor 3", "valor 4"]}
                             layout={
                                 {
-                                    width: 550,
+                                    width: 600,
                                     height: height - 230,
                                     title: "Grafico de Exemplo",
                                     margin: {
@@ -59,7 +59,7 @@ const ResultadoModelo = ({ height, tipo, valores, labels }) => {
                             ]}
                             layout={
                                 {
-                                    width: 575,
+                                    width: 600,
                                     height: height - 230,
                                     title: "Planilha de Exemplo",
                                     margin: {

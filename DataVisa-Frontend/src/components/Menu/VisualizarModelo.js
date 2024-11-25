@@ -5,7 +5,7 @@ import Barras from '../../components/Templates/Barras.js'
 import Linhas from '../../components/Templates/Linhas.js'
 import Planilha from '../../components/Templates/Planilha.js'
 
-const VisualizarModelo = ({ height, tipo, valores, labels, view, setView }) => {
+const VisualizarModelo = ({ height, tipo, valores, labels, nome, view, setView }) => {
   return (
     <Dialog visible={view} modal
       onHide={() => { if (!view) return; setView(false); }}
@@ -25,9 +25,12 @@ const VisualizarModelo = ({ height, tipo, valores, labels, view, setView }) => {
                 labels={["Text 1", "Text 2", "Text 3", "Text 4"]}
                 layout={
                   {
-                    width: 700,
+                    width: 850,
                     height: height - 120,
                     title: "Grafico de Teste",
+                    font: {
+                      size: 18,
+                    },
                     margin: {
                       r: 30, l: 110, t: 60, b: 20
                     }

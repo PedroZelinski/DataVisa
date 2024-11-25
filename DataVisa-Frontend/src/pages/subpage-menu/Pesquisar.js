@@ -75,6 +75,7 @@ const Pesquisar = () => {
                   card.tipo == "Linhas" && checkedLinhas == true ||
                   card.tipo == "Planilha" && checkedPlan == true ?
                   <Card
+                    imgHeight={80}
                     tipo={card.tipo}
                     navigate={navigate}
                     nome={card.nome}
