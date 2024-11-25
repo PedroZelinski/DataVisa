@@ -15,16 +15,26 @@ const Usuarios = () => {
 
   useEffect(() => {
     const loadUsers = async () => {
-      await DBClient.get('/dataVisa/user/getAll').then((res) => {
-        setUsers(res.data)
-        console.log(res.data)
-      })
+      try {
+        await DBClient.get('/dataVisa/user/getAll').then((res) => {
+          setUsers(res.data)
+          console.log(res.data)
+        })
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+          error.response.data)
+      }
     }
     const loadPending = async () => {
-      await DBClient.get('/dataVisa/user/getAllPending').then((res) => {
-        setUsers(res.data)
-        console.log(res.data)
-      })
+      try {
+        await DBClient.get('/dataVisa/user/getAllPending').then((res) => {
+          setUsers(res.data)
+          console.log(res.data)
+        })
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+          error.response.data)
+      }
     }
 
     if (location.pathname == "/config/usuarios") {
