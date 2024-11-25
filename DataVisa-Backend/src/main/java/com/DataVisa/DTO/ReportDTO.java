@@ -19,13 +19,16 @@ public class ReportDTO implements Serializable {
 	public ReportDTO(ReportModel reportModel) {
 		this.id = reportModel.getId();
 		this.name = reportModel.getName();
+		this.creatorEmail = reportModel.getCreatorEmail();
+		this.creatorName = reportModel.getCreatorName();
+		this.templateId = reportModel.getTemplateId();
+		this.templateName = reportModel.getTemplateName();
 		this.graphType = reportModel.getGraphType();
-		this.reportLabels = reportModel.getReportLabels();
-		this.reportValues = reportModel.getReportValues();
-		this.empresaId = reportModel.getEmpresaId();
 		this.conexaoId = reportModel.getConexaoId();
-		this.accessLevel = reportModel.getAccessLevel();
+		this.conexaoName = reportModel.getConexaoName();
+		this.tablePermition = reportModel.getTablePermition();
 		this.date = reportModel.getDate();
+		this.isPublic = reportModel.getIsPublic();
 	}
 	
 	private static final long serialVersionUID = 1L;
@@ -33,6 +36,14 @@ public class ReportDTO implements Serializable {
 	private Long id;
 	
 	private String name;
+
+	private String creatorEmail;
+	
+	private String creatorName;
+	
+	private String templateId;
+	
+	private String templateName;
 	
 	private String graphType;
 	
@@ -43,11 +54,15 @@ public class ReportDTO implements Serializable {
 	private Long empresaId;
 	
 	private Long conexaoId;
+
+	private String conexaoName;
 	
-	private int accessLevel;
+	private int tablePermition;
 	
 	private Timestamp date;
 	
 	private String mensagemRetorno;
+
+	private int isPublic;
 	
 }  

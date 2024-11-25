@@ -24,6 +24,14 @@ public class ReportModel implements Serializable {
 	
 	private String name;
 	
+	private String creatorEmail;
+	
+	private String creatorName;
+	
+	private String templateId;
+	
+	private String templateName;
+	
 	private String graphType;
 	
 	private List<String> reportLabels;
@@ -34,8 +42,12 @@ public class ReportModel implements Serializable {
 	
 	private Long conexaoId;
 	
-	private int accessLevel;
+	private String conexaoName;
+	
+	private int tablePermition;
 	
 	private Timestamp date;
+	
+	private int isPublic;
 	
 }  
