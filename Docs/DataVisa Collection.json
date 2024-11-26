@@ -829,6 +829,24 @@
 			"response": []
 		},
 		{
+			"name": "Get Active Templates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/getActives",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"getActives"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update Template",
 			"request": {
 				"method": "PUT",
@@ -857,6 +875,89 @@
 		},
 		{
 			"name": "Delete Template",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/deleteTemplate/Lucros2",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"deleteTemplate",
+						"Lucros2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add template Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"templateName\": \"Lucros2\",\r\n    \"sqlQuery\": \"select pp.pedido_id as numero_do_pedido,         SUM(p.preco * (p.margem_lucro / 100) * pp.quantidade) AS lucro_total,        SUM(pp.quantidade * p.preco) AS total_da_venda,        (SUM(p.preco * (p.margem_lucro / 100) * pp.quantidade) / SUM(pp.quantidade * p.preco)) * 100 AS percentual_lucro FROM pedido_pizzas as pp JOIN pizzas p ON pp.pizza_id = p.pizza_id GROUP BY pp.pedido_id ORDER BY percentual_lucro DESC  limit 3\",\r\n    \"tableName\": \"pedido_pizzas\",\r\n    \"items\": [\r\n        \"Numero do pedido\",\r\n        \"Lucro total\",\r\n        \"Total da venda\",\r\n        \"Percentual lucro\"\r\n    ],\r\n    \"conexaoId\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{DataVisa}}/template/addTemplate",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"addTemplate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Template Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/getTemplate/1",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"getTemplate",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Templates Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{DataVisa}}/template/getAll",
+					"host": [
+						"{{DataVisa}}"
+					],
+					"path": [
+						"template",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Template Copy",
 			"request": {
 				"method": "DELETE",
 				"header": [],
