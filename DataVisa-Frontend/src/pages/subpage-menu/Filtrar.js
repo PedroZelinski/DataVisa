@@ -12,7 +12,7 @@ const Filtrar = () => {
   const navigate = useNavigate()
   const [session, alteraModo, exibeMensagem] = useOutletContext();
 
-  const [area, setArea] = useState('')
+  const [area, setArea] = useState({})
   const [areas, setAreas] = useState([])
 
   const [item, setItem] = useState('')
@@ -28,8 +28,8 @@ const Filtrar = () => {
   const modelos = ["Gráfico de Pizza", "Gráfico de Linhas", "Gráfico de Barras", "Planilha"]
   //const areas1 = ["area 1", "area 2"]
   //const items1 = ["item 1", "item 2"]
-  const orders = ["Crescente", "Decrescente"]
-  const wheres = ["Nenhuma", "Igual a", "Maior que", "Menor que", "Entre"]
+  // const orders = ["Crescente", "Decrescente"]
+  // const wheres = ["Nenhuma", "Igual a", "Maior que", "Menor que", "Entre"]
   const dropStyle = {
     width: "90%",
     background: '#EBEDEE',
@@ -43,7 +43,7 @@ const Filtrar = () => {
         await DBClient.get("/dataVisa/template/getAll").then(
           (res) => {
             setAreas(res.data)
-            console.log(res.data)
+            //console.log(res.data)
           })
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
@@ -53,6 +53,42 @@ const Filtrar = () => {
     load();
     setModelo(location.state)
   }, [])
+  async function conectar(nomeDb) {
+    try {
+      await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
+        () => gerar()
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+        + error.response.data)
+    }
+  }
+  async function gerar() {
+    const dadosReport = {
+      reportName: document.getElementById("nome").value,
+      templateName: area.nome,
+      sqlQuery: area.query,
+      selectedItem: item,
+      graphType: modelo == "Gráfico de Barras" ? "bar" :
+        modelo == "Gráfico de Linhas" ? "scatter" :
+          modelo == "Gráfico de Pizza" ? "pie" : "table",
+      conexaoName: area.conexaoName,
+      tablePermition: 5, //ajustar
+      isPublic: checkedPublico == true ? 1 : 0
+    }
+    console.log(dadosReport)
+    try {
+      DBClient.post("/dataVisa/report/addReport",
+        dadosReport
+      ).then((res) => {
+        console.log(res.data)
+        navigate("/menu/gerar", { state: res.data })
+      })
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+        + error.response.data)
+    }
+  }
 
   return (
     <div className="col-12">
@@ -60,7 +96,9 @@ const Filtrar = () => {
 
         <div className="col-10 font-bold">Crie uma personalização para o modelo</div>
         <div className="col-2">
-          <button className='cadastro-btn-blue' onClick={() => navigate("/menu/gerar", { state: modelo })}>
+          <button className='cadastro-btn-blue' onClick={() => conectar(area.conexaoName)
+            //navigate("/menu/gerar", { state: modelo })
+          }>
             Avançar</button>
         </div>
 
@@ -69,20 +107,20 @@ const Filtrar = () => {
             <div className="scroll-white col-12">
               <div className="col-12 grid">
 
-                <label className='font-bold col-10'>Tipo de Modelo
+                <label className='font-bold col-10'>Nome do Modelo
                   <div className="input-div">
                     <input className="input-field" style={{ background: '#EBEDEE' }}
                       type="text" id="nome" placeholder="Nome" required />
                   </div>
                 </label>
 
-                <label className='font-bold col-10'>Modelo
+                <label className='font-bold col-10'>Tipo de Modelo
                   <Dropdown value={modelo} options={modelos}
                     onChange={(e) => setModelo(e.value)} style={dropStyle}
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
 
-                <label className='font-bold col-6'>Área
+                <label className='font-bold col-10'>Área
                   <Dropdown value={area} options={areas} optionLabel='nome'
                     onChange={(e) => {
                       setArea(e.value)
@@ -91,12 +129,13 @@ const Filtrar = () => {
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
 
-                <label className='font-bold col-6'>Item
+                <label className='font-bold col-10'>Item
                   <Dropdown value={item} options={items}
                     onChange={(e) => setItem(e.value)} style={dropStyle}
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
-                <label className='font-bold col-6'>Ordenação
+
+                {/* <label className='font-bold col-6'>Ordenação
                   <Dropdown value={order} options={orders}
                     onChange={(e) => setOrder(e.value)} style={dropStyle}
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
@@ -119,7 +158,7 @@ const Filtrar = () => {
                   <Dropdown value={where} options={wheres}
                     onChange={(e) => setWhere(e.value)} style={dropStyle}
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
-                </label>
+                </label> */}
 
                 {where != "Nenhuma" ?
                   <label className='font-bold col-6'>{where == "Entre" ? "Valor minimo" : "Valor"}

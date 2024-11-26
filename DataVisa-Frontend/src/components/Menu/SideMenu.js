@@ -32,11 +32,6 @@ const SideMenu = () => {
                     <i className='fi fi-rr-clock' /><br />Recentes</button>
             </div>
             <br />
-            {/* <div>
-                <button className='side-menu-btn'>
-                <i className='fi fi-rr-share' /><br />Compartilhados</button>
-            </div>
-            <br /> */}
             <div>
                 <button onClick={() => navigate('/menu/pesquisar')}
                     className='side-menu-btn' style={selected("/menu/pesquisar")}>
@@ -45,7 +40,7 @@ const SideMenu = () => {
 
             <div className='relative' style={{ height: "calc(100vh - 400px)" }}>
 
-                {location.pathname != "/menu/recentes" && location.pathname != "/menu/pesquisar" ?
+                {location.pathname == "/menu/criar" || location.pathname == "/menu/filtrar" ?
                     <div className='absolute bottom-0 ml-5'>
                         <button onClick={() => navigate(-1)}
                             className='side-menu-btn'>

@@ -5,7 +5,23 @@ import Barras from '../../components/Templates/Barras.js'
 import Linhas from '../../components/Templates/Linhas.js'
 import Planilha from '../../components/Templates/Planilha.js'
 
-const VisualizarModelo = ({ height, tipo, valores, labels, nome, view, setView }) => {
+const VisualizarModelo = ({ height, modelo, view, setView }) => {
+
+  function values() {
+    const trimmedValues = modelo.reportValues[0].split(', ').map(item => item.trim())
+    const parsedValues = trimmedValues.map(item => parseFloat(item.replace(',', '.')))
+
+    return parsedValues
+  }
+  function labels() {
+    const trimmedValues = modelo.reportValues[0].split(', ').map(item => item.trim())
+    const parsedValues = trimmedValues.map(item => parseFloat(item.replace(',', '.')))
+    const defaultLabels = parsedValues.map((_, index) => `Valor ${index + 1}`)
+
+    if (modelo.labels !== undefined) return modelo.labels
+    else return defaultLabels
+  }
+
   return (
     <Dialog visible={view} modal
       onHide={() => { if (!view) return; setView(false); }}
@@ -19,15 +35,15 @@ const VisualizarModelo = ({ height, tipo, valores, labels, nome, view, setView }
           </div>
 
           <div className="col-12">
-            {tipo == "Gráfico de Pizza" ?
+            {modelo.graphType == "pie" ?
               <Pizza
-                valores={["25", "30", "67", "6"]}
-                labels={["Text 1", "Text 2", "Text 3", "Text 4"]}
+                valores={values()}
+                labels={labels()}
                 layout={
                   {
                     width: 850,
                     height: height - 120,
-                    title: "Grafico de Teste",
+                    title: modelo.reportName,
                     font: {
                       size: 18,
                     },
@@ -37,28 +53,28 @@ const VisualizarModelo = ({ height, tipo, valores, labels, nome, view, setView }
                   }
                 }
               />
-              : tipo == "Gráfico de Barras" ?
+              : modelo.graphType == "bar" ?
                 <Barras
-                  valores={[31, 23, 57]}
-                  labels={["Valor 1", "Valor 2", "Valor 3"]}
+                  valores={values()}
+                  labels={labels()}
                   layout={
                     {
                       width: 700,
                       height: height - 120,
-                      title: "Grafico de Exemplo",
+                      title: modelo.reportName,
                       margin: {
                         r: 30, l: 50, t: 50, b: 30
                       }
                     }} />
-                : tipo == "Gráfico de Linhas" ?
+                : modelo.graphType == "scatter" ?
                   <Linhas
-                    valores={[15, 5, 12, 43]}
-                    labels={["Valor 1", "Valor 2", "Valor 3", "valor 4"]}
+                    valores={values()}
+                    labels={labels()}
                     layout={
                       {
                         width: 700,
                         height: height - 120,
-                        title: "Grafico de Exemplo",
+                        title: modelo.reportName,
                         margin: {
                           r: 30, l: 50, t: 50, b: 30
                         }

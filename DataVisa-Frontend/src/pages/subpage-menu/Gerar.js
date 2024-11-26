@@ -22,7 +22,7 @@ const Gerar = () => {
       const pdf = new jsPDF(
         {
           orientation: "landscape",
-          format: [height * 0.4, 300]
+          format: [height * 0.4, 320]
         }
       )
       pdf.addImage(imgData, 'JPEG', 0, 0)
@@ -40,7 +40,7 @@ const Gerar = () => {
 
       <VisualizarModelo
         height={window.innerHeight}
-        tipo={location.state}
+        modelo={location.state}
         view={view}
         setView={setView} />
 
@@ -67,7 +67,7 @@ const Gerar = () => {
             <div className="col-9" id="teste">
               <ResultadoModelo
                 height={window.innerHeight}
-                tipo={location.state} />
+                modelo={location.state} />
             </div>
           </div>
 
