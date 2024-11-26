@@ -22,19 +22,19 @@ public class ReportModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String name;
+	private String reportName;
 	
 	private String creatorEmail;
 	
 	private String creatorName;
 	
-	private String templateId;
-	
 	private String templateName;
 	
-	private String graphType;
+	private String sqlQuery;
 	
-	private List<String> reportLabels;
+	private String selectedItem;
+	
+	private String graphType;
 	
 	private List<String> reportValues;
 	

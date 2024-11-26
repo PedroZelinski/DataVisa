@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,9 +24,9 @@ public class ReportController {
 	ReportService reportService;
 	
 	
-	@GetMapping("/dataVisa/report/add")
-	public ResponseEntity<String> add(@RequestBody ReportModel report){
-		Pair<String, HttpStatus> result = reportService.create(report);
+	@PostMapping("/dataVisa/report/addReport")
+	public ResponseEntity<Object> add(@RequestBody ReportModel report){
+		Pair<Object, HttpStatus> result = reportService.create(report);
 	    return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
@@ -41,13 +42,13 @@ public class ReportController {
 		return new ResponseEntity<ReportDTO>(result.getLeft(), result.getRight());
 	}
 	
-    @DeleteMapping("/dataVisa/report/delete")
+    @DeleteMapping("/dataVisa/report/delete/{id}")
     public ResponseEntity<String> delete(@RequestBody ReportModel report){
     	Pair<String, HttpStatus> result = reportService.delete(report);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
     
-//    @GetMapping("/dataVisa/user/getAll")
+//    @GetMapping("/dataVisa/report/getAll")
 //	public ResponseEntity<?> getAll(){
 //    	Pair<Object, HttpStatus> result = reportService.findAll();
 //    	return new ResponseEntity<>(result.getLeft(), result.getRight());

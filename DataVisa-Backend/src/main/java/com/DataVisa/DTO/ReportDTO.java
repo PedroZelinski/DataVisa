@@ -18,10 +18,9 @@ public class ReportDTO implements Serializable {
 	
 	public ReportDTO(ReportModel reportModel) {
 		this.id = reportModel.getId();
-		this.name = reportModel.getName();
+		this.reportName = reportModel.getReportName();
 		this.creatorEmail = reportModel.getCreatorEmail();
 		this.creatorName = reportModel.getCreatorName();
-		this.templateId = reportModel.getTemplateId();
 		this.templateName = reportModel.getTemplateName();
 		this.graphType = reportModel.getGraphType();
 		this.conexaoId = reportModel.getConexaoId();
@@ -35,13 +34,11 @@ public class ReportDTO implements Serializable {
 
 	private Long id;
 	
-	private String name;
+	private String reportName;
 
 	private String creatorEmail;
 	
 	private String creatorName;
-	
-	private String templateId;
 	
 	private String templateName;
 	

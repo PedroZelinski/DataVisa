@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.ReportDTO;
+import com.DataVisa.DTO.TemplateDTO;
 import com.DataVisa.Models.ReportModel;
 import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Repositories.ReportRepository;
 import com.DataVisa.Session.DatavisaSession;
+import com.DataVisa.Utils.DatavisaUtils;
 
 @Service
 public class ReportService {
@@ -28,17 +31,24 @@ public class ReportService {
 	@Autowired
 	DatavisaSession datavisaSession;
 	
-	public Pair<String, HttpStatus> create(ReportModel report) {
+	@Autowired
+	TableSawService tableSawService;
+	
+	public Pair<Object, HttpStatus> create(ReportModel report) {
 		
 		try {
+			report.setCreatorEmail(datavisaSession.getEmail());
+			report.setCreatorName(datavisaSession.getNome());
 			report.setConexaoId(datavisaSession.getConexao());
 			report.setEmpresaId(dbRepository.findById(report.getConexaoId()).get().getEmpresaId());
-			reportRepository.save(report);
+			report.setReportValues(extractValues(report.getSqlQuery(), report.getSelectedItem()));
+			
+			report = reportRepository.save(report);
 			
 		} catch (Exception ex){
-			 return Pair.of("Relatório não cadastrado! \nErro: " + ex.getMessage(), HttpStatus.NOT_FOUND); 
+			 return Pair.of("Relatório não cadastrado! \nErro: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
-		return Pair.of("Relatório cadastrado com sucesso!", HttpStatus.OK);
+		return Pair.of(report, HttpStatus.OK);
 	}
 	
 	public Pair<String, HttpStatus> update(ReportModel report) {
@@ -137,6 +147,33 @@ public class ReportService {
 	        }
 	    }
 	    return Pair.of(dtos, HttpStatus.OK);
+	}
+	
+	public List<String> extractValues(String query, String selectedItem){
+		
+		try {
+			 
+			String sanitizedQuery = DatavisaUtils.sanitizeQuery(query);
+			String tableName = DatavisaUtils.tableNameMapper(query);
+			
+			List<String> items = DatavisaUtils.tableFieldsMapper(query);
+			
+			 return items.stream()
+		                .filter(item -> item.toLowerCase().equals(selectedItem.toLowerCase()))
+		                .map(item -> {
+		                    int index = items.indexOf(item);
+		                    return tableSawService.extractCustomizesdCollumnFields(sanitizedQuery, tableName, index);
+		                })
+		                .collect(Collectors.toList());
+			
+//			List<String> valores = IntStream.range(0, items.size())
+//			        .mapToObj(index -> tableSawService.extractCustomizesdCollumnFields(sanitizedQuery, tableName, index))
+//			        .collect(Collectors.toList());
+//		   return valores;
+		
+		} catch (IllegalArgumentException e) {
+			return new ArrayList<>();
+		}
 	}
 	
 }
