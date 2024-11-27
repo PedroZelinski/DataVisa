@@ -1,0 +1,11 @@
+link: 
+
+--acessos--
+admin: adnimistracao@pizzaria.com -> usuario master com todas as permissoes
+analista: analista@pizzaria.com -> usuario com permissoes apenas de cadastro de templates e conexoes
+usuario: rebeca@pizzari.com -> usuario com permissoes basicas, sem acesso a cadastros
+senha(para todos): 1234
+
+--OBS--
+cadastro de banco de dados requer um banco local ou em serviço (como aiven), 
+e cadastros de template requer uma conexao com banco. Gerar graficos/planilhas requer ambos
