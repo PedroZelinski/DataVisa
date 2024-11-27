@@ -71,7 +71,8 @@ const CadastroTemplate = ({ exibeMensagem }) => {
   async function setConnection(nomeDb) {
     try {
       await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
-        (res) => console.log(res)
+        (res) => { console.log(res)
+          salvarTemplate()}
       )
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
@@ -172,7 +173,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
           <button className="cadastro-btn-color"
             type="submit" form='cadastro' onClick={() => {
               controle == 0 ?
-                cadastrarTemplate() : salvarTemplate()
+                cadastrarTemplate() : setConnection(conexao.nomeConexao)
             }}>
             {controle == 0 ? "Cadastrar" : "Salvar"}</button>
         </div>

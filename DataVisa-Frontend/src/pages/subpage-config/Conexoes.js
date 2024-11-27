@@ -40,6 +40,7 @@ const Conexoes = ({ }) => {
         error.response.data)
     }
   }
+
   const confirmDelete = (nomeConexao) => {
     confirmDialog({
       message: 'Deseja mesmo excluir a conexão ' + nomeConexao + '?',
@@ -69,6 +70,15 @@ const Conexoes = ({ }) => {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
     }
+  }
+
+  function formatarData(data) {
+    const newdata = new Date(data);
+
+    const dataFormatada = newdata.toLocaleDateString("pt-BR");
+    const horaFormatada = newdata.toLocaleTimeString("pt-BR", { hour12: false });
+
+    return `${dataFormatada} ${horaFormatada}`
   }
 
   return (
@@ -110,7 +120,7 @@ const Conexoes = ({ }) => {
             <div className='col-1'>ID</div>
             <div className='col-3'>Nome</div>
             <div className='col-2'>Tipo</div>
-            <div className='col-2'>Data de Conexão</div>
+            <div className='col-2'>Última Mod.</div>
             <div className='col-2'>Status</div>
             <div className='col-2'>Ações</div>
             <div className="col-12"><hr /></div>
@@ -128,7 +138,7 @@ const Conexoes = ({ }) => {
                   <div className='col-1 mt-2'>{db.id}</div>
                   <div className='col-3 mt-2'>{db.nomeConexao}</div>
                   <div className='col-2 mt-2'>{db.tipoDb}</div>
-                  <div className='col-2 mt-2'>Data de Conexão</div>
+                  <div className='col-2 mt-2'>{formatarData(db.lastModification)}</div>
                   <div className='col-2 mt-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
                   <div className='col-2'>
                     <button className='cadastro-btn-blue mr-2'
