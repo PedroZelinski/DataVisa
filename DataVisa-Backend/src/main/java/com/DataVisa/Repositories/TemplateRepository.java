@@ -127,7 +127,7 @@ public class TemplateRepository {
         String tableName = "templates_" + template.getEmpresaId();
         String query = "UPDATE " + tableName + 
                        " SET templateName = :templateName, sqlQuery = :sqlQuery, tableName = :tableName, tablePermition = :tablePermition, items = :items, " +
-                       "lastModification = :lastModification, conexaoId = :conexaoId, conexaoName = :conexaoName, isActive = :isActive" +
+                       "lastModification = :lastModification, conexaoId = :conexaoId, conexaoName = :conexaoName, isActive = :isActive " +
                        "WHERE id = :id";
         try {
 	        Query updateQuery = entityManager.createNativeQuery(query);
