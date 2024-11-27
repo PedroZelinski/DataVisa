@@ -16,18 +16,17 @@ const Filtrar = () => {
   const [areas, setAreas] = useState([])
 
   const [item, setItem] = useState('')
+  const [itemLabel, setItemLabel] = useState('')
   const [items, setItems] = useState([])
 
-  const [order, setOrder] = useState('Crescente')
-  const [orderBy, setOrderBy] = useState('')
-  const [where, setWhere] = useState("Nenhuma")
+  // const [order, setOrder] = useState('Crescente')
+  // const [orderBy, setOrderBy] = useState('')
+  // const [where, setWhere] = useState("Nenhuma")
   const [modelo, setModelo] = useState('')
   const [checkedPublico, setCheckedPublico] = useState(false)
   const location = useLocation()
 
   const modelos = ["Gráfico de Pizza", "Gráfico de Linhas", "Gráfico de Barras", "Planilha"]
-  //const areas1 = ["area 1", "area 2"]
-  //const items1 = ["item 1", "item 2"]
   // const orders = ["Crescente", "Decrescente"]
   // const wheres = ["Nenhuma", "Igual a", "Maior que", "Menor que", "Entre"]
   const dropStyle = {
@@ -40,7 +39,7 @@ const Filtrar = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        await DBClient.get("/dataVisa/template/getAll").then(
+        await DBClient.get("/dataVisa/template/getActives").then(
           (res) => {
             setAreas(res.data)
             //console.log(res.data)
@@ -69,11 +68,12 @@ const Filtrar = () => {
       templateName: area.nome,
       sqlQuery: area.query,
       selectedItem: item,
+      selectedLabel: itemLabel,
       graphType: modelo == "Gráfico de Barras" ? "bar" :
         modelo == "Gráfico de Linhas" ? "scatter" :
           modelo == "Gráfico de Pizza" ? "pie" : "table",
       conexaoName: area.conexaoName,
-      tablePermition: 5, //ajustar
+      tablePermition: area.tablePermition,
       isPublic: checkedPublico == true ? 1 : 0
     }
     console.log(dadosReport)
@@ -135,6 +135,12 @@ const Filtrar = () => {
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label>
 
+                <label className='font-bold col-10'>Legenda
+                  <Dropdown value={itemLabel} options={items}
+                    onChange={(e) => setItemLabel(e.value)} style={dropStyle}
+                    scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
+                </label>
+
                 {/* <label className='font-bold col-6'>Ordenação
                   <Dropdown value={order} options={orders}
                     onChange={(e) => setOrder(e.value)} style={dropStyle}
@@ -160,7 +166,7 @@ const Filtrar = () => {
                     scrollHeight='125px' virtualScrollerOptions={{ itemSize: 35 }} />
                 </label> */}
 
-                {where != "Nenhuma" ?
+                {/* {where != "Nenhuma" ?
                   <label className='font-bold col-6'>{where == "Entre" ? "Valor minimo" : "Valor"}
                     <div className="input-div">
                       <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
@@ -174,7 +180,7 @@ const Filtrar = () => {
                       <input className="input-field" style={{ background: '#EBEDEE', height: '47.5px' }}
                         type="text" id="valorMax" required />
                     </div>
-                  </label> : <div />}
+                  </label> : <div />} */}
 
                 <label className='font-bold col-6'>Tornar Público
                   <Checkbox inputId="checkTodos"

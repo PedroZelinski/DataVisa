@@ -68,15 +68,16 @@ const Templates = () => {
       }
     })
   }
-  async function deletarTemplate(template) {
+  async function deletarTemplate(templateNome) {
     try {
-      await DBClient.delete("/dataVisa/template/deleteTemplate/" + template).then(
+      await DBClient.delete("/dataVisa/template/deleteTemplate/" + templateNome).then(
         (res) => {
           exibeMensagem(res.data)
           setControle(controle + 1)
         }
       )
     } catch (error) {
+      console.log(error)
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
         error.response.data)
     }

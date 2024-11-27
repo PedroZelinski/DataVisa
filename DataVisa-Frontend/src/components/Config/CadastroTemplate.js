@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown'
+import { InputSwitch } from 'primereact/inputswitch'
 import DBClient from '../../utils/DBClient.js'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const CadastroTemplate = ({ exibeMensagem }) => {
+  const [ativo, setAtivo] = useState(true)
   const [controle, setControle] = useState(0)
   const [conexoes, setConexoes] = useState([])
   const [conexao, setConexao] = useState('')
@@ -17,6 +19,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
 
   useEffect(() => {
     setScript(location.state.query)
+    setAtivo(location.state.isActive == 1 ? true : false)
     const load = async () => {
       try {
         await DBClient.get("/dataVisa/database/getAll").then((res) => {
@@ -65,6 +68,16 @@ const CadastroTemplate = ({ exibeMensagem }) => {
         error.response.data)
     }
   }
+  async function setConnection(nomeDb) {
+    try {
+      await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
+        (res) => console.log(res)
+      )
+    } catch (error) {
+      exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
+        error.response.data)
+    }
+  }
 
   function formatarQuery(query) {
     return query
@@ -105,14 +118,14 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       sqlQuery: script,
       tableName: retorno.tableName,
       items: itens,
-      conexaoId: conexao.id
+      isActive: ativo == true ? 1 : 0,
     }
     try {
       await DBClient.post("/dataVisa/template/addTemplate", dadosQuery).then(
         (res) => {
           exibeMensagem(res.data)
           conectar(conexao.nomeConexao, script)
-          navigate("/config/templates") //Temporario
+          navigate("/inspect/templates") //Temporario
         }
       )
     } catch (error) {
@@ -127,8 +140,10 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       sqlQuery: script,
       tableName: retorno.tableName,
       items: itens,
-      conexaoId: conexao.id
+      conexaoId: conexao.id,
+      isActive: ativo == true ? 1 : 0
     }
+    console.log(dadosQuery)
     try {
       await DBClient.put("/dataVisa/template/updateTemplate", dadosQuery).then(
         (res) => {
@@ -145,8 +160,15 @@ const CadastroTemplate = ({ exibeMensagem }) => {
     <div className="col-12">
       <div className="grid nested-grid">
 
-        <div className="col-10 font-bold">Cadastro do Template</div>
-        <div className="col-1 text-right ml-5">
+        <div className="col-8 font-bold mt-3">Cadastro do Template</div>
+        <div className="cadastro-area grid col-2 mr-2 mt-1 mb-1 align-items-center"
+          style={{ width: '140px', boxShadow: 'none', height: '60px' }}>
+          <div className="col-6">Ativo</div>
+          <div className="col-6">
+            <InputSwitch checked={ativo} onChange={(e) => setAtivo(!ativo)} />
+          </div>
+        </div>
+        <div className="col-1 text-right ml-5 mt-2">
           <button className="cadastro-btn-color"
             type="submit" form='cadastro' onClick={() => {
               controle == 0 ?
@@ -173,7 +195,11 @@ const CadastroTemplate = ({ exibeMensagem }) => {
                 <label className='font-bold'>Conexão
                   <Dropdown value={conexao} options={conexoes}
                     optionLabel="nomeConexao"
-                    onChange={(e) => setConexao(e.value)}
+                    onChange={(e) => {
+                        setConnection(e.value.nomeConexao)
+                        setConexao(e.value)
+                      }
+                    }
                     style={{
                       width: "90%", background: '#EBEDEE',
                       border: '1px #374957 solid', opacity: '0.60',
@@ -207,14 +233,14 @@ const CadastroTemplate = ({ exibeMensagem }) => {
                   <thead>
                     <tr>
                       {itens.map((item) => (
-                        <th key={itens[item]}>{item}</th>
+                        <th key={item}>{item}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       {valores.map((valor) => (
-                        <td key={valores[valor]}>{valor}</td>
+                        <td key={valor}>{valor}</td>
                       ))}
                     </tr>
                   </tbody>
