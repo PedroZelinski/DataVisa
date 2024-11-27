@@ -12,6 +12,7 @@ call npm i @flaticon/flaticon-uicons
 call npm i react-plotly.js plotly.js
 call npm i npm install html2canvas
 call npm i npm install jspdf
+call npm i react-loading
 echo .
 echo .
 echo Bibliotecas instaladas

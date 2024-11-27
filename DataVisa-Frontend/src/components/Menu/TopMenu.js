@@ -11,13 +11,18 @@ const TopMenu = ({ alteraModo, nivel, exibeMensagem }) => {
     const config = useRef(null);
     const inspect = useRef(null);
 
-    function navegar(e, panel, path, modo) {
-        if (path != "perfil") {
-            alteraModo(modo)
+    function navegar(e, panel, path) {
+        if (path == "usuarios" || path == "pendentes" || path ==  "auditoria") {
+            alteraModo(3)
             navigate('/config/' + path)
         } else {
-            alteraModo(modo)
-            navigate('/menu/' + path)
+            if (path == "conexoes" || path == "templates") {
+                alteraModo(2)
+                navigate('/inspect/' + path)
+            } else {
+                alteraModo(1)
+                navigate('/menu/' + path)
+            }
         }
         panel.current.toggle(e)
     }

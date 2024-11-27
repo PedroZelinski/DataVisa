@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
+import Loading from '../../components/Config/Loading.js'
 
 const Templates = () => {
   const [session, alteraModo, exibeMensagem] = useOutletContext();
   const [controle, setControle] = useState(0);
+  const [loading, setLoading] = useState(true)
   const [templates, setTemplates] = useState([])
   const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ const Templates = () => {
           (res) => {
             setTemplates(res.data)
             console.log(res.data)
+            setLoading(false)
           }
         )
       } catch (error) {
@@ -40,7 +43,7 @@ const Templates = () => {
       await DBClient.get("/dataVisa/template/getTemplate/" + template).then(
         (res) => {
           console.log(res.data)
-          navigate("/config/cadastro/template", { state: res.data })
+          navigate("/inspect/cadastro/template", { state: res.data })
         }
       )
     } catch (error) {
@@ -100,7 +103,7 @@ const Templates = () => {
             navigate('/menu/recentes')
           }}>Menu</button>
           <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
-            navigate("/config/cadastro/template", {
+            navigate("/inspect/cadastro/template", {
               state: {
                 nome: null,
               }
@@ -125,23 +128,27 @@ const Templates = () => {
           <div className="scroll-white col-12 text-center ml-1 mt-2"
             style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
 
-            {templates.map((template) => (
+            {loading == true ?
+              <div className="grid col-4 col-offset-5">
+                <Loading color={"blue"} height={100} width={100} />
+              </div> :
+              templates.map((template) => (
 
-              <div className='grid col-12' key={template.id}>
-                <div className="col-1 mt-2">{template.id}</div>
-                <div className="col-2 mt-2">{template.nome}</div>
-                <div className="col-2 mt-2">{template.conexaoName}</div>
-                <div className="col-2 mt-2">{template.tableName}</div>
-                <div className="col-2 mt-2">{formatarData(template.lastModification)}</div>
-                <div className="col-1 mt-2">Ativo</div>
-                <div className="col-2">
-                  <button className='cadastro-btn-blue mr-2'
-                    onClick={() => templateCadastro(template.id)}>Editar</button>
-                  <button className='cadastro-btn-red'
-                    onClick={() => confirmDelete(template.nome)}>Deletar</button>
+                <div className='grid col-12' key={template.id}>
+                  <div className="col-1 mt-2">{template.id}</div>
+                  <div className="col-2 mt-2">{template.nome}</div>
+                  <div className="col-2 mt-2">{template.conexaoName}</div>
+                  <div className="col-2 mt-2">{template.tableName}</div>
+                  <div className="col-2 mt-2">{formatarData(template.lastModification)}</div>
+                  <div className="col-1 mt-2">{template.isActive == 1 ? "Ativo" : "Inativo"}</div>
+                  <div className="col-2">
+                    <button className='cadastro-btn-blue mr-2'
+                      onClick={() => templateCadastro(template.id)}>Editar</button>
+                    <button className='cadastro-btn-red'
+                      onClick={() => confirmDelete(template.nome)}>Deletar</button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
 
         </div>

@@ -52,14 +52,14 @@ const SideConfig = ({ modo, alteraModo, nivel }) => {
                 </div>
                 <br /><hr className='ml-1'/>
                 <div>
-                    <button onClick={() => navigate('/config/conexoes')}
-                        className='side-config-btn' style={selected("/config/conexoes")}>
+                    <button onClick={() => navigate('/inspect/conexoes')}
+                        className='side-config-btn' style={selected("/inspect/conexoes")}>
                         <i className='fi fi-rr-database' /> Conexões</button>
                 </div>
                 <br />
                 <div>
-                    <button onClick={() => navigate('/config/templates')}
-                        className='side-config-btn' style={selected("/config/templates")}>
+                    <button onClick={() => navigate('/inspect/templates')}
+                        className='side-config-btn' style={selected("/inspect/templates")}>
                         <i className='fi fi-rr-chart-histogram' /> Templates</button>
                 </div>
                 <br />

@@ -5,20 +5,25 @@ import DBClient from '../../utils/DBClient.js'
 import ListUser from '../../components/Config/ListUser.js'
 import ListPending from '../../components/Config/ListPending.js'
 
-
 const Usuarios = () => {
   const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [loadingPending, setLoadingPending] = useState(true)
   const [controle, setControle] = useState(0);
   const [session, alteraModo, exibeMensagem] = useOutletContext();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
+    alteraModo(3)
+    setLoading(true)
+    setLoadingPending(true)
     const loadUsers = async () => {
       try {
         await DBClient.get('/dataVisa/user/getAll').then((res) => {
           setUsers(res.data)
           console.log(res.data)
+          setLoading(false)
         })
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
@@ -30,6 +35,7 @@ const Usuarios = () => {
         await DBClient.get('/dataVisa/user/getAllPending').then((res) => {
           setUsers(res.data)
           console.log(res.data)
+          setLoadingPending(false)
         })
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
@@ -124,19 +130,20 @@ const Usuarios = () => {
           }}>Menu</button>
         </div>
 
-
         {location.pathname == "/config/usuarios" ?
           <ListUser
             list={users}
             userCadastro={userCadastro}
             confirmDelete={confirmDelete}
-            setControle={setControle} />
+            setControle={setControle} 
+            loading={loading} />
           :
           <ListPending
             list={users}
             userCadastro={userCadastro}
             confirmDelete={confirmDelete}
-            setControle={setControle} />
+            setControle={setControle} 
+            loading={loadingPending}/>
         }
       </div>
     </div>

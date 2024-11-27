@@ -2,19 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { confirmDialog } from 'primereact/confirmdialog'
 import DBClient from '../../utils/DBClient';
+import Loading from '../../components/Config/Loading.js'
 
-const Conexoes = ({}) => {
+const Conexoes = ({ }) => {
   const [dbs, setDbs] = useState([])
   const [session, alteraModo, exibeMensagem] = useOutletContext();
+  const [loading, setLoading] = useState(true)
   const [controle, setControle] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true)
     const load = async () => {
       try {
         await DBClient.get("/dataVisa/database/getAll").then((res) => {
           setDbs(res.data)
           console.log(res.data)
+          setLoading(false)
         })
       } catch (error) {
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
@@ -29,7 +33,7 @@ const Conexoes = ({}) => {
       await DBClient.get("/dataVisa/database/getDB/" + id).then(
         (res) => {
           console.log(res.data)
-          navigate("/config/cadastro/conexao", { state: res.data })
+          navigate("/inspect/cadastro/conexao", { state: res.data })
         })
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
@@ -89,7 +93,7 @@ const Conexoes = ({}) => {
             navigate('/menu/recentes')
           }}>Menu</button>
           <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
-            navigate("/config/cadastro/conexao", {
+            navigate("/inspect/cadastro/conexao", {
               state: {
                 nomeConexao: null,
                 isActive: 0
@@ -115,21 +119,25 @@ const Conexoes = ({}) => {
           <div className="scroll-white col-12 text-center ml-1 mt-2"
             style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
 
-            {dbs.map((db) => (
-              <div className="grid col-12" key={db.id}>
-                <div className='col-1 mt-2'>{db.id}</div>
-                <div className='col-3 mt-2'>{db.nomeConexao}</div>
-                <div className='col-2 mt-2'>{db.tipoDb}</div>
-                <div className='col-2 mt-2'>Data de Conexão</div>
-                <div className='col-2 mt-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
-                <div className='col-2'>
-                  <button className='cadastro-btn-blue mr-2'
-                    onClick={() => conexaoCadastro(db.id)}>Editar</button>
-                  <button className='cadastro-btn-red'
-                    onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
+            {loading == true ?
+              <div className="grid col-4 col-offset-5">
+                <Loading color={"blue"} height={100} width={100} />
+              </div> :
+              dbs.map((db) => (
+                <div className="grid col-12" key={db.id}>
+                  <div className='col-1 mt-2'>{db.id}</div>
+                  <div className='col-3 mt-2'>{db.nomeConexao}</div>
+                  <div className='col-2 mt-2'>{db.tipoDb}</div>
+                  <div className='col-2 mt-2'>Data de Conexão</div>
+                  <div className='col-2 mt-2'>{db.isActive == 1 ? "Ativo" : "Inativo"}</div>
+                  <div className='col-2'>
+                    <button className='cadastro-btn-blue mr-2'
+                      onClick={() => conexaoCadastro(db.id)}>Editar</button>
+                    <button className='cadastro-btn-red'
+                      onClick={() => confirmDelete(db.nomeConexao)}>Deletar</button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
 
         </div>
