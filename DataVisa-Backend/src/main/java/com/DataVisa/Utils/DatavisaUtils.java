@@ -83,99 +83,108 @@ public class DatavisaUtils {
     }
 
 
-        public static String columnExtractorByType(Table table, String columnType, String columnName) {
-            String response;
-            StringBuilder formattedValues = new StringBuilder();
-            switch (columnType.toLowerCase()) {
-                case "int":
-                case "integer":
-                	table.intColumn(columnName).forEach(value -> formattedValues.append(value).append(", "));
-                    break;
-                case "varchar":
-                case "json":
-                case "text":
-                	table.stringColumn(columnName).forEach(value -> 
-                    formattedValues.append(value).append(", "));
-                	break;
-                case "date":
-                	response = table.dateColumn(columnName).print();
-                    break;
-                case "datetime":
-                	response = table.dateTimeColumn(columnName).print();
-                    break;
-                case "float":
-                	table.floatColumn(columnName).forEach(value -> 
-                    formattedValues.append(String.format(Locale.US, "%.2f", value)).append(", "));
-                	break;
-                case "double":
-                case "decimal":
-                	table.doubleColumn(columnName).forEach(value -> 
-                    formattedValues.append(String.format(Locale.US, "%.2f", value)).append(", "));
-                	break;
-                case "boolean":
-                case "bool":
-                	response = table.booleanColumn(columnName).print();
-                    break;
-                default:
-                	response = table.stringColumn(columnName).print();
-                    return response.contains("\n") ? response.substring(response.indexOf('\n') + 1).replaceAll("\\r\\n", "").trim() : response.trim();
-            }
+    public static String columnExtractorByType(Table table, String columnType, String columnName) {
+        String response;
+        StringBuilder formattedValues = new StringBuilder();
+        switch (columnType.toLowerCase()) {
+            case "int":
+            case "integer":
+            	table.intColumn(columnName).forEach(value -> formattedValues.append(value).append(", "));
+                break;
+            case "varchar":
+            case "json":
+            case "text":
+            case "string":
+            	table.stringColumn(columnName).forEach(value -> {
+                    if (value != null && !value.trim().isEmpty()) {
+                        // Aqui, para separar corretamente, usamos o split por vírgula mas mantendo palavras compostas
+                        String[] values = value.split("\\s*,\\s*"); // Divida por vírgula e espaços
+                        for (String v : values) {
+                            // Remover espaços extras e adicionar ao StringBuilder
+                            formattedValues.append(v.trim()).append(", ");
+                        }
+                    }
+                });
+                break;
+            case "date":
+            	response = table.dateColumn(columnName).print();
+                break;
+            case "datetime":
+            	response = table.dateTimeColumn(columnName).print();
+                break;
+            case "float":
+            	table.floatColumn(columnName).forEach(value -> 
+                formattedValues.append(String.format(Locale.US, "%.2f", value)).append(", "));
+            	break;
+            case "double":
+            case "decimal":
+            	table.doubleColumn(columnName).forEach(value -> 
+                formattedValues.append(String.format(Locale.US, "%.2f", value)).append(", "));
+            	break;
+            case "boolean":
+            case "bool":
+            	response = table.booleanColumn(columnName).print();
+                break;
+            default:
+            	response = table.stringColumn(columnName).print();
+                return response.contains("\n") ? response.substring(response.indexOf('\n') + 1).replaceAll("\\r\\n", "").trim() : response.trim();
+        }
 
-            if (formattedValues.length() > 0) {
-                formattedValues.setLength(formattedValues.length() - 2);
-            }
-            return formattedValues.toString();
+        if (formattedValues.length() > 0) {
+            formattedValues.setLength(formattedValues.length() - 2);
+        }
+        return formattedValues.toString();
+    }
+        
+    public static String sanitizeQuery(String query) {
+        if (query == null || query.isEmpty()) {
+        	throw new IllegalArgumentException("A query não pode ser nula ou vazia.");
+        }
+
+        // Remove conteúdo após ';' juntamente com o caractere indesejado
+        int semicolonIndex = query.indexOf(';');
+        if (semicolonIndex != -1) {
+            query = query.substring(0, semicolonIndex);
+        }
+
+        // Adiciona "select " no início, caso não esteja presente
+        if (!query.trim().toLowerCase().startsWith("select ")) {
+            query = "select " + query.trim();
         }
         
-        public static String sanitizeQuery(String query) {
-            if (query == null || query.isEmpty()) {
-            	throw new IllegalArgumentException("A query não pode ser nula ou vazia.");
-            }
-
-            // Remove conteúdo após ';' juntamente com o caractere indesejado
-            int semicolonIndex = query.indexOf(';');
-            if (semicolonIndex != -1) {
-                query = query.substring(0, semicolonIndex);
-            }
-
-            // Adiciona "select " no início, caso não esteja presente
-            if (!query.trim().toLowerCase().startsWith("select ")) {
-                query = "select " + query.trim();
-            }
-            
-            // Considera a query inválida por conter palavras reservadas
-            String lowerQuery = query.toLowerCase();
-            if (lowerQuery.contains("update ") || lowerQuery.contains("delete ") || 
-                lowerQuery.contains("insert ") || lowerQuery.contains("drop ") || 
-                lowerQuery.contains("alter ")) {
-                throw new IllegalArgumentException("Query inválida: somente comandos com a cláusula SELECT são permitidos.");
-            }
-            
-            return query.replaceAll("\\r\\n", " ").trim();
+        // Considera a query inválida por conter palavras reservadas
+        String lowerQuery = query.toLowerCase();
+        if (lowerQuery.contains("update ") || lowerQuery.contains("delete ") || 
+            lowerQuery.contains("insert ") || lowerQuery.contains("drop ") || 
+            lowerQuery.contains("alter ")) {
+            throw new IllegalArgumentException("Query inválida: somente comandos com a cláusula SELECT são permitidos.");
         }
+        
+        return query.replaceAll("\\r\\n", " ").trim();
+    }
+
+    private static String capitalizeFirstLetter(String input) { 
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        
+        // Capitaliza apenas a primeira letra e mantém o restante da string como está
+        return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+    }
     
-        private static String capitalizeFirstLetter(String input) { 
-            if (input == null || input.isEmpty()) {
-                return input;
-            }
-            
-            // Capitaliza apenas a primeira letra e mantém o restante da string como está
-            return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+    public static String limitQueryToOne(String query) {
+        if (query == null || query.isEmpty()) {
+        	throw new IllegalArgumentException("A query não pode ser nula ou vazia.");
         }
         
-        public static String limitQueryToOne(String query) {
-            if (query == null || query.isEmpty()) {
-            	throw new IllegalArgumentException("A query não pode ser nula ou vazia.");
-            }
-            
-            // Regex para encontrar a cláusula LIMIT na query
-            String limitRegex = "(?i)\\s+limit\\s+\\d+";
-            if (query.matches(".*" + limitRegex + ".*")) {
-                // Substitui o valor atual de LIMIT por 1
-                return query.replaceAll(limitRegex, " LIMIT 1");
-            } else {
-                // Adiciona "LIMIT 1" ao final, caso não exista
-                return query + " LIMIT 1";
-            }
+        // Regex para encontrar a cláusula LIMIT na query
+        String limitRegex = "(?i)\\s+limit\\s+\\d+";
+        if (query.matches(".*" + limitRegex + ".*")) {
+            // Substitui o valor atual de LIMIT por 1
+            return query.replaceAll(limitRegex, " LIMIT 1");
+        } else {
+            // Adiciona "LIMIT 1" ao final, caso não exista
+            return query + " LIMIT 1";
         }
+    }
 }
