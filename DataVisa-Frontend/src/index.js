@@ -83,8 +83,26 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: "/config",
+    path: "/inspect",
     element: <MenuInicial modo={2}/>,
+    children: [
+      {
+        path: "templates",
+        element: <Templates />
+      },
+      {
+        path: "conexoes",
+        element: <Conexoes />
+      },
+      {
+        path: "cadastro/:type",
+        element: <Cadastro />
+      },
+    ]
+  },
+  {
+    path: "/config",
+    element: <MenuInicial modo={3}/>,
     children: [
       {
         path: "usuarios",
@@ -97,18 +115,6 @@ const router = createBrowserRouter([
       {
         path: "audit",
         element: <Auditoria />
-      },
-      {
-        path: "templates",
-        element: <Templates />
-      },
-      {
-        path: "conexoes",
-        element: <Conexoes />
-      },
-      {
-        path: "cadastro/:type",
-        element: <Cadastro />
       },
     ]
   }
