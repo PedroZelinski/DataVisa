@@ -32,9 +32,13 @@ public class ReportModel implements Serializable {
 	
 	private String sqlQuery;
 	
+	private String selectedLabel;
+	
 	private String selectedItem;
 	
 	private String graphType;
+	
+	private List<String> reportlabels;
 	
 	private List<String> reportValues;
 	
@@ -46,7 +50,7 @@ public class ReportModel implements Serializable {
 	
 	private int tablePermition;
 	
-	private Timestamp date;
+	private Timestamp creationDate;
 	
 	private int isPublic;
 	

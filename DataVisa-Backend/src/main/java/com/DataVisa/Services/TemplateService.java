@@ -1,5 +1,7 @@
 package com.DataVisa.Services;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +57,8 @@ public class TemplateService{
 			template.setConexaoName(datavisaSession.getNomeConexao());;
 			template.setTableName(DatavisaUtils.tableNameMapper(template.getSqlQuery()));
 			template.setEmpresaId(dbRepository.findById(datavisaSession.getConexao()).get().getEmpresaId());
-			template.setTablePermition(tableSawService.getTablePermition(template.getTableName(), template.getConexaoName()));	
+			template.setTablePermition(tableSawService.getTablePermition(template.getTableName(), template.getConexaoName()));
+			template.setLastModification(Timestamp.from(Instant.now()));
 			
 			//Verifica se o template já existe
 			if (templateRepository.findByName(template.getTemplateName(), template.getEmpresaId()) != null) {
@@ -95,6 +98,7 @@ public class TemplateService{
 			}
 			
 			template.setEmpresaId(dbRepository.findById(datavisaSession.getConexao()).get().getEmpresaId());
+			template.setLastModification(Timestamp.from(Instant.now()));
 			templateRepository.updateTemplate(template);
 			
 			response = Pair.of("Banco atualizado com sucesso!", HttpStatus.OK);

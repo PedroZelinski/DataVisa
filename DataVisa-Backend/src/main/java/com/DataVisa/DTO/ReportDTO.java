@@ -26,7 +26,7 @@ public class ReportDTO implements Serializable {
 		this.conexaoId = reportModel.getConexaoId();
 		this.conexaoName = reportModel.getConexaoName();
 		this.tablePermition = reportModel.getTablePermition();
-		this.date = reportModel.getDate();
+		this.creationDate = reportModel.getCreationDate();
 		this.isPublic = reportModel.getIsPublic();
 	}
 	
@@ -56,7 +56,7 @@ public class ReportDTO implements Serializable {
 	
 	private int tablePermition;
 	
-	private Timestamp date;
+	private Timestamp creationDate;
 	
 	private String mensagemRetorno;
 

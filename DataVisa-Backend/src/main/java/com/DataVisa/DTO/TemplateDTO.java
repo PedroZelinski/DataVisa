@@ -24,6 +24,7 @@ public class TemplateDTO implements Serializable {
         this.nome = templateModel.getTemplateName();
         this.query = templateModel.getSqlQuery();
         this.tableName = templateModel.getTableName();
+        this.tablePermition = templateModel.getTablePermition();
         this.items = templateModel.getItems();
         this.lastModification = templateModel.getLastModification();
         this.empresaId = templateModel.getEmpresaId();
@@ -42,6 +43,8 @@ public class TemplateDTO implements Serializable {
 	private String query;
 	
 	private String tableName;
+	
+	private int tablePermition;
 	
 	private List<String> items;
 

@@ -48,9 +48,10 @@ public class ReportController {
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
     
-//    @GetMapping("/dataVisa/report/getAll")
-//	public ResponseEntity<?> getAll(){
-//    	Pair<Object, HttpStatus> result = reportService.findAll();
-//    	return new ResponseEntity<>(result.getLeft(), result.getRight());
-//	}
+    @GetMapping("/dataVisa/report/getActives")
+	public ResponseEntity<?> getActives(){
+    	Pair<Object, HttpStatus> result = reportService.getActives();
+    	return new ResponseEntity<>(result.getLeft(), result.getRight());
+	}
+    
 }

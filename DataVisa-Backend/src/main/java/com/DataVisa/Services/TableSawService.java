@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,21 +170,31 @@ public class TableSawService {
 			return "Erro: " + e.getMessage();
 		}
 	}
+
 	
-	public String extractCustomizesdCollumnFields(String query, String tabela, int index){
-		StringBuilder column = new StringBuilder();
-		try {
-			
-			Table table = datavisaSession.getCustomerConnection(query, tabela);
-			String columnType = table.typeArray()[index].toString();
-			String columnName = table.columnNames().get(index);
-			//column.append(columnName + ":");
-			column.append(DatavisaUtils.columnExtractorByType(table, columnType, columnName));
-			return column.toString();
-			
-		} catch (Exception e) {
-			return "Erro: " + e.getMessage() + "\n" + e.getClass().toString();
-		}
+	public String extractCustomizesdCollumnFields(String query, String tabela, int index) {
+	    StringBuilder column = new StringBuilder();
+	    try {
+	        // Obter a tabela a partir da conexão
+	        Table table = datavisaSession.getCustomerConnection(query, tabela);
+	        
+	        // Obter o tipo e o nome da coluna
+	        String columnType = table.typeArray()[index].toString();
+	        String columnName = table.columnNames().get(index);
+
+	        // Extrair valores usando o método columnExtractorByType
+	        String rawValues = DatavisaUtils.columnExtractorByType(table, columnType, columnName);
+
+	        // Verificar se os valores precisam ser separados (no caso de múltiplos valores)
+	        List<String> extractedValues = Arrays.asList(rawValues.split(",\\s*")); // Divide por vírgulas e remove espaços
+
+	        // Retornar os valores processados como uma string separada por vírgulas
+	        return String.join(",", extractedValues);
+
+	    } catch (Exception e) {
+	        // Retornar erro em caso de exceção
+	        return "Erro: " + e.getMessage() + "\n" + e.getClass().toString();
+	    }
 	}
 		
 	public void addPermitionsTable(DBModel db) throws Exception {

@@ -2,6 +2,7 @@ package com.DataVisa.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -84,11 +85,11 @@ public class DatavisaUtils {
 
         public static String columnExtractorByType(Table table, String columnType, String columnName) {
             String response;
-            StringBuilder formattedValues;
+            StringBuilder formattedValues = new StringBuilder();
             switch (columnType.toLowerCase()) {
                 case "int":
                 case "integer":
-                	response = table.intColumn(columnName).print();
+                	table.intColumn(columnName).forEach(value -> formattedValues.append(value).append(", "));
                     break;
                 case "varchar":
                 case "json":
@@ -102,32 +103,27 @@ public class DatavisaUtils {
                 	response = table.dateTimeColumn(columnName).print();
                     break;
                 case "float":
-                	formattedValues = new StringBuilder();
-                    table.floatColumn(columnName).forEach(value -> formattedValues.append(String.format("%.2f", value)).append(", "));
-                    response = formattedValues.length() > 0
-                        ? formattedValues.substring(0, formattedValues.length() - 2)
-                        : "";
-                    break;
+                	table.floatColumn(columnName).forEach(value -> 
+                    formattedValues.append(String.format(Locale.US, "%.2f", value)).append(", "));
+                	break;
                 case "double":
-                    formattedValues = new StringBuilder();
-                    table.doubleColumn(columnName).forEach(value -> formattedValues.append(String.format("%.2f", value)).append(", "));
-                    response = formattedValues.length() > 0
-                        ? formattedValues.substring(0, formattedValues.length() - 2)
-                        : "";
-                    break;
+                case "decimal":
+                	table.doubleColumn(columnName).forEach(value -> 
+                    formattedValues.append(String.format(Locale.US, "%.2f", value)).append(", "));
+                	break;
                 case "boolean":
                 case "bool":
                 	response = table.booleanColumn(columnName).print();
                     break;
-                case "decimal":
-                	response = table.doubleColumn(columnName).print();
-                    break;
                 default:
                 	response = table.stringColumn(columnName).print();
+                    return response.contains("\n") ? response.substring(response.indexOf('\n') + 1).replaceAll("\\r\\n", "").trim() : response.trim();
             }
 
-            response = response.contains("\n") ? response.substring(response.indexOf('\n') + 1): response;
-            return response.replaceAll("\\r\\n", "").trim();
+            if (formattedValues.length() > 0) {
+                formattedValues.setLength(formattedValues.length() - 2);
+            }
+            return formattedValues.toString();
         }
         
         public static String sanitizeQuery(String query) {
