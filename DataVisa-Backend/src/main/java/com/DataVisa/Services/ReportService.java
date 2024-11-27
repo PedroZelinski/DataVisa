@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.DataVisa.DTO.ReportDTO;
-import com.DataVisa.DTO.TemplateDTO;
 import com.DataVisa.Models.ReportModel;
 import com.DataVisa.Repositories.DBRepository;
 import com.DataVisa.Repositories.ReportRepository;
@@ -44,7 +42,7 @@ public class ReportService {
 			report.setCreatorName(datavisaSession.getNome());
 			report.setConexaoId(datavisaSession.getConexao());
 			report.setEmpresaId(dbRepository.findById(report.getConexaoId()).get().getEmpresaId());
-			report.setReportlabels(extractValues(report.getSqlQuery(), report.getSelectedLabel()));
+			report.setReportLabels(extractValues(report.getSqlQuery(), report.getSelectedLabel()));
 			report.setReportValues(extractValues(report.getSqlQuery(), report.getSelectedItem()));
 			report.setCreationDate(Timestamp.from(Instant.now()));
 			
@@ -102,22 +100,24 @@ public class ReportService {
 	}
 
 
-	public Pair<String, HttpStatus> delete(ReportModel report){
+	public Pair<String, HttpStatus> delete(Long id){
 		
 		Pair<String, HttpStatus> response;
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED))
 			return Pair.of(response);
 		
+			Optional<ReportModel> model = reportRepository.findById(id);
+			
 			//Verifica se o registro existe
-			if (reportRepository.findById(report.getId()).isEmpty()) {
+			if (model.isEmpty()) {
 				return Pair.of("Erro: Relatório informado não encontrado. Verifique os valores fornecidos.", HttpStatus.NOT_FOUND);
 			}
 			
 			try {
-				reportRepository.delete(report);
+				reportRepository.delete(model.get());
 				
 				//Verifica se o relatório foi excluido
-	            if (reportRepository.findById(report.getId()).isPresent()) {
+	            if (reportRepository.findById(id).isPresent()) {
 	            	return Pair.of("Erro: Erro interno.", HttpStatus.INTERNAL_SERVER_ERROR);
 	            }
             		

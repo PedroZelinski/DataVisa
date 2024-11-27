@@ -30,21 +30,15 @@ public class ReportController {
 	    return new ResponseEntity<>(result.getLeft(), result.getRight());
 	}
 	
-	@GetMapping("/dataVisa/report/update/{id}")
-	public ResponseEntity<String> update(@RequestBody ReportModel report){
-		Pair<String, HttpStatus> result =  reportService.update(report);
-		return new ResponseEntity<>(result.getLeft(), result.getRight());   
-	}
-	
-	@GetMapping("/dataVisa/report/getReport/{email}")
+	@GetMapping("/dataVisa/report/getReport/{id}")
 	public ResponseEntity<ReportDTO> get(@PathVariable Long id){
 		Pair<ReportDTO, HttpStatus> result = reportService.getReport(id);
 		return new ResponseEntity<ReportDTO>(result.getLeft(), result.getRight());
 	}
 	
     @DeleteMapping("/dataVisa/report/delete/{id}")
-    public ResponseEntity<String> delete(@RequestBody ReportModel report){
-    	Pair<String, HttpStatus> result = reportService.delete(report);
+    public ResponseEntity<String> delete(@PathVariable Long id){
+    	Pair<String, HttpStatus> result = reportService.delete(id);
     	return new ResponseEntity<>(result.getLeft(), result.getRight());
     }
     

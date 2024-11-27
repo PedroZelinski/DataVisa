@@ -22,9 +22,13 @@ public class ReportDTO implements Serializable {
 		this.creatorEmail = reportModel.getCreatorEmail();
 		this.creatorName = reportModel.getCreatorName();
 		this.templateName = reportModel.getTemplateName();
+		this.sqlQuery = reportModel.getSqlQuery();
 		this.graphType = reportModel.getGraphType();
+		this.reportLabels = reportModel.getReportLabels();
+		this.reportValues = reportModel.getReportValues();
 		this.conexaoId = reportModel.getConexaoId();
 		this.conexaoName = reportModel.getConexaoName();
+		this.empresaId = reportModel.getEmpresaId();
 		this.tablePermition = reportModel.getTablePermition();
 		this.creationDate = reportModel.getCreationDate();
 		this.isPublic = reportModel.getIsPublic();
@@ -41,6 +45,8 @@ public class ReportDTO implements Serializable {
 	private String creatorName;
 	
 	private String templateName;
+	
+	private String sqlQuery;
 	
 	private String graphType;
 	

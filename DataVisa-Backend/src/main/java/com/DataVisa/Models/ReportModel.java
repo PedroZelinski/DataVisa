@@ -38,7 +38,7 @@ public class ReportModel implements Serializable {
 	
 	private String graphType;
 	
-	private List<String> reportlabels;
+	private List<String> reportLabels;
 	
 	private List<String> reportValues;
 	
