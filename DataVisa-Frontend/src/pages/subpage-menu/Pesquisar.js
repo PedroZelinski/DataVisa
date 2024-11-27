@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../../components/Menu/Card'
 import PesquisarFiltros from '../../components/Menu/PesquisarFiltros'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import DBClient from '../../utils/DBClient'
 
 const Pesquisar = () => {
+  const [reports, setReports] = useState([])
+  const [session, alteraModo, exibeMensagem] = useOutletContext();
   const [checkedTodos, setCheckedTodos] = useState(true);
   const [checkedPizza, setCheckedPizza] = useState(true);
   const [checkedLinhas, setCheckedLinhas] = useState(true);
   const [checkedBarras, setCheckedBarras] = useState(true);
   const [checkedPlan, setCheckedPlan] = useState(true);
   const navigate = useNavigate();
-  
+
   const cards = [
     {
       nome: "Pizzas mais vendidas",
@@ -38,6 +41,21 @@ const Pesquisar = () => {
     }
   ]
 
+  useEffect(() => {
+    const load = async () => {
+      try {
+        await DBClient.get("/dataVisa/report/getActives").then((res) => {
+          console.log(res.data)
+          setReports(res.data)
+        })
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+          + error.response.data)
+      }
+    }
+    load();
+  }, [])
+
   return (
     <div className='col-12'>
       <div className="grid nested-grid">
@@ -60,8 +78,8 @@ const Pesquisar = () => {
                 checkedPizza={checkedPizza} setCheckedPizza={setCheckedPizza}
                 checkedLinhas={checkedLinhas} setCheckedLinhas={setCheckedLinhas}
                 checkedBarras={checkedBarras} setCheckedBarras={setCheckedBarras}
-                checkedPlan={checkedPlan} setCheckedPlan={setCheckedPlan} 
-                qtd={cards.length}/>
+                checkedPlan={checkedPlan} setCheckedPlan={setCheckedPlan}
+                qtd={reports.length} />
 
             </div>
           </div>
@@ -69,17 +87,17 @@ const Pesquisar = () => {
           <div className="grid col-9 ml-2">
             <div className="scroll-white grid col-12" style={{ height: 'calc(100vh - 220px)' }}>
 
-              {cards.map((card) => (
-                card.tipo == "Pizza" && checkedPizza == true ||
-                  card.tipo == "Barras" && checkedBarras == true ||
-                  card.tipo == "Linhas" && checkedLinhas == true ||
-                  card.tipo == "Planilha" && checkedPlan == true ?
+              {reports.map((report) => (
+                report.graphType == "pie" && checkedPizza == true ||
+                  report.graphType == "bar" && checkedBarras == true ||
+                  report.graphType == "scatter" && checkedLinhas == true ||
+                  report.graphType == "spreadsheet" && checkedPlan == true ?
                   <Card
                     imgHeight={80}
-                    tipo={card.tipo}
+                    report={report}
                     navigate={navigate}
-                    nome={card.nome}
-                    data={card.data} />
+                    exibeMensagem={exibeMensagem}
+                  />
                   : null
               ))}
             </div>

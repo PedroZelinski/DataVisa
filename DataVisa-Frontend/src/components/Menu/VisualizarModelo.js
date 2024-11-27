@@ -7,21 +7,6 @@ import Planilha from '../../components/Templates/Planilha.js'
 
 const VisualizarModelo = ({ height, modelo, view, setView }) => {
 
-  function values() {
-    const trimmedValues = modelo.reportValues[0].split(', ').map(item => item.trim())
-    const parsedValues = trimmedValues.map(item => parseFloat(item.replace(',', '.')))
-
-    return parsedValues
-  }
-  function labels() {
-    const trimmedValues = modelo.reportValues[0].split(', ').map(item => item.trim())
-    const parsedValues = trimmedValues.map(item => parseFloat(item.replace(',', '.')))
-    const defaultLabels = parsedValues.map((_, index) => `Valor ${index + 1}`)
-
-    if (modelo.labels !== undefined) return modelo.labels
-    else return defaultLabels
-  }
-
   return (
     <Dialog visible={view} modal
       onHide={() => { if (!view) return; setView(false); }}
@@ -37,8 +22,8 @@ const VisualizarModelo = ({ height, modelo, view, setView }) => {
           <div className="col-12">
             {modelo.graphType == "pie" ?
               <Pizza
-                valores={values()}
-                labels={labels()}
+                valores={modelo.reportValues}
+                labels={modelo.reportLabels}
                 layout={
                   {
                     width: 850,
@@ -55,8 +40,8 @@ const VisualizarModelo = ({ height, modelo, view, setView }) => {
               />
               : modelo.graphType == "bar" ?
                 <Barras
-                  valores={values()}
-                  labels={labels()}
+                  valores={modelo.reportValues}
+                  labels={modelo.reportLabels}
                   layout={
                     {
                       width: 700,
@@ -68,8 +53,8 @@ const VisualizarModelo = ({ height, modelo, view, setView }) => {
                     }} />
                 : modelo.graphType == "scatter" ?
                   <Linhas
-                    valores={values()}
-                    labels={labels()}
+                    valores={modelo.reportValues}
+                    labels={modelo.reportLabels}
                     layout={
                       {
                         width: 700,
@@ -81,12 +66,10 @@ const VisualizarModelo = ({ height, modelo, view, setView }) => {
                       }}
                   /> :
                   <Planilha
-                    labels={["Id", "Data", "Responsavel", "Valor"]}
+                    labels={["Pagamento", "Valor"]}
                     valores={[
-                      [1, 2, 3],
-                      ["10/01/2024", "12/01/2024", "23/02/2024"],
-                      ["Rafael", "Jhonatan", "Pedro"],
-                      ["R$ 199,99", "R$ 350,00", "R$ 264,50"]
+                      ["Cartão", "Dinheiro", "Online"],
+                      ["68.00", "10.00", "129.00"]
                     ]}
                     layout={
                       {

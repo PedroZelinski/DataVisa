@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../../components/Menu/Card'
-
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import DBClient from '../../utils/DBClient';
 
 
 const Recentes = () => {
+  const [reports, setReports] = useState([])
+  const [contador, setContador] = useState(0)
+  const [session, alteraModo, exibeMensagem] = useOutletContext();
   const navigate = useNavigate();
   const cards = [
     {
@@ -33,6 +36,21 @@ const Recentes = () => {
     },
   ]
 
+  useEffect(() => {
+    const load = async () => {
+      try {
+        await DBClient.get("/dataVisa/report/getActives").then((res) => {
+          console.log(res.data)
+          setReports(res.data)
+        })
+      } catch (error) {
+        exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
+          + error.response.data)
+      }
+    }
+    load();
+  }, [contador])
+
   return (
     <div className='col-12'>
 
@@ -51,13 +69,15 @@ const Recentes = () => {
             </div>
           </div>
 
-          {cards.map((card) => (
+          {reports.map((report) => (
             <Card
               imgHeight={100}
-              tipo={card.tipo}
+              report={report}
               navigate={navigate}
-              nome={card.nome}
-              data={card.data} />
+              exibeMensagem={exibeMensagem}
+              setContador={setContador}
+              contador={contador}
+            />
           ))}
 
         </div>

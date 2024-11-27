@@ -242,12 +242,11 @@ const Filtrar = () => {
                     />
                     :
                     <Planilha
-                      labels={["Id", "Data", "Responsavel", "Valor"]}
+                      labels={["Valor 1", "Valor 2", "Valor 3"]}
                       valores={[
-                        [1, 2, 3],
-                        ["10/01/2024", "12/01/2024", "23/02/2024"],
-                        ["Rafael", "Jhonatan", "Pedro"],
-                        ["R$ 199,99", "R$ 350,00", "R$ 264,50"]
+                        ["Registro 1", "Registro 2", "Registro 3"],
+                        ["Registro 1", "Registro 2", "Registro 3"],
+                        ["Registro 1", "Registro 2", "Registro 3"],
                       ]}
                       layout={
                         {
