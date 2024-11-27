@@ -43,7 +43,7 @@ const Templates = () => {
       await DBClient.get("/dataVisa/template/getTemplate/" + template).then(
         (res) => {
           console.log(res.data)
-          navigate("/config/cadastro/template", { state: res.data })
+          navigate("/inspect/cadastro/template", { state: res.data })
         }
       )
     } catch (error) {
@@ -103,7 +103,7 @@ const Templates = () => {
             navigate('/menu/recentes')
           }}>Menu</button>
           <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
-            navigate("/config/cadastro/template", {
+            navigate("/inspect/cadastro/template", {
               state: {
                 nome: null,
               }

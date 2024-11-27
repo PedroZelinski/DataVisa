@@ -116,6 +116,10 @@ const router = createBrowserRouter([
         path: "audit",
         element: <Auditoria />
       },
+      {
+        path: "cadastro/:type",
+        element: <Cadastro />
+      },
     ]
   }
 ])

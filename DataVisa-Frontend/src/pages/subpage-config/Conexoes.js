@@ -33,7 +33,7 @@ const Conexoes = ({ }) => {
       await DBClient.get("/dataVisa/database/getDB/" + id).then(
         (res) => {
           console.log(res.data)
-          navigate("/config/cadastro/conexao", { state: res.data })
+          navigate("/inspect/cadastro/conexao", { state: res.data })
         })
     } catch (error) {
       exibeMensagem("Ocorreu um erro: " + error.response.status + "\n" +
@@ -93,7 +93,7 @@ const Conexoes = ({ }) => {
             navigate('/menu/recentes')
           }}>Menu</button>
           <button className='cadastro-btn-blue m-1 w-full' onClick={() =>
-            navigate("/config/cadastro/conexao", {
+            navigate("/inspect/cadastro/conexao", {
               state: {
                 nomeConexao: null,
                 isActive: 0

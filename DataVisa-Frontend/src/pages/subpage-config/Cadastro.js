@@ -12,11 +12,11 @@ const Cadastro = () => {
         case "/config/cadastro/usuario":
             return <CadastroUser exibeMensagem={exibeMensagem}/>
 
-        case "/config/cadastro/conexao":
+        case "/inspect/cadastro/conexao":
             return <CadastroDb 
                 exibeMensagem={exibeMensagem}
                 session={session}/>
-        case "/config/cadastro/template":
+        case "/inspect/cadastro/template":
             return <CadastroTemplate 
                 exibeMensagem={exibeMensagem}
                 session={session}/>
