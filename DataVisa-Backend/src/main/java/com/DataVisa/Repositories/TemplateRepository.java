@@ -93,7 +93,7 @@ public class TemplateRepository {
     
     public TemplateModel findByName(String name, Long empresaId) {
         String tableName = "templates_" + empresaId;
-        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, isActive " +
+        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, conexaoName, isActive " +
                 "FROM " + tableName + " WHERE templateName = :templateName LIMIT 1";  
 
         try {
