@@ -29,13 +29,14 @@ public class TemplateRepository {
     @Transactional
     public void save(TemplateModel template) throws SQLException{
     	String tableName = "templates_" + template.getEmpresaId();
-        String query = "INSERT INTO " + tableName + " (templateName, sqlQuery, tableName, items, lastModification, empresaId, conexaoId) " +
-                       "VALUES (:templateName, :sqlQuery, :tableName, :items,  :lastModification, :empresaId, :conexaoId)";
+        String query = "INSERT INTO " + tableName + " (templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, conexaoName, isActive) " +
+                       "VALUES (:templateName, :sqlQuery, :tableName, :tablePermition, :items,  :lastModification, :empresaId, :conexaoId, :conexaoName, isActive = :isActive)";
         try {
             Query insertQuery = entityManager.createNativeQuery(query);
             insertQuery.setParameter("templateName", template.getTemplateName().trim());
             insertQuery.setParameter("sqlQuery", template.getSqlQuery());
             insertQuery.setParameter("tableName", template.getTableName());
+            insertQuery.setParameter("tablePermition", template.getTablePermition());
             
             Gson gson = new Gson();
             String itemsJson = gson.toJson(template.getItems());
@@ -46,6 +47,9 @@ public class TemplateRepository {
             
             insertQuery.setParameter("empresaId", template.getEmpresaId());
             insertQuery.setParameter("conexaoId", template.getConexaoId());
+            insertQuery.setParameter("conexaoName", template.getConexaoName());
+            insertQuery.setParameter("isActive", template.getIsActive());
+            
 	        insertQuery.executeUpdate();
         } catch (Exception e) {
             // Caso queira lançar uma exceção personalizada
@@ -55,7 +59,7 @@ public class TemplateRepository {
     
     public TemplateModel findById(Long id, Long empresaId) {
     	String tableName = "templates_" + empresaId;
-        String query = "SELECT id, templateName, sqlQuery, tableName, items, lastModification, empresaId, conexaoId FROM " + tableName + " WHERE id = :id LIMIT 1";
+        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, conexaoName, isActive FROM " + tableName + " WHERE id = :id LIMIT 1";
 
         try {
             Object[] result = (Object[]) entityManager.createNativeQuery(query)
@@ -68,13 +72,16 @@ public class TemplateRepository {
             template.setTemplateName((String) result[1]);
             template.setSqlQuery((String) result[2]);
             template.setTableName((String) result[3]);
+            template.setTablePermition(((Number) result[4]).intValue());
             Gson gson = new Gson();
-            String itemsJson = (String) result[4]; 
+            String itemsJson = (String) result[5]; 
             List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
             template.setItems(items);
-            template.setLastModification((Timestamp) result[5]);
-            template.setEmpresaId(((Number) result[6]).longValue());
-            template.setConexaoId(((Number) result[7]).longValue());
+            template.setLastModification((Timestamp) result[6]);
+            template.setEmpresaId(((Number) result[7]).longValue());
+            template.setConexaoId(((Number) result[8]).longValue());
+            template.setConexaoName((String) result[9]);
+            template.setIsActive(((Number) result[10]).intValue());
 
             return template;
         } catch (NoResultException e) {
@@ -84,7 +91,7 @@ public class TemplateRepository {
     
     public TemplateModel findByName(String name, Long empresaId) {
         String tableName = "templates_" + empresaId;
-        String query = "SELECT id, templateName, sqlQuery, tableName, items, lastModification, empresaId, conexaoId " + 
+        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, isActive " + 
                 "FROM " + tableName + " WHERE templateName = :templateName LIMIT 1";  
 
         try {
@@ -98,13 +105,16 @@ public class TemplateRepository {
             template.setTemplateName((String) result[1]);
             template.setSqlQuery((String) result[2]);
             template.setTableName((String) result[3]);
+            template.setTablePermition(((Number) result[4]).intValue());
             Gson gson = new Gson();
-            String itemsJson = (String) result[4]; 
+            String itemsJson = (String) result[5]; 
             List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
             template.setItems(items);
-            template.setLastModification((Timestamp) result[5]);
-            template.setEmpresaId(((Number) result[6]).longValue());
-            template.setConexaoId(((Number) result[7]).longValue());
+            template.setLastModification((Timestamp) result[6]);
+            template.setEmpresaId(((Number) result[7]).longValue());
+            template.setConexaoId(((Number) result[8]).longValue());
+            template.setConexaoName((String) result[9]);
+            template.setIsActive(((Number) result[10]).intValue());
 
             return template;
         } catch (NoResultException e) {
@@ -116,14 +126,15 @@ public class TemplateRepository {
     public void updateTemplate(TemplateModel template) throws SQLException {
         String tableName = "templates_" + template.getEmpresaId();
         String query = "UPDATE " + tableName + 
-                       " SET templateName = :templateName, sqlQuery = :sqlQuery, tableName = :tableName, items = :items, " +
-                       "lastModification = :lastModification, conexaoId = :conexaoId " +
+                       " SET templateName = :templateName, sqlQuery = :sqlQuery, tableName = :tableName, tablePermition = :tablePermition, items = :items, " +
+                       "lastModification = :lastModification, conexaoId = :conexaoId, conexaoName = :conexaoName, isActive = :isActive" +
                        "WHERE id = :id";
         try {
 	        Query updateQuery = entityManager.createNativeQuery(query);
 	        updateQuery.setParameter("templateName", template.getTemplateName());
 	        updateQuery.setParameter("sqlQuery", template.getSqlQuery());
 	        updateQuery.setParameter("tableName", template.getTableName());
+	        updateQuery.setParameter("tablePermition", template.getTablePermition());
 	        Gson gson = new Gson();
 	        String itemsJson = gson.toJson(template.getItems());
 	        updateQuery.setParameter("items", itemsJson);
@@ -131,6 +142,8 @@ public class TemplateRepository {
 	        updateQuery.setParameter("lastModification", currentTimestamp);
 	        
 	        updateQuery.setParameter("conexaoId", template.getConexaoId());
+	        updateQuery.setParameter("conexaoName", template.getConexaoName());
+	        updateQuery.setParameter("isActive", template.getIsActive());
 	        updateQuery.setParameter("id", template.getId());
 	
 	        updateQuery.executeUpdate();
