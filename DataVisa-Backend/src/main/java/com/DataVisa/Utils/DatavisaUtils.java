@@ -94,8 +94,9 @@ public class DatavisaUtils {
                 case "varchar":
                 case "json":
                 case "text":
-                	response = table.stringColumn(columnName).print();
-                    break;
+                	table.stringColumn(columnName).forEach(value -> 
+                    formattedValues.append(value).append(", "));
+                	break;
                 case "date":
                 	response = table.dateColumn(columnName).print();
                     break;
