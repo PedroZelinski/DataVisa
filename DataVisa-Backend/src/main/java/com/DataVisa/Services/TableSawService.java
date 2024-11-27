@@ -173,7 +173,6 @@ public class TableSawService {
 
 	
 	public String extractCustomizesdCollumnFields(String query, String tabela, int index) {
-	    StringBuilder column = new StringBuilder();
 	    try {
 	        // Obter a tabela a partir da conexão
 	        Table table = datavisaSession.getCustomerConnection(query, tabela);
