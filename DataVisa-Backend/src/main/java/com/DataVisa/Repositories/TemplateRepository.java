@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.DataVisa.Models.TemplateModel;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import jakarta.persistence.EntityManager;
@@ -91,7 +93,7 @@ public class TemplateRepository {
     
     public TemplateModel findByName(String name, Long empresaId) {
         String tableName = "templates_" + empresaId;
-        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, isActive " + 
+        String query = "SELECT id, templateName, sqlQuery, tableName, tablePermition, items, lastModification, empresaId, conexaoId, isActive " +
                 "FROM " + tableName + " WHERE templateName = :templateName LIMIT 1";  
 
         try {
@@ -99,17 +101,18 @@ public class TemplateRepository {
                     .setParameter("templateName", name)
                     .getSingleResult();
 
-            // Cria e retorna um TemplateModel a partir do resultado
             TemplateModel template = new TemplateModel();
             template.setId(((Number) result[0]).longValue());
             template.setTemplateName((String) result[1]);
             template.setSqlQuery((String) result[2]);
             template.setTableName((String) result[3]);
             template.setTablePermition(((Number) result[4]).intValue());
+
             Gson gson = new Gson();
             String itemsJson = (String) result[5]; 
             List<String> items = gson.fromJson(itemsJson, new TypeToken<List<String>>(){}.getType());
             template.setItems(items);
+
             template.setLastModification((Timestamp) result[6]);
             template.setEmpresaId(((Number) result[7]).longValue());
             template.setConexaoId(((Number) result[8]).longValue());
