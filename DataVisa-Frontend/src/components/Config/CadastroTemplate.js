@@ -24,6 +24,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       try {
         await DBClient.get("/dataVisa/database/getAll").then((res) => {
           setConexoes(res.data)
+          console.log(res.data)
           setConexao(res.data.find(obj => obj.id == location.state.conexaoId))
         })
       } catch (error) {
@@ -32,7 +33,8 @@ const CadastroTemplate = ({ exibeMensagem }) => {
       }
     }
     load();
-    if (location.state.nome != null) {
+
+    if (location.state.nome != undefined) {
       setControle(1)
       conectar(location.state.conexaoName, location.state.query)
     }
@@ -197,7 +199,7 @@ const CadastroTemplate = ({ exibeMensagem }) => {
                   <Dropdown value={conexao} options={conexoes}
                     optionLabel="nomeConexao"
                     onChange={(e) => {
-                        setConnection(e.value.nomeConexao)
+                        //setConnection(e.value.nomeConexao)
                         setConexao(e.value)
                       }
                     }

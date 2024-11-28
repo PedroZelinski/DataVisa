@@ -16,9 +16,9 @@ const ListUser = ({ list, userCadastro, confirmDelete, setControle, loading }) =
                 <div className='col-1 text-center'>N°</div>
                 <div className='col-2 text-center'>Nome</div>
                 <div className='col-3 text-center'>Email</div>
-                <div className='col-1 text-center'>Nivel</div>
+                <div className='col-2 text-center'>Nivel</div>
                 <div className='col-2 text-center'>Cargo</div>
-                <div className='col-1 text-center'>Data</div>
+                {/* <div className='col-1 text-center'>Data</div> */}
                 <div className='col-2 text-center'>Ações</div>
                 <div className='col 12'><hr /></div>
             </div>
@@ -35,9 +35,10 @@ const ListUser = ({ list, userCadastro, confirmDelete, setControle, loading }) =
                             <div className='col-1 mt-2'>{list.indexOf(user) + 1}</div>
                             <div className='col-2 mt-2'>{user.nome}</div>
                             <div className='col-3 mt-2'>{user.email}</div>
-                            <div className='col-1 mt-2'>{user.nivelAcesso}</div>
+                            <div className='col-2 mt-2'>{user.nivelAcesso == 1 ? "1 - Administrador"
+                                : user.nivelAcesso == 2 ? "2 - Analista" : "3 - Usuário"}</div>
                             <div className='col-2 mt-2'>{user.departamento}</div>
-                            <div className='col-1 mt-2'>Data</div>
+                            {/* <div className='col-1 mt-2'>Data</div> */}
                             <div className="col-2">
                                 <button className='cadastro-btn-blue mr-2'
                                     onClick={() => userCadastro(user.email)}>

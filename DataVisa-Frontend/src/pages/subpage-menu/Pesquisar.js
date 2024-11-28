@@ -91,7 +91,7 @@ const Pesquisar = () => {
                 report.graphType == "pie" && checkedPizza == true ||
                   report.graphType == "bar" && checkedBarras == true ||
                   report.graphType == "scatter" && checkedLinhas == true ||
-                  report.graphType == "spreadsheet" && checkedPlan == true ?
+                  report.graphType == "table" && checkedPlan == true ?
                   <Card
                     imgHeight={80}
                     report={report}

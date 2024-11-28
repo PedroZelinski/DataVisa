@@ -6,7 +6,7 @@ const CardModelo = ({ img, filtrar, tipo }) => {
       onClick={() => filtrar(tipo)}>
 
       <div className="col-10 font-bold">
-        {tipo == "Planilha" ? tipo : "Gráfico de " + tipo}
+        {tipo}
       </div>
 
       <div className="col-12 text-center">

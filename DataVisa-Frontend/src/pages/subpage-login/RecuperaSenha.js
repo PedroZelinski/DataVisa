@@ -48,7 +48,7 @@ const RecuperaSenha = () => {
                             Uma nova senha será enviada para a conta do e-mail informada acima.
                             <br /><br />
                             Caso tenha dificuldades com a recuperação, solicite a alteração para um administrador
-                            de sua empresa ou o suporte DataVisa.
+                            de sua empresa ou o suporte DataVisa em datavisaa@gmail.com
                         </p>
                     </div>
                 </form>

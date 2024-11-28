@@ -58,14 +58,19 @@ const Card = ({ report, imgHeight, navigate, exibeMensagem, contador, setContado
           onClick={() => navigate("/menu/filtrar", {state: report} )}/> */}
 
         <Button label="Gerar" icon="fi fi-rr-check"
-          onClick={() => navigate("/menu/gerar", {state: report} )} />
+          onClick={() => {
+            report.reportName.split(' ')[0] != "Filial" ?
+              navigate("/menu/gerar", { state: report }) :
+              exibeMensagem(
+                "A conexão utilizada por este modelo está inativa, informe um analista de dados.")
+          }} />
       </div>
     </div>
   )
 
 
   return (
-    <div className="card-area col-3 grid m-2 ml-4">
+    <div className="card-area col-3 grid m-2 ml-4" style={{ maxHeight: "250px" }}>
 
       <Dialog visible={info} modal
         header={report.reportName}
@@ -102,7 +107,12 @@ const Card = ({ report, imgHeight, navigate, exibeMensagem, contador, setContado
 
 
       <div className="col-12 text-center" style={{ cursor: 'pointer' }}
-        onClick={() => navigate("/menu/gerar",  {state: report} )}>
+        onClick={() => {
+          report.reportName.split(' ')[0] != "Filial" ?
+            navigate("/menu/gerar", { state: report }) :
+            exibeMensagem(
+              "A conexão utilizada por este modelo está inativa, informe um analista de dados.")
+        }}>
         <img src={img} alt="" style={{ height: imgHeight }} />
       </div>
     </div>

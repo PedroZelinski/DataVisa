@@ -45,6 +45,7 @@ const Filtrar = () => {
             //console.log(res.data)
           })
       } catch (error) {
+        console.log(error)
         exibeMensagem("Ocorreu um erro: " + error.response.status + "\n"
           + error.response.data)
       }
@@ -53,6 +54,19 @@ const Filtrar = () => {
     setModelo(location.state)
   }, [])
   async function conectar(nomeDb) {
+    console.log(area)
+    if(document.getElementById("nome").value == ""){
+      return exibeMensagem("Informe um nome para este modelo.")
+    }
+    if(Object.keys(area).length == 0 || area == undefined || area == null){
+      return exibeMensagem("Seleciona uma area para prosseguir.")
+    }
+    if(item == "" || item == undefined || item == null){
+      return exibeMensagem("Informe um item para trazer como valores do gráfico.")
+    }
+    if(itemLabel == "" || itemLabel == undefined || itemLabel == null){
+      return exibeMensagem("Informe qual será a legenda.")
+    }
     try {
       await DBClient.get("/dataVisa/database/connect/" + nomeDb).then(
         () => gerar()

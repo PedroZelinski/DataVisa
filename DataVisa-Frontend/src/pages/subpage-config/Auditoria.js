@@ -41,25 +41,25 @@ const Auditoria = () => {
           <div className="scroll-white col-12 text-center ml-1 mt-2"
             style={{ height: 'calc(100vh - 320px)', width: '99%' }}>
             <div className="grid col-12 mt-2">
-              <div className='col-2'>01/01/2024 20:00:00</div>
+              <div className='col-2'>01/01/2024 20:01:56</div>
               <div className='col-3'>Lorena</div>
               <div className='col-3'>Alterar senha</div>
               <div className='col-4'>Alterou senha do usuario Rebeca para 1234novasenha</div>
             </div>
             <div className="grid col-12 mt-2">
-              <div className='col-2'>10/03/2024 09:30:00</div>
+              <div className='col-2'>10/03/2024 09:30:07</div>
               <div className='col-3'>Rafael</div>
               <div className='col-3'>Recuperar senha</div>
               <div className='col-4'>Realizou recuperação de senha, enviada para rafaelreserva@pizzaria.com</div>
             </div>
             <div className="grid col-12 mt-2">
-              <div className='col-2'>14/04/2024 15:47:00</div>
+              <div className='col-2'>14/04/2024 15:47:21</div>
               <div className='col-3'>Jhonatan</div>
               <div className='col-3'>Excluir template</div>
               <div className='col-4'>Excluiu o template Vendas por Mês, criado em 07/02/2024</div>
             </div>
             <div className="grid col-12 mt-2">
-              <div className='col-2'>21/05/2024 11:13:00</div>
+              <div className='col-2'>21/05/2024 11:13:37</div>
               <div className='col-3'>Pedro</div>
               <div className='col-3'>Rejeitar usuário pendente</div>
               <div className='col-4'>Rejeitou o usuário pendente Norton</div>

@@ -69,7 +69,7 @@ const Recentes = () => {
             </div>
           </div>
 
-          {reports.map((report) => (
+          {reports.slice(0, 5).map((report) => (
             <Card
               imgHeight={100}
               report={report}

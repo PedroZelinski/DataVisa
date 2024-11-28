@@ -7,6 +7,12 @@ const ListPending = ({ list, userCadastro, confirmDelete, setControle, loading }
     setControle(prevControle => prevControle + 1)
   }, []);
 
+  function formatarData(data){
+    const [ano, mes, dia] = data.split('-');
+  
+    return `${dia}/${mes}/${ano}`
+  }
+
   return (
     <div className="cadastro-area grid m-2 mr-3 w-full"
       style={{ height: 'calc(100vh - 250px)' }}>
@@ -33,7 +39,7 @@ const ListPending = ({ list, userCadastro, confirmDelete, setControle, loading }
               <div className='col-1 mt-2'>{list.indexOf(user) + 1}</div>
               <div className='col-3 mt-2'>{user.nome}</div>
               <div className='col-3 mt-2'>{user.email}</div>
-              <div className='col-3 mt-2'>Data</div>
+              <div className='col-3 mt-2'>{formatarData(user.data_solicitacao)}</div>
               <div className='col-2'>
                 <button onClick={() => userCadastro(user.email)}
                   className='cadastro-btn-green mr-2'>

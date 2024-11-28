@@ -40,7 +40,6 @@ const Conexoes = ({ }) => {
         error.response.data)
     }
   }
-
   const confirmDelete = (nomeConexao) => {
     confirmDialog({
       message: 'Deseja mesmo excluir a conexão ' + nomeConexao + '?',
