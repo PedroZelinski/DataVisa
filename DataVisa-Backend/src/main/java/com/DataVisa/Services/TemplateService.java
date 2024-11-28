@@ -201,9 +201,7 @@ public class TemplateService{
 		if (!(response = datavisaSession.checkStatus()).getRight().equals(HttpStatus.ACCEPTED)) {
 	        return Pair.of(response,  response.getRight());
 	    }
-	    if (!(response = datavisaSession.checkDatavisaPermition(2)).getRight().equals(HttpStatus.ACCEPTED)) {
-	        return Pair.of(response, response.getRight());
-	    }
+	    
 	    try {
 		    List<TemplateModel> templatesResponse = templateRepository.getAll(datavisaSession.getEmpresaId());
 		    List<TemplateDTO> dtos = new ArrayList<>();
